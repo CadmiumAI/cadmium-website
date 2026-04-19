@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadmium — Automated Piping Isometrics</title>
+  <meta name="description" content="Turn AutoCAD Plant 3D drawings into production-ready annotated isometrics in seconds, not hours." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- CAD Canvas Background -->
+  <canvas id="cad-canvas"></canvas>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+          <rect x="2" y="2" width="28" height="28" rx="4" stroke="currentColor" stroke-width="2"/>
+          <line x1="8" y1="16" x2="24" y2="16" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="14" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="24" y1="14" x2="24" y2="18" stroke="currentColor" stroke-width="1.5"/>
+          <text x="16" y="12" text-anchor="middle" fill="currentColor" font-size="6" font-family="DM Sans">Cd</text>
+        </svg>
+        Cadmium
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#components">Components</a>
+      </div>
+      <a href="#cta" class="nav-cta">Request access</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">For piping engineers</div>
+      <h1>Stop redrawing<br/>your isometrics</h1>
+      <p class="hero-sub">
+        Cadmium reads your AutoCAD Plant 3D models and generates clean,
+        dimensioned isometric drawings automatically. What used to take
+        your team hours now takes seconds.
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">Get early access</a>
+        <a href="#workflow" class="btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">95%</span>
+          <span class="stat-label">Less manual rework</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">Seconds</span>
+          <span class="stat-label">Not hours</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">DXF/PDF</span>
+          <span class="stat-label">Native export</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Screenshot: Main App UI -->
+    <div class="hero-screenshot">
+      <div class="screenshot-frame">
+        <svg viewBox="0 0 960 560" fill="none" xmlns="http://www.w3.org/2000/svg" class="screenshot-svg">
+          <!-- Window chrome -->
+          <rect x="0" y="0" width="960" height="560" rx="10" fill="#111114"/>
+          <rect x="0" y="0" width="960" height="560" rx="10" stroke="#2a2a2f" stroke-width="1"/>
+          <!-- Title bar -->
+          <rect x="1" y="1" width="958" height="36" rx="10" fill="#1a1a1f"/>
+          <circle cx="20" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="36" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="52" cy="18" r="5" fill="#3a3a40"/>
+          <text x="480" y="22" text-anchor="middle" fill="#5a5a64" font-size="11" font-family="DM Sans, sans-serif">Cadmium — Carbonation System Piping</text>
+
+          <!-- Left Sidebar -->
+          <rect x="1" y="37" width="220" height="522" fill="#141418"/>
+          <line x1="221" y1="37" x2="221" y2="559" stroke="#2a2a2f" stroke-width="1"/>
+
+          <!-- Sidebar: Project header -->
+          <text x="20" y="62" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">PROJECT</text>
+          <rect x="16" y="70" width="190" height="32" rx="6" fill="#1e1e24"/>
+          <text x="32" y="91" fill="#e0e0e0" font-size="12" font-family="DM Sans" font-weight="600">Carbonation System</text>
+
+          <!-- Sidebar: Components list header -->
+          <text x="20" y="126" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">COMPONENTS</text>
+          <text x="178" y="126" fill="#5a5a64" font-size="9" font-family="DM Sans">47</text>
+
+          <!-- Component list items -->
+          <!-- Pipes -->
+          <rect x="16" y="134" width="190" height="28" rx="4" fill="#00d4ff" fill-opacity="0.08"/>
+          <rect x="24" y="142" width="10" height="10" rx="2" fill="#00d4ff" fill-opacity="0.3"/>
+          <line x1="26" y1="147" x2="32" y2="147" stroke="#00d4ff" stroke-width="1.5"/>
+          <text x="42" y="151" fill="#e0e0e0" font-size="11" font-family="DM Sans">Pipes</text>
+          <text x="178" y="151" fill="#00d4ff" font-size="10" font-family="DM Sans">18</text>
+
+          <!-- Elbows -->
+          <rect x="24" y="170" width="10" height="10" rx="2" fill="#00ff00" fill-opacity="0.2"/>
+          <text x="42" y="179" fill="#a0a0a8" font-size="11" font-family="DM Sans">Elbows</text>
+          <text x="178" y="179" fill="#5a5a64" font-size="10" font-family="DM Sans">12</text>
+
+          <!-- Valves -->
+          <rect x="24" y="194" width="10" height="10" rx="2" fill="#ff3333" fill-opacity="0.2"/>
+          <text x="42" y="203" fill="#a0a0a8" font-size="11" font-family="DM Sans">Valves</text>
+          <text x="178" y="203" fill="#5a5a64" font-size="10" font-family="DM Sans">6</text>
+
+          <!-- Flanges -->
+          <rect x="24" y="218" width="10" height="10" rx="2" fill="#ff44ff" fill-opacity="0.2"/>
+          <text x="42" y="227" fill="#a0a0a8" font-size="11" font-family="DM Sans">Flanges</text>
+          <text x="178" y="227" fill="#5a5a64" font-size="10" font-family="DM Sans">8</text>
+
+          <!-- Tees -->
+          <rect x="24" y="242" width="10" height="10" rx="2" fill="#ffff00" fill-opacity="0.2"/>
+          <text x="42" y="251" fill="#a0a0a8" font-size="11" font-family="DM Sans">Tees</text>
+          <text x="178" y="251" fill="#5a5a64" font-size="10" font-family="DM Sans">3</text>
+
+          <!-- Sidebar: Properties panel -->
+          <line x1="16" y1="280" x2="206" y2="280" stroke="#2a2a2f" stroke-width="1"/>
+          <text x="20" y="302" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">PROPERTIES</text>
+          <text x="20" y="324" fill="#5a5a64" font-size="10" font-family="DM Sans">Type</text>
+          <text x="100" y="324" fill="#e0e0e0" font-size="10" font-family="DM Sans">Gate Valve</text>
+          <text x="20" y="344" fill="#5a5a64" font-size="10" font-family="DM Sans">Tag</text>
+          <text x="100" y="344" fill="#e0e0e0" font-size="10" font-family="DM Sans">GV-101</text>
+          <text x="20" y="364" fill="#5a5a64" font-size="10" font-family="DM Sans">Size</text>
+          <text x="100" y="364" fill="#e0e0e0" font-size="10" font-family="DM Sans">4" (DN100)</text>
+          <text x="20" y="384" fill="#5a5a64" font-size="10" font-family="DM Sans">Spec</text>
+          <text x="100" y="384" fill="#e0e0e0" font-size="10" font-family="DM Sans">CS150</text>
+          <text x="20" y="404" fill="#5a5a64" font-size="10" font-family="DM Sans">Line</text>
+          <text x="100" y="404" fill="#00d4ff" font-size="10" font-family="DM Sans">L-001-CS150-4"</text>
+
+          <!-- Sidebar: Export button -->
+          <rect x="16" y="500" width="190" height="36" rx="8" fill="#00d4ff"/>
+          <text x="111" y="523" text-anchor="middle" fill="#111114" font-size="12" font-family="DM Sans" font-weight="700">Export DXF</text>
+
+          <!-- ==================== -->
+          <!-- Main 3D Viewport -->
+          <!-- ==================== -->
+          <rect x="222" y="37" width="738" height="523" fill="#1e1e1e"/>
+
+          <!-- Grid floor (faint) -->
+          <line x1="340" y1="450" x2="900" y2="450" stroke="#1a1a1f" stroke-width="0.5"/>
+          <line x1="360" y1="470" x2="880" y2="470" stroke="#1a1a1f" stroke-width="0.5"/>
+          <line x1="380" y1="490" x2="860" y2="490" stroke="#1a1a1f" stroke-width="0.5"/>
+          <!-- vertical grid hints -->
+          <line x1="450" y1="350" x2="420" y2="510" stroke="#1a1a1f" stroke-width="0.5"/>
+          <line x1="550" y1="350" x2="520" y2="510" stroke="#1a1a1f" stroke-width="0.5"/>
+          <line x1="650" y1="350" x2="620" y2="510" stroke="#1a1a1f" stroke-width="0.5"/>
+          <line x1="750" y1="350" x2="720" y2="510" stroke="#1a1a1f" stroke-width="0.5"/>
+
+          <!-- ====== 3D Piping Model ====== -->
+
+          <!-- Main horizontal run (thick pipe) -->
+          <line x1="320" y1="300" x2="580" y2="300" stroke="#cccccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- Riser going up -->
+          <line x1="580" y1="300" x2="580" y2="180" stroke="#cccccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- Upper horizontal run -->
+          <line x1="580" y1="180" x2="800" y2="180" stroke="#cccccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- Branch down from middle -->
+          <line x1="460" y1="300" x2="460" y2="400" stroke="#cccccc" stroke-width="3" stroke-linecap="round"/>
+          <!-- Diagonal run (isometric feel) -->
+          <line x1="800" y1="180" x2="870" y2="140" stroke="#cccccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- Short branch off upper run -->
+          <line x1="680" y1="180" x2="680" y2="250" stroke="#cccccc" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Elbow at 580,300 -->
+          <circle cx="580" cy="300" r="8" fill="#1e1e1e" stroke="#00ff00" stroke-width="2"/>
+          <circle cx="580" cy="300" r="3" fill="#00ff00" fill-opacity="0.4"/>
+          <!-- Elbow at 580,180 -->
+          <circle cx="580" cy="180" r="8" fill="#1e1e1e" stroke="#00ff00" stroke-width="2"/>
+          <circle cx="580" cy="180" r="3" fill="#00ff00" fill-opacity="0.4"/>
+          <!-- Elbow at 800,180 -->
+          <circle cx="800" cy="180" r="8" fill="#1e1e1e" stroke="#00ff00" stroke-width="2"/>
+          <circle cx="800" cy="180" r="3" fill="#00ff00" fill-opacity="0.4"/>
+
+          <!-- Tee at 460,300 -->
+          <rect x="452" y="292" width="16" height="16" rx="3" fill="#1e1e1e" stroke="#ffff00" stroke-width="1.5"/>
+          <line x1="456" y1="300" x2="464" y2="300" stroke="#ffff00" stroke-width="1"/>
+          <line x1="460" y1="296" x2="460" y2="304" stroke="#ffff00" stroke-width="1"/>
+
+          <!-- Tee at 680,180 -->
+          <rect x="672" y="172" width="16" height="16" rx="3" fill="#1e1e1e" stroke="#ffff00" stroke-width="1.5"/>
+          <line x1="676" y1="180" x2="684" y2="180" stroke="#ffff00" stroke-width="1"/>
+          <line x1="680" y1="176" x2="680" y2="184" stroke="#ffff00" stroke-width="1"/>
+
+          <!-- Valve on main run (selected - highlighted) -->
+          <rect x="375" y="280" width="40" height="40" rx="6" fill="#00d4ff" fill-opacity="0.08" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <!-- Valve bowtie -->
+          <polygon points="385,295 395,300 385,305" fill="none" stroke="#ff3333" stroke-width="1.5"/>
+          <polygon points="405,295 395,300 405,305" fill="none" stroke="#ff3333" stroke-width="1.5"/>
+          <text x="395" y="275" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="DM Sans" font-weight="600">GV-101</text>
+
+          <!-- Flanges (thick bars) -->
+          <line x1="318" y1="293" x2="318" y2="307" stroke="#ff44ff" stroke-width="3" stroke-linecap="round"/>
+          <line x1="370" y1="293" x2="370" y2="307" stroke="#ff44ff" stroke-width="3" stroke-linecap="round"/>
+          <line x1="420" y1="293" x2="420" y2="307" stroke="#ff44ff" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Second valve on upper run -->
+          <polygon points="710,175 720,180 710,185" fill="none" stroke="#ff3333" stroke-width="1.5"/>
+          <polygon points="730,175 720,180 730,185" fill="none" stroke="#ff3333" stroke-width="1.5"/>
+          <text x="720" y="168" text-anchor="middle" fill="#888" font-size="8" font-family="DM Sans">CV-202</text>
+
+          <!-- Dimension lines -->
+          <!-- Horizontal main run dimension -->
+          <line x1="320" y1="330" x2="580" y2="330" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="320" y1="325" x2="320" y2="335" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="580" y1="325" x2="580" y2="335" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <rect x="420" y="333" width="48" height="14" rx="3" fill="#1a1a1f"/>
+          <text x="444" y="344" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="DM Sans">4200mm</text>
+
+          <!-- Vertical riser dimension -->
+          <line x1="605" y1="180" x2="605" y2="300" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="600" y1="180" x2="610" y2="180" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="600" y1="300" x2="610" y2="300" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <rect x="609" y="234" width="44" height="14" rx="3" fill="#1a1a1f"/>
+          <text x="631" y="245" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="DM Sans">2400mm</text>
+
+          <!-- Upper run dimension -->
+          <line x1="580" y1="155" x2="800" y2="155" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="580" y1="150" x2="580" y2="160" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <line x1="800" y1="150" x2="800" y2="160" stroke="#00d4ff" stroke-width="0.8" opacity="0.6"/>
+          <rect x="662" y="140" width="48" height="14" rx="3" fill="#1a1a1f"/>
+          <text x="686" y="151" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="DM Sans">3500mm</text>
+
+          <!-- Toolbar at top of viewport -->
+          <rect x="222" y="37" width="738" height="32" fill="#141418"/>
+          <line x1="222" y1="69" x2="960" y2="69" stroke="#2a2a2f" stroke-width="1"/>
+
+          <!-- Toolbar buttons -->
+          <!-- Select -->
+          <rect x="234" y="43" width="24" height="20" rx="4" fill="#00d4ff" fill-opacity="0.12"/>
+          <path d="M242 48l6 8-3-1-2 4-1.5-0.7 2-4-3-0.3z" fill="#00d4ff" fill-opacity="0.7"/>
+          <!-- Pan -->
+          <rect x="264" y="43" width="24" height="20" rx="4" fill="transparent"/>
+          <path d="M276 48v8m-4-4h8" stroke="#5a5a64" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- Rotate -->
+          <rect x="294" y="43" width="24" height="20" rx="4" fill="transparent"/>
+          <path d="M302 56a5 5 0 1 1 8-2" stroke="#5a5a64" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          <path d="M310 52l1 3 3-1" stroke="#5a5a64" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <!-- Separator -->
+          <line x1="326" y1="46" x2="326" y2="60" stroke="#2a2a2f" stroke-width="1"/>
+          <!-- Dimension tool -->
+          <rect x="334" y="43" width="24" height="20" rx="4" fill="transparent"/>
+          <line x1="340" y1="56" x2="352" y2="56" stroke="#5a5a64" stroke-width="1"/>
+          <line x1="340" y1="53" x2="340" y2="59" stroke="#5a5a64" stroke-width="1"/>
+          <line x1="352" y1="53" x2="352" y2="59" stroke="#5a5a64" stroke-width="1"/>
+          <!-- Annotate -->
+          <rect x="364" y="43" width="24" height="20" rx="4" fill="transparent"/>
+          <text x="376" y="57" text-anchor="middle" fill="#5a5a64" font-size="10" font-family="DM Sans">A</text>
+          <!-- Separator -->
+          <line x1="396" y1="46" x2="396" y2="60" stroke="#2a2a2f" stroke-width="1"/>
+          <!-- Zoom controls -->
+          <text x="408" y="57" fill="#5a5a64" font-size="12" font-family="DM Sans">+</text>
+          <text x="426" y="57" fill="#5a5a64" font-size="12" font-family="DM Sans">-</text>
+          <rect x="440" y="46" width="36" height="14" rx="4" fill="#1e1e24"/>
+          <text x="458" y="56" text-anchor="middle" fill="#888" font-size="9" font-family="DM Sans">100%</text>
+
+          <!-- View mode tabs -->
+          <rect x="820" y="43" width="54" height="20" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="847" y="56" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="DM Sans" font-weight="600">3D</text>
+          <rect x="878" y="43" width="54" height="20" rx="4" fill="transparent"/>
+          <text x="905" y="56" text-anchor="middle" fill="#5a5a64" font-size="9" font-family="DM Sans">Iso</text>
+
+          <!-- Orientation gizmo (bottom right) -->
+          <circle cx="900" cy="510" r="22" fill="#141418" stroke="#2a2a2f" stroke-width="1"/>
+          <line x1="900" y1="510" x2="916" y2="510" stroke="#ff3333" stroke-width="1.2"/>
+          <text x="919" y="513" fill="#ff3333" font-size="7" font-family="DM Sans">X</text>
+          <line x1="900" y1="510" x2="900" y2="494" stroke="#00ff00" stroke-width="1.2"/>
+          <text x="897" y="491" fill="#00ff00" font-size="7" font-family="DM Sans">Y</text>
+          <line x1="900" y1="510" x2="888" y2="518" stroke="#ffff00" stroke-width="1.2"/>
+          <text x="883" y="524" fill="#ffff00" font-size="7" font-family="DM Sans">Z</text>
+
+          <!-- Status bar at bottom -->
+          <rect x="222" y="542" width="738" height="18" fill="#141418"/>
+          <line x1="222" y1="542" x2="960" y2="542" stroke="#2a2a2f" stroke-width="1"/>
+          <text x="234" y="554" fill="#5a5a64" font-size="8" font-family="DM Sans">47 components</text>
+          <text x="340" y="554" fill="#5a5a64" font-size="8" font-family="DM Sans">|</text>
+          <text x="355" y="554" fill="#5a5a64" font-size="8" font-family="DM Sans">18 pipes</text>
+          <text x="420" y="554" fill="#5a5a64" font-size="8" font-family="DM Sans">|</text>
+          <text x="435" y="554" fill="#5a5a64" font-size="8" font-family="DM Sans">42 connections</text>
+          <circle cx="920" cy="551" r="3" fill="#00ff00" fill-opacity="0.6"/>
+          <text x="912" y="555" fill="#5a5a64" font-size="8" font-family="DM Sans" text-anchor="end">Ready</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before / After -->
+  <section class="before-after">
+    <div class="container">
+      <div class="section-header">
+        <h2>You know the problem</h2>
+        <p>AutoCAD generates isometrics. But they're never production-ready.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-card ba-before">
+          <div class="ba-label">Before Cadmium</div>
+          <div class="ba-visual">
+            <svg viewBox="0 0 400 240" fill="none" class="ba-svg">
+              <!-- Cluttered drawing simulation -->
+              <line x1="40" y1="120" x2="360" y2="120" stroke="#444" stroke-width="1"/>
+              <line x1="80" y1="60" x2="200" y2="180" stroke="#444" stroke-width="0.5"/>
+              <line x1="120" y1="40" x2="300" y2="200" stroke="#444" stroke-width="0.5"/>
+              <line x1="60" y1="180" x2="340" y2="60" stroke="#444" stroke-width="0.5"/>
+              <rect x="100" y="80" width="60" height="40" stroke="#555" stroke-width="0.5" fill="none"/>
+              <rect x="200" y="100" width="80" height="50" stroke="#555" stroke-width="0.5" fill="none"/>
+              <circle cx="300" cy="100" r="25" stroke="#555" stroke-width="0.5" fill="none"/>
+              <circle cx="150" cy="160" r="15" stroke="#555" stroke-width="0.5" fill="none"/>
+              <!-- Overlapping text -->
+              <text x="90" y="75" fill="#555" font-size="7" font-family="monospace">DIM 1250.00</text>
+              <text x="95" y="85" fill="#555" font-size="6" font-family="monospace">REF-A 48"</text>
+              <text x="200" y="95" fill="#555" font-size="7" font-family="monospace">SPEC: CS150</text>
+              <text x="180" y="145" fill="#555" font-size="6" font-family="monospace">LINE-001-CS150-2"</text>
+              <text x="260" y="80" fill="#555" font-size="6" font-family="monospace">FLANGE RF</text>
+              <text x="50" y="170" fill="#555" font-size="7" font-family="monospace">EL +3500</text>
+              <text x="280" y="170" fill="#555" font-size="6" font-family="monospace">WELD</text>
+              <!-- More clutter lines -->
+              <line x1="30" y1="90" x2="370" y2="150" stroke="#333" stroke-width="0.3" stroke-dasharray="4,3"/>
+              <line x1="150" y1="30" x2="250" y2="210" stroke="#333" stroke-width="0.3" stroke-dasharray="4,3"/>
+              <polyline points="60,100 100,80 160,110 200,70 260,130 320,90 360,120" stroke="#555" stroke-width="0.7" fill="none"/>
+              <polyline points="40,160 90,140 140,170 200,130 280,160 350,140" stroke="#555" stroke-width="0.7" fill="none"/>
+            </svg>
+          </div>
+          <ul class="ba-list">
+            <li>Cluttered overlapping annotations</li>
+            <li>Unnecessary construction geometry</li>
+            <li>Hours of manual cleanup needed</li>
+          </ul>
+        </div>
+        <div class="ba-arrow">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M8 24h32M30 14l10 10-10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="ba-card ba-after">
+          <div class="ba-label ba-label-good">After Cadmium</div>
+          <div class="ba-visual">
+            <svg viewBox="0 0 400 240" fill="none" class="ba-svg">
+              <!-- Clean isometric pipe run -->
+              <line x1="60" y1="160" x2="160" y2="110" stroke="#e0e0e0" stroke-width="1.5"/>
+              <line x1="160" y1="110" x2="280" y2="110" stroke="#e0e0e0" stroke-width="1.5"/>
+              <line x1="280" y1="110" x2="340" y2="80" stroke="#e0e0e0" stroke-width="1.5"/>
+              <!-- Elbow symbols -->
+              <circle cx="160" cy="110" r="4" fill="none" stroke="#00d4ff" stroke-width="1.2"/>
+              <circle cx="280" cy="110" r="4" fill="none" stroke="#00d4ff" stroke-width="1.2"/>
+              <!-- Valve symbol -->
+              <polygon points="210,104 220,98 230,104 220,110" fill="none" stroke="#00d4ff" stroke-width="1"/>
+              <!-- Clean dimension lines -->
+              <line x1="60" y1="178" x2="160" y2="128" stroke="#00d4ff" stroke-width="0.6"/>
+              <line x1="55" y1="175" x2="65" y2="181" stroke="#00d4ff" stroke-width="0.6"/>
+              <line x1="155" y1="125" x2="165" y2="131" stroke="#00d4ff" stroke-width="0.6"/>
+              <text x="95" y="162" fill="#00d4ff" font-size="9" font-family="DM Sans" transform="rotate(-27, 95, 162)">2450 mm</text>
+              <line x1="160" y1="128" x2="280" y2="128" stroke="#00d4ff" stroke-width="0.6"/>
+              <line x1="160" y1="125" x2="160" y2="131" stroke="#00d4ff" stroke-width="0.6"/>
+              <line x1="280" y1="125" x2="280" y2="131" stroke="#00d4ff" stroke-width="0.6"/>
+              <text x="205" y="142" fill="#00d4ff" font-size="9" font-family="DM Sans">3200 mm</text>
+              <!-- Flange at start -->
+              <line x1="55" y1="157" x2="65" y2="163" stroke="#e0e0e0" stroke-width="2"/>
+              <!-- Tag -->
+              <text x="180" y="90" fill="#888" font-size="8" font-family="DM Sans">GV-101</text>
+            </svg>
+          </div>
+          <ul class="ba-list ba-list-good">
+            <li>Clean, properly dimensioned output</li>
+            <li>Components labeled and classified</li>
+            <li>Ready for review and fabrication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshot 2: Annotation / Isometric Output View -->
+  <section class="screenshot-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Production-ready output</h2>
+        <p>Clean isometric drawings with every dimension placed automatically.</p>
+      </div>
+      <div class="screenshot-frame">
+        <svg viewBox="0 0 960 520" fill="none" xmlns="http://www.w3.org/2000/svg" class="screenshot-svg">
+          <!-- Window -->
+          <rect width="960" height="520" rx="10" fill="#111114"/>
+          <rect width="960" height="520" rx="10" stroke="#2a2a2f" stroke-width="1"/>
+          <rect x="1" y="1" width="958" height="36" rx="10" fill="#1a1a1f"/>
+          <circle cx="20" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="36" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="52" cy="18" r="5" fill="#3a3a40"/>
+          <text x="480" y="22" text-anchor="middle" fill="#5a5a64" font-size="11" font-family="DM Sans, sans-serif">Cadmium — Isometric Output</text>
+
+          <!-- Drawing canvas (white-ish background like real technical drawing) -->
+          <rect x="40" y="56" width="680" height="440" rx="4" fill="#1a1a1a"/>
+          <rect x="40" y="56" width="680" height="440" rx="4" stroke="#2a2a2f" stroke-width="1"/>
+
+          <!-- Drawing border / title block style -->
+          <rect x="56" y="72" width="648" height="400" fill="none" stroke="#222228" stroke-width="0.8"/>
+          <line x1="56" y1="432" x2="704" y2="432" stroke="#222228" stroke-width="0.8"/>
+          <rect x="520" y="432" width="184" height="40" fill="none" stroke="#222228" stroke-width="0.8"/>
+          <text x="612" y="447" text-anchor="middle" fill="#5a5a64" font-size="7" font-family="DM Sans">CADMIUM AUTO-GENERATED</text>
+          <text x="612" y="460" text-anchor="middle" fill="#888" font-size="9" font-family="DM Sans" font-weight="600">CARBONATION SYSTEM - ISO-001</text>
+          <text x="540" y="447" fill="#5a5a64" font-size="6" font-family="DM Sans">REV</text>
+          <text x="540" y="460" fill="#888" font-size="8" font-family="DM Sans" font-weight="600">A</text>
+
+          <!-- ====== Main Isometric Drawing ====== -->
+
+          <!-- Main pipe run 1: angled up-right (isometric 30 deg) -->
+          <line x1="100" y1="380" x2="200" y2="322" stroke="#e0e0e0" stroke-width="2"/>
+          <!-- Flange at start -->
+          <line x1="96" y1="378" x2="104" y2="382" stroke="#e0e0e0" stroke-width="3"/>
+
+          <!-- Horizontal run -->
+          <line x1="200" y1="322" x2="420" y2="322" stroke="#e0e0e0" stroke-width="2"/>
+
+          <!-- Elbow joints -->
+          <circle cx="200" cy="322" r="5" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="200" cy="322" r="1.5" fill="#00d4ff"/>
+
+          <!-- Valve on horizontal run -->
+          <polygon points="280,314 295,322 280,330" fill="none" stroke="#ff3333" stroke-width="1.2"/>
+          <polygon points="310,314 295,322 310,330" fill="none" stroke="#ff3333" stroke-width="1.2"/>
+          <!-- Valve label -->
+          <line x1="295" y1="310" x2="295" y2="286" stroke="#888" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <rect x="268" y="274" width="54" height="14" rx="3" fill="#1a1a1f" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="295" y="284" text-anchor="middle" fill="#e0e0e0" font-size="8" font-family="DM Sans" font-weight="500">GV-101</text>
+
+          <!-- Tee junction -->
+          <circle cx="360" cy="322" r="4" fill="none" stroke="#ffff00" stroke-width="1.5"/>
+          <!-- Branch going down -->
+          <line x1="360" y1="322" x2="360" y2="400" stroke="#e0e0e0" stroke-width="2"/>
+          <!-- Branch elbow and horizontal -->
+          <circle cx="360" cy="400" r="4" fill="none" stroke="#00d4ff" stroke-width="1.2"/>
+          <line x1="360" y1="400" x2="440" y2="400" stroke="#e0e0e0" stroke-width="1.5"/>
+
+          <!-- Elbow going up -->
+          <circle cx="420" cy="322" r="5" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="420" cy="322" r="1.5" fill="#00d4ff"/>
+
+          <!-- Vertical riser -->
+          <line x1="420" y1="322" x2="420" y2="180" stroke="#e0e0e0" stroke-width="2"/>
+
+          <!-- Top elbow -->
+          <circle cx="420" cy="180" r="5" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <circle cx="420" cy="180" r="1.5" fill="#00d4ff"/>
+
+          <!-- Top horizontal run -->
+          <line x1="420" y1="180" x2="620" y2="180" stroke="#e0e0e0" stroke-width="2"/>
+
+          <!-- Second valve -->
+          <polygon points="510,172 525,180 510,188" fill="none" stroke="#ff3333" stroke-width="1.2"/>
+          <polygon points="540,172 525,180 540,188" fill="none" stroke="#ff3333" stroke-width="1.2"/>
+          <line x1="525" y1="170" x2="525" y2="148" stroke="#888" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <rect x="498" y="136" width="54" height="14" rx="3" fill="#1a1a1f" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="525" y="146" text-anchor="middle" fill="#e0e0e0" font-size="8" font-family="DM Sans" font-weight="500">CV-202</text>
+
+          <!-- End elbow and riser down -->
+          <circle cx="620" cy="180" r="5" fill="none" stroke="#00d4ff" stroke-width="1.5"/>
+          <line x1="620" y1="180" x2="680" y2="140" stroke="#e0e0e0" stroke-width="2"/>
+          <!-- End flange -->
+          <line x1="681" y1="136" x2="677" y2="144" stroke="#e0e0e0" stroke-width="3"/>
+
+          <!-- Flanges on main run -->
+          <line x1="265" y1="316" x2="265" y2="328" stroke="#ff44ff" stroke-width="2.5"/>
+          <line x1="325" y1="316" x2="325" y2="328" stroke="#ff44ff" stroke-width="2.5"/>
+
+          <!-- ====== Dimension Lines ====== -->
+
+          <!-- Dim: first angled segment -->
+          <line x1="94" y1="396" x2="194" y2="338" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="90" y1="393" x2="98" y2="399" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="190" y1="335" x2="198" y2="341" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <text x="132" y="375" fill="#00d4ff" font-size="8" font-family="DM Sans" transform="rotate(-30,132,375)">2450</text>
+
+          <!-- Dim: horizontal run -->
+          <line x1="200" y1="345" x2="420" y2="345" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="200" y1="341" x2="200" y2="349" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="420" y1="341" x2="420" y2="349" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <!-- Arrow heads -->
+          <polygon points="200,345 207,343 207,347" fill="#00d4ff" opacity="0.7"/>
+          <polygon points="420,345 413,343 413,347" fill="#00d4ff" opacity="0.7"/>
+          <rect x="290" y="348" width="38" height="12" rx="2" fill="#1a1a1a"/>
+          <text x="309" y="358" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">3200</text>
+
+          <!-- Dim: vertical riser -->
+          <line x1="442" y1="180" x2="442" y2="322" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="438" y1="180" x2="446" y2="180" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="438" y1="322" x2="446" y2="322" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <polygon points="442,180 440,187 444,187" fill="#00d4ff" opacity="0.7"/>
+          <polygon points="442,322 440,315 444,315" fill="#00d4ff" opacity="0.7"/>
+          <rect x="446" y="245" width="38" height="12" rx="2" fill="#1a1a1a"/>
+          <text x="465" y="255" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">2400</text>
+
+          <!-- Dim: upper horizontal -->
+          <line x1="420" y1="158" x2="620" y2="158" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="420" y1="154" x2="420" y2="162" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <line x1="620" y1="154" x2="620" y2="162" stroke="#00d4ff" stroke-width="0.6" opacity="0.7"/>
+          <polygon points="420,158 427,156 427,160" fill="#00d4ff" opacity="0.7"/>
+          <polygon points="620,158 613,156 613,160" fill="#00d4ff" opacity="0.7"/>
+          <rect x="500" y="144" width="38" height="12" rx="2" fill="#1a1a1a"/>
+          <text x="519" y="154" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">3500</text>
+
+          <!-- Dim: branch -->
+          <line x1="375" y1="322" x2="375" y2="400" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+          <line x1="371" y1="322" x2="379" y2="322" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+          <line x1="371" y1="400" x2="379" y2="400" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+          <text x="382" y="365" fill="#00d4ff" font-size="7" font-family="DM Sans">1200</text>
+
+          <!-- Elevation callouts -->
+          <rect x="82" y="370" width="38" height="12" rx="3" fill="#1a1a1f" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="101" y="379" text-anchor="middle" fill="#5a5a64" font-size="7" font-family="DM Sans">EL +0</text>
+          <rect x="402" y="164" width="42" height="12" rx="3" fill="#1a1a1f" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="423" y="173" text-anchor="middle" fill="#5a5a64" font-size="7" font-family="DM Sans">EL +4800</text>
+
+          <!-- ====== Right Panel: Annotation List ====== -->
+          <rect x="740" y="56" width="220" height="464" fill="#141418"/>
+          <line x1="740" y1="56" x2="740" y2="520" stroke="#2a2a2f" stroke-width="1"/>
+
+          <text x="756" y="80" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">ANNOTATIONS</text>
+          <text x="930" y="80" fill="#5a5a64" font-size="9" font-family="DM Sans" text-anchor="end">12 items</text>
+
+          <!-- Toggle: Auto-dimension -->
+          <rect x="752" y="92" width="192" height="28" rx="6" fill="#00d4ff" fill-opacity="0.06" stroke="#00d4ff" stroke-opacity="0.15" stroke-width="0.5"/>
+          <circle cx="771" cy="106" r="5" fill="#00d4ff" fill-opacity="0.3"/>
+          <path d="M769 106l2 2 3-4" stroke="#00d4ff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="784" y="110" fill="#00d4ff" font-size="10" font-family="DM Sans">Auto-dimension enabled</text>
+
+          <!-- Annotation list items -->
+          <!-- Item 1 -->
+          <rect x="752" y="130" width="192" height="40" rx="6" fill="#1e1e24"/>
+          <text x="764" y="146" fill="#e0e0e0" font-size="10" font-family="DM Sans" font-weight="500">Pipe run 1</text>
+          <text x="764" y="160" fill="#5a5a64" font-size="8" font-family="DM Sans">3200mm horizontal</text>
+          <rect x="906" y="140" width="28" height="16" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="920" y="152" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">4"</text>
+
+          <!-- Item 2 -->
+          <rect x="752" y="178" width="192" height="40" rx="6" fill="#1e1e24"/>
+          <text x="764" y="194" fill="#e0e0e0" font-size="10" font-family="DM Sans" font-weight="500">Riser</text>
+          <text x="764" y="208" fill="#5a5a64" font-size="8" font-family="DM Sans">2400mm vertical</text>
+          <rect x="906" y="188" width="28" height="16" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="920" y="200" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">4"</text>
+
+          <!-- Item 3 -->
+          <rect x="752" y="226" width="192" height="40" rx="6" fill="#1e1e24"/>
+          <text x="764" y="242" fill="#e0e0e0" font-size="10" font-family="DM Sans" font-weight="500">Pipe run 2</text>
+          <text x="764" y="256" fill="#5a5a64" font-size="8" font-family="DM Sans">3500mm horizontal</text>
+          <rect x="906" y="236" width="28" height="16" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="920" y="248" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">4"</text>
+
+          <!-- Item 4 -->
+          <rect x="752" y="274" width="192" height="40" rx="6" fill="#1e1e24"/>
+          <text x="764" y="290" fill="#e0e0e0" font-size="10" font-family="DM Sans" font-weight="500">Branch</text>
+          <text x="764" y="304" fill="#5a5a64" font-size="8" font-family="DM Sans">1200mm vertical</text>
+          <rect x="906" y="284" width="28" height="16" rx="4" fill="#ffff00" fill-opacity="0.1"/>
+          <text x="920" y="296" text-anchor="middle" fill="#ffff00" font-size="8" font-family="DM Sans">2"</text>
+
+          <!-- Item 5 -->
+          <rect x="752" y="322" width="192" height="40" rx="6" fill="#1e1e24"/>
+          <text x="764" y="338" fill="#e0e0e0" font-size="10" font-family="DM Sans" font-weight="500">Inlet segment</text>
+          <text x="764" y="352" fill="#5a5a64" font-size="8" font-family="DM Sans">2450mm @ 30deg</text>
+          <rect x="906" y="332" width="28" height="16" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="920" y="344" text-anchor="middle" fill="#00d4ff" font-size="8" font-family="DM Sans">4"</text>
+
+          <!-- Export options at bottom of panel -->
+          <line x1="752" y1="440" x2="940" y2="440" stroke="#2a2a2f" stroke-width="1"/>
+          <text x="756" y="460" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">EXPORT AS</text>
+          <rect x="752" y="470" width="52" height="26" rx="6" fill="#00d4ff"/>
+          <text x="778" y="487" text-anchor="middle" fill="#111114" font-size="10" font-family="DM Sans" font-weight="700">DXF</text>
+          <rect x="810" y="470" width="44" height="26" rx="6" fill="#1e1e24" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="832" y="487" text-anchor="middle" fill="#888" font-size="10" font-family="DM Sans">PDF</text>
+          <rect x="860" y="470" width="44" height="26" rx="6" fill="#1e1e24" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="882" y="487" text-anchor="middle" fill="#888" font-size="10" font-family="DM Sans">SVG</text>
+          <rect x="910" y="470" width="40" height="26" rx="6" fill="#1e1e24" stroke="#2a2a2f" stroke-width="0.5"/>
+          <text x="930" y="487" text-anchor="middle" fill="#888" font-size="10" font-family="DM Sans">PNG</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Built for piping engineers</h2>
+        <p>Every feature designed around your actual workflow.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="12" cy="20" r="6" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="28" cy="20" r="6" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="18" y1="20" x2="22" y2="20" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Automatic pipe detection</h3>
+          <p>Cadmium analyzes 3D solid geometry to identify every pipe run, fitting, and connection point in your model. No manual selection needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <line x1="8" y1="28" x2="32" y2="28" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="8" y1="25" x2="8" y2="31" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="32" y1="25" x2="32" y2="31" stroke="currentColor" stroke-width="1.5"/>
+              <text x="20" y="24" text-anchor="middle" fill="currentColor" font-size="8">2450</text>
+            </svg>
+          </div>
+          <h3>Smart dimensioning</h3>
+          <p>Dimension lines placed automatically with correct measurements. Aligned, rotated, and offset — all calculated from the 3D model data.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="10" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="24" y="10" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="15" y="22" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="16" y1="15" x2="24" y2="15" stroke="currentColor" stroke-width="1"/>
+              <line x1="14" y1="20" x2="18" y2="22" stroke="currentColor" stroke-width="1"/>
+              <line x1="27" y1="20" x2="23" y2="22" stroke="currentColor" stroke-width="1"/>
+            </svg>
+          </div>
+          <h3>Component recognition</h3>
+          <p>Automatically classifies valves, elbows, flanges, tees, reducers, and more. Each component tagged with its spec and description.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <polyline points="8,30 14,18 22,24 28,12 34,16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+              <circle cx="14" cy="18" r="2" fill="currentColor"/>
+              <circle cx="22" cy="24" r="2" fill="currentColor"/>
+              <circle cx="28" cy="12" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Network mapping</h3>
+          <p>Builds a complete connectivity graph of your piping system. See exactly how every component connects, with weld points identified.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="8" width="28" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6 14h28" stroke="currentColor" stroke-width="1"/>
+              <circle cx="10" cy="11" r="1" fill="currentColor"/>
+              <circle cx="14" cy="11" r="1" fill="currentColor"/>
+              <circle cx="18" cy="11" r="1" fill="currentColor"/>
+              <path d="M12 22l4 4 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Interactive 3D review</h3>
+          <p>Explore your piping model in a browser-based 3D viewer. Click components for details, filter by type, and verify connections visually.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <path d="M22 8H12a2 2 0 00-2 2v20a2 2 0 002 2h16a2 2 0 002-2V16l-8-8z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M22 8v8h8" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="14" y1="22" x2="26" y2="22" stroke="currentColor" stroke-width="1"/>
+              <line x1="14" y1="26" x2="22" y2="26" stroke="currentColor" stroke-width="1"/>
+            </svg>
+          </div>
+          <h3>Export anywhere</h3>
+          <p>Generate production-ready DXF files that open natively in AutoCAD. Also export to PDF, SVG, and PNG for documentation and review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshot 3: Network Graph View -->
+  <section class="screenshot-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>See how everything connects</h2>
+        <p>A complete network graph of your piping system, built automatically.</p>
+      </div>
+      <div class="screenshot-frame">
+        <svg viewBox="0 0 960 480" fill="none" xmlns="http://www.w3.org/2000/svg" class="screenshot-svg">
+          <!-- Window -->
+          <rect width="960" height="480" rx="10" fill="#111114"/>
+          <rect width="960" height="480" rx="10" stroke="#2a2a2f" stroke-width="1"/>
+          <rect x="1" y="1" width="958" height="36" rx="10" fill="#1a1a1f"/>
+          <circle cx="20" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="36" cy="18" r="5" fill="#3a3a40"/>
+          <circle cx="52" cy="18" r="5" fill="#3a3a40"/>
+          <text x="480" y="22" text-anchor="middle" fill="#5a5a64" font-size="11" font-family="DM Sans, sans-serif">Cadmium — Network Graph</text>
+
+          <!-- Tab bar -->
+          <rect x="1" y="37" width="958" height="30" fill="#141418"/>
+          <line x1="1" y1="67" x2="959" y2="67" stroke="#2a2a2f" stroke-width="1"/>
+          <rect x="16" y="42" width="64" height="22" rx="4" fill="transparent"/>
+          <text x="48" y="56" text-anchor="middle" fill="#5a5a64" font-size="10" font-family="DM Sans">3D View</text>
+          <rect x="88" y="42" width="80" height="22" rx="4" fill="transparent"/>
+          <text x="128" y="56" text-anchor="middle" fill="#5a5a64" font-size="10" font-family="DM Sans">Isometric</text>
+          <rect x="176" y="42" width="72" height="22" rx="4" fill="#00d4ff" fill-opacity="0.1"/>
+          <text x="212" y="56" text-anchor="middle" fill="#00d4ff" font-size="10" font-family="DM Sans" font-weight="600">Network</text>
+          <line x1="176" y1="66" x2="248" y2="66" stroke="#00d4ff" stroke-width="2"/>
+
+          <!-- Main graph area -->
+          <rect x="1" y="67" width="720" height="412" fill="#0c0c0f"/>
+
+          <!-- Graph edges (connections between components) -->
+          <!-- Edges drawn as smooth lines -->
+          <line x1="140" y1="200" x2="250" y2="200" stroke="#333" stroke-width="1.5"/>
+          <line x1="250" y1="200" x2="340" y2="200" stroke="#333" stroke-width="1.5"/>
+          <line x1="340" y1="200" x2="340" y2="130" stroke="#333" stroke-width="1.5"/>
+          <line x1="340" y1="130" x2="440" y2="130" stroke="#333" stroke-width="1.5"/>
+          <line x1="440" y1="130" x2="540" y2="130" stroke="#333" stroke-width="1.5"/>
+          <line x1="540" y1="130" x2="540" y2="200" stroke="#333" stroke-width="1.5"/>
+          <line x1="540" y1="200" x2="640" y2="200" stroke="#333" stroke-width="1.5"/>
+          <line x1="340" y1="200" x2="340" y2="300" stroke="#333" stroke-width="1.5"/>
+          <line x1="340" y1="300" x2="440" y2="300" stroke="#333" stroke-width="1.5"/>
+          <line x1="440" y1="300" x2="540" y2="350" stroke="#333" stroke-width="1.5"/>
+          <line x1="540" y1="200" x2="640" y2="300" stroke="#333" stroke-width="1"/>
+          <line x1="640" y1="200" x2="640" y2="300" stroke="#333" stroke-width="1.5"/>
+          <line x1="250" y1="200" x2="250" y2="320" stroke="#333" stroke-width="1.5"/>
+          <line x1="250" y1="320" x2="340" y2="380" stroke="#333" stroke-width="1"/>
+          <line x1="440" y1="130" x2="440" y2="80" stroke="#333" stroke-width="1"/>
+
+          <!-- Weld points (small dots on edges) -->
+          <circle cx="195" cy="200" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+          <circle cx="290" cy="200" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+          <circle cx="340" cy="165" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+          <circle cx="490" cy="130" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+          <circle cx="590" cy="200" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+          <circle cx="390" cy="300" r="3" fill="#888" stroke="#555" stroke-width="0.5"/>
+
+          <!-- ====== Graph Nodes ====== -->
+
+          <!-- Flange: start -->
+          <rect x="110" y="186" width="60" height="28" rx="14" fill="#ff44ff" fill-opacity="0.1" stroke="#ff44ff" stroke-width="1.5"/>
+          <text x="140" y="204" text-anchor="middle" fill="#ff44ff" font-size="9" font-family="DM Sans" font-weight="600">FL-001</text>
+
+          <!-- Pipe node -->
+          <rect x="222" y="186" width="56" height="28" rx="6" fill="#cccccc" fill-opacity="0.1" stroke="#cccccc" stroke-width="1.5"/>
+          <text x="250" y="204" text-anchor="middle" fill="#cccccc" font-size="9" font-family="DM Sans" font-weight="600">P-001</text>
+
+          <!-- Tee -->
+          <rect x="316" y="186" width="48" height="28" rx="6" fill="#ffff00" fill-opacity="0.12" stroke="#ffff00" stroke-width="1.5"/>
+          <text x="340" y="204" text-anchor="middle" fill="#ffff00" font-size="9" font-family="DM Sans" font-weight="600">T-001</text>
+
+          <!-- Elbow -->
+          <rect x="316" y="116" width="48" height="28" rx="14" fill="#00ff00" fill-opacity="0.1" stroke="#00ff00" stroke-width="1.5"/>
+          <text x="340" y="134" text-anchor="middle" fill="#00ff00" font-size="9" font-family="DM Sans" font-weight="600">EL-01</text>
+
+          <!-- Valve (main) - highlighted/selected -->
+          <rect x="408" y="112" width="64" height="36" rx="8" fill="#ff3333" fill-opacity="0.1" stroke="#ff3333" stroke-width="2"/>
+          <text x="440" y="127" text-anchor="middle" fill="#ff3333" font-size="10" font-family="DM Sans" font-weight="700">GV-101</text>
+          <text x="440" y="140" text-anchor="middle" fill="#ff3333" font-size="7" font-family="DM Sans" opacity="0.7">Gate Valve</text>
+          <!-- Selection ring -->
+          <rect x="404" y="108" width="72" height="44" rx="10" fill="none" stroke="#ff3333" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+
+          <!-- Elbow 2 -->
+          <rect x="516" y="116" width="48" height="28" rx="14" fill="#00ff00" fill-opacity="0.1" stroke="#00ff00" stroke-width="1.5"/>
+          <text x="540" y="134" text-anchor="middle" fill="#00ff00" font-size="9" font-family="DM Sans" font-weight="600">EL-02</text>
+
+          <!-- Pipe 2 -->
+          <rect x="516" y="186" width="56" height="28" rx="6" fill="#cccccc" fill-opacity="0.1" stroke="#cccccc" stroke-width="1.5"/>
+          <text x="544" y="204" text-anchor="middle" fill="#cccccc" font-size="9" font-family="DM Sans" font-weight="600">P-002</text>
+
+          <!-- Valve 2 -->
+          <rect x="608" y="186" width="64" height="28" rx="8" fill="#ff3333" fill-opacity="0.1" stroke="#ff3333" stroke-width="1.5"/>
+          <text x="640" y="204" text-anchor="middle" fill="#ff3333" font-size="9" font-family="DM Sans" font-weight="600">CV-202</text>
+
+          <!-- Branch pipe -->
+          <rect x="316" y="286" width="48" height="28" rx="6" fill="#cccccc" fill-opacity="0.1" stroke="#cccccc" stroke-width="1.5"/>
+          <text x="340" y="304" text-anchor="middle" fill="#cccccc" font-size="9" font-family="DM Sans" font-weight="600">P-003</text>
+
+          <!-- Reducer -->
+          <rect x="412" y="286" width="56" height="28" rx="6" fill="#4488ff" fill-opacity="0.1" stroke="#4488ff" stroke-width="1.5"/>
+          <text x="440" y="304" text-anchor="middle" fill="#4488ff" font-size="9" font-family="DM Sans" font-weight="600">RD-01</text>
+
+          <!-- Flange end -->
+          <rect x="610" y="286" width="60" height="28" rx="14" fill="#ff44ff" fill-opacity="0.1" stroke="#ff44ff" stroke-width="1.5"/>
+          <text x="640" y="304" text-anchor="middle" fill="#ff44ff" font-size="9" font-family="DM Sans" font-weight="600">FL-002</text>
+
+          <!-- Pipe 4 down from start -->
+          <rect x="222" y="306" width="56" height="28" rx="6" fill="#cccccc" fill-opacity="0.1" stroke="#cccccc" stroke-width="1.5"/>
+          <text x="250" y="324" text-anchor="middle" fill="#cccccc" font-size="9" font-family="DM Sans" font-weight="600">P-004</text>
+
+          <!-- Elbow 3 -->
+          <rect x="316" y="366" width="48" height="28" rx="14" fill="#00ff00" fill-opacity="0.1" stroke="#00ff00" stroke-width="1.5"/>
+          <text x="340" y="384" text-anchor="middle" fill="#00ff00" font-size="9" font-family="DM Sans" font-weight="600">EL-03</text>
+
+          <!-- End node -->
+          <rect x="516" y="336" width="48" height="28" rx="14" fill="#00ff00" fill-opacity="0.1" stroke="#00ff00" stroke-width="1.5"/>
+          <text x="540" y="354" text-anchor="middle" fill="#00ff00" font-size="9" font-family="DM Sans" font-weight="600">EL-04</text>
+
+          <!-- Cap node at top -->
+          <circle cx="440" cy="80" r="14" fill="#666" fill-opacity="0.08" stroke="#666" stroke-width="1"/>
+          <text x="440" y="84" text-anchor="middle" fill="#666" font-size="8" font-family="DM Sans">CAP</text>
+
+          <!-- ====== Right Panel: Legend + Details ====== -->
+          <rect x="721" y="67" width="239" height="413" fill="#141418"/>
+          <line x1="721" y1="67" x2="721" y2="480" stroke="#2a2a2f" stroke-width="1"/>
+
+          <!-- Selected node details -->
+          <text x="737" y="92" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">SELECTED NODE</text>
+
+          <rect x="733" y="100" width="215" height="80" rx="8" fill="#ff3333" fill-opacity="0.04" stroke="#ff3333" stroke-opacity="0.2" stroke-width="1"/>
+          <text x="749" y="120" fill="#e0e0e0" font-size="14" font-family="DM Sans" font-weight="700">GV-101</text>
+          <text x="749" y="138" fill="#ff3333" font-size="10" font-family="DM Sans">Gate Valve, 4" DN100</text>
+          <text x="749" y="155" fill="#5a5a64" font-size="9" font-family="DM Sans">Connections: EL-01, EL-02</text>
+          <text x="749" y="170" fill="#5a5a64" font-size="9" font-family="DM Sans">Ports: 2/2 connected</text>
+
+          <!-- Graph stats -->
+          <line x1="733" y1="196" x2="948" y2="196" stroke="#2a2a2f" stroke-width="1"/>
+          <text x="737" y="218" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">GRAPH STATS</text>
+
+          <text x="749" y="240" fill="#5a5a64" font-size="10" font-family="DM Sans">Nodes</text>
+          <text x="936" y="240" fill="#e0e0e0" font-size="10" font-family="DM Sans" text-anchor="end">14</text>
+          <text x="749" y="260" fill="#5a5a64" font-size="10" font-family="DM Sans">Edges</text>
+          <text x="936" y="260" fill="#e0e0e0" font-size="10" font-family="DM Sans" text-anchor="end">16</text>
+          <text x="749" y="280" fill="#5a5a64" font-size="10" font-family="DM Sans">Weld points</text>
+          <text x="936" y="280" fill="#e0e0e0" font-size="10" font-family="DM Sans" text-anchor="end">6</text>
+          <text x="749" y="300" fill="#5a5a64" font-size="10" font-family="DM Sans">Branches</text>
+          <text x="936" y="300" fill="#e0e0e0" font-size="10" font-family="DM Sans" text-anchor="end">2</text>
+
+          <!-- Legend -->
+          <line x1="733" y1="320" x2="948" y2="320" stroke="#2a2a2f" stroke-width="1"/>
+          <text x="737" y="342" fill="#888" font-size="9" font-family="DM Sans" font-weight="600" letter-spacing="1">LEGEND</text>
+
+          <circle cx="749" cy="362" r="5" fill="#cccccc" fill-opacity="0.3"/>
+          <text x="762" y="366" fill="#cccccc" font-size="10" font-family="DM Sans">Pipe</text>
+
+          <circle cx="749" cy="382" r="5" fill="#00ff00" fill-opacity="0.3"/>
+          <text x="762" y="386" fill="#00ff00" font-size="10" font-family="DM Sans">Elbow</text>
+
+          <circle cx="749" cy="402" r="5" fill="#ff3333" fill-opacity="0.3"/>
+          <text x="762" y="406" fill="#ff3333" font-size="10" font-family="DM Sans">Valve</text>
+
+          <circle cx="749" cy="422" r="5" fill="#ff44ff" fill-opacity="0.3"/>
+          <text x="762" y="426" fill="#ff44ff" font-size="10" font-family="DM Sans">Flange</text>
+
+          <circle cx="840" cy="362" r="5" fill="#ffff00" fill-opacity="0.3"/>
+          <text x="853" y="366" fill="#ffff00" font-size="10" font-family="DM Sans">Tee</text>
+
+          <circle cx="840" cy="382" r="5" fill="#4488ff" fill-opacity="0.3"/>
+          <text x="853" y="386" fill="#4488ff" font-size="10" font-family="DM Sans">Reducer</text>
+
+          <circle cx="840" cy="402" r="5" fill="#888"/>
+          <text x="853" y="406" fill="#888" font-size="10" font-family="DM Sans">Weld</text>
+
+          <circle cx="840" cy="422" r="5" fill="#666" fill-opacity="0.3"/>
+          <text x="853" y="426" fill="#666" font-size="10" font-family="DM Sans">Cap/End</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section id="workflow" class="workflow">
+    <div class="container">
+      <div class="section-header">
+        <h2>Three steps. That's it.</h2>
+        <p>From Plant 3D model to production-ready isometric in minutes.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Upload your drawing</h3>
+            <p>Export your Plant 3D model using our AutoCAD plugin, then upload the files to Cadmium. We handle DWG, DXF, and IGES.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 200 140" fill="none">
+              <rect x="40" y="20" width="120" height="100" rx="6" stroke="#555" stroke-width="1" stroke-dasharray="6,4"/>
+              <path d="M100 50v30M88 68l12 12 12-12" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="100" y="100" text-anchor="middle" fill="#666" font-size="10">.dxf + .iges</text>
+            </svg>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Automatic processing</h3>
+            <p>Cadmium parses geometry, identifies every component, maps the piping network, and generates dimensioned annotations.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 200 140" fill="none">
+              <!-- Processing visual - gears -->
+              <circle cx="80" cy="65" r="22" stroke="#555" stroke-width="1"/>
+              <circle cx="80" cy="65" r="8" stroke="#00d4ff" stroke-width="1"/>
+              <circle cx="120" cy="85" r="16" stroke="#555" stroke-width="1"/>
+              <circle cx="120" cy="85" r="6" stroke="#00d4ff" stroke-width="1"/>
+              <!-- Teeth hints -->
+              <line x1="80" y1="43" x2="80" y2="38" stroke="#555" stroke-width="1.5"/>
+              <line x1="80" y1="87" x2="80" y2="92" stroke="#555" stroke-width="1.5"/>
+              <line x1="58" y1="65" x2="53" y2="65" stroke="#555" stroke-width="1.5"/>
+              <line x1="102" y1="65" x2="107" y2="65" stroke="#555" stroke-width="1.5"/>
+              <text x="100" y="125" text-anchor="middle" fill="#666" font-size="10">Analyzing...</text>
+            </svg>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3>Download clean output</h3>
+            <p>Get production-ready isometric drawings with proper dimensions, component labels, and clean formatting. Export as DXF, PDF, or interactive HTML.</p>
+          </div>
+          <div class="step-visual">
+            <svg viewBox="0 0 200 140" fill="none">
+              <!-- Clean drawing output -->
+              <rect x="30" y="15" width="140" height="110" rx="4" stroke="#555" stroke-width="1"/>
+              <!-- Title block -->
+              <rect x="100" y="100" width="70" height="25" stroke="#555" stroke-width="0.5"/>
+              <line x1="30" y1="100" x2="170" y2="100" stroke="#555" stroke-width="0.5"/>
+              <!-- Isometric pipe -->
+              <line x1="50" y1="75" x2="90" y2="55" stroke="#00d4ff" stroke-width="1.2"/>
+              <line x1="90" y1="55" x2="140" y2="55" stroke="#00d4ff" stroke-width="1.2"/>
+              <line x1="140" y1="55" x2="155" y2="45" stroke="#00d4ff" stroke-width="1.2"/>
+              <circle cx="90" cy="55" r="2.5" fill="none" stroke="#00d4ff" stroke-width="0.8"/>
+              <circle cx="140" cy="55" r="2.5" fill="none" stroke="#00d4ff" stroke-width="0.8"/>
+              <!-- Dim line -->
+              <line x1="90" y1="68" x2="140" y2="68" stroke="#888" stroke-width="0.5"/>
+              <text x="115" y="78" text-anchor="middle" fill="#888" font-size="7">3200</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section id="components" class="components">
+    <div class="container">
+      <div class="section-header">
+        <h2>Every component, recognized</h2>
+        <p>Cadmium identifies and classifies piping components from geometry alone.</p>
+      </div>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Pipes</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <path d="M12 44l20-20h20" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+            <circle cx="32" cy="24" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Elbows</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="24" y2="32" stroke="currentColor" stroke-width="2"/>
+            <line x1="40" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="2"/>
+            <polygon points="28,24 36,32 28,40" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <polygon points="36,24 28,32 36,40" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Valves</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="2"/>
+            <line x1="24" y1="28" x2="24" y2="36" stroke="currentColor" stroke-width="3"/>
+            <line x1="40" y1="28" x2="40" y2="36" stroke="currentColor" stroke-width="3"/>
+          </svg>
+          <span>Flanges</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="2"/>
+            <line x1="32" y1="32" x2="32" y2="56" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Tees</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="24" y2="32" stroke="currentColor" stroke-width="2.5"/>
+            <line x1="24" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span>Reducers</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <circle cx="32" cy="32" r="2" fill="currentColor"/>
+            <circle cx="32" cy="32" r="8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Welds</span>
+        </div>
+        <div class="comp-card">
+          <svg viewBox="0 0 64 64" fill="none" class="comp-svg">
+            <line x1="8" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="2"/>
+            <line x1="32" y1="20" x2="32" y2="44" stroke="currentColor" stroke-width="2"/>
+            <line x1="32" y1="20" x2="32" y2="8" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/>
+          </svg>
+          <span>Branches</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <div class="cta-drawing">
+          <!-- Decorative isometric pipe drawing -->
+          <svg viewBox="0 0 300 200" fill="none" class="cta-svg">
+            <line x1="20" y1="140" x2="80" y2="110" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+            <line x1="80" y1="110" x2="180" y2="110" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+            <line x1="180" y1="110" x2="240" y2="80" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+            <line x1="240" y1="80" x2="280" y2="80" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+            <line x1="130" y1="110" x2="130" y2="60" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+            <circle cx="80" cy="110" r="3" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/>
+            <circle cx="180" cy="110" r="3" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/>
+            <circle cx="130" cy="110" r="3" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/>
+          </svg>
+        </div>
+        <h2>Ready to stop redrawing?</h2>
+        <p>Join the early access program and start automating your piping isometrics today.</p>
+        <form class="cta-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="you@company.com" class="cta-input" />
+          <button type="submit" class="btn-primary">Request access</button>
+        </form>
+        <span class="cta-note">Free during early access. No credit card required.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">Cadmium</span>
+        <span class="footer-tagline">Automated piping isometrics</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/farizrahman4u/cadmium" target="_blank">GitHub</a>
+        <a href="#features">Features</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#cta">Early access</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

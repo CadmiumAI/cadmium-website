@@ -4,8 +4,8 @@
   const ctx = canvas.getContext("2d");
   let W, H;
   let mouse = { x: -1000, y: -1000 };
-  const ACCENT = "rgba(0,212,255,";
-  const DIM = "rgba(255,255,255,";
+  const ACCENT = "rgba(26,76,134,";
+  const DIM = "rgba(46,107,176,";
   const particles = [];
   const PARTICLE_COUNT = 60;
   const MOUSE_RADIUS = 200;

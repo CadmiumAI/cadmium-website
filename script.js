@@ -1,415 +1,402 @@
-// ─── CAD-themed particle canvas ───
+/* ═══════════════════════════════════════════════════════════════════════
+   Cadmium — cadmium-ai.com
+   ══════════════════════════════════════════════════════════════════════ */
 (function () {
-  const canvas = document.getElementById("cad-canvas");
-  const ctx = canvas.getContext("2d");
-  let W, H;
-  let mouse = { x: -1000, y: -1000 };
-  const ACCENT = "rgba(26,76,134,";
-  const DIM = "rgba(46,107,176,";
-  const particles = [];
-  const PARTICLE_COUNT = 60;
-  const MOUSE_RADIUS = 200;
+  'use strict';
 
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  window.addEventListener("resize", resize);
-  resize();
+  /* Where the "send us your model" form is addressed. One place to change. */
+  var CONTACT_EMAIL = 'hello@cadmium-ai.com';
 
-  document.addEventListener("mousemove", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $  = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  // ─── Particle types ───
-
-  // Draw a dimension line with tick marks and a measurement
-  function drawDimension(ctx, x, y, rot, len, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const half = len / 2;
-    const tick = 6;
-
-    // Main line
-    ctx.strokeStyle = ACCENT + "0.6)";
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(-half, 0);
-    ctx.lineTo(half, 0);
-    ctx.stroke();
-
-    // Tick marks
-    ctx.beginPath();
-    ctx.moveTo(-half, -tick);
-    ctx.lineTo(-half, tick);
-    ctx.moveTo(half, -tick);
-    ctx.lineTo(half, tick);
-    ctx.stroke();
-
-    // Arrow heads
-    ctx.fillStyle = ACCENT + "0.5)";
-    ctx.beginPath();
-    ctx.moveTo(-half + 8, -2.5);
-    ctx.lineTo(-half, 0);
-    ctx.lineTo(-half + 8, 2.5);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(half - 8, -2.5);
-    ctx.lineTo(half, 0);
-    ctx.lineTo(half - 8, 2.5);
-    ctx.fill();
-
-    // Text
-    const measurement = Math.round(len * 18) + "";
-    ctx.fillStyle = ACCENT + "0.45)";
-    ctx.font = "9px 'DM Sans', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(measurement, 0, -6);
-
-    ctx.restore();
-  }
-
-  // Draw a pipe segment with flanges
-  function drawPipe(ctx, x, y, rot, len, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const half = len / 2;
-
-    // Pipe body
-    ctx.strokeStyle = DIM + "0.18)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(-half, 0);
-    ctx.lineTo(half, 0);
-    ctx.stroke();
-
-    // Flange marks at ends
-    ctx.lineWidth = 2.5;
-    ctx.strokeStyle = DIM + "0.25)";
-    ctx.beginPath();
-    ctx.moveTo(-half, -5);
-    ctx.lineTo(-half, 5);
-    ctx.moveTo(half, -5);
-    ctx.lineTo(half, 5);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // Draw an elbow (90-degree arc)
-  function drawElbow(ctx, x, y, rot, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const r = size;
-    ctx.strokeStyle = DIM + "0.18)";
-    ctx.lineWidth = 1.5;
-
-    // Incoming line
-    ctx.beginPath();
-    ctx.moveTo(-r * 1.2, 0);
-    ctx.lineTo(0, 0);
-    ctx.stroke();
-
-    // Arc
-    ctx.beginPath();
-    ctx.arc(0, -r, r, Math.PI / 2, Math.PI);
-    ctx.stroke();
-
-    // Outgoing line
-    ctx.beginPath();
-    ctx.moveTo(-r, -r);
-    ctx.lineTo(-r, -r * 2.2);
-    ctx.stroke();
-
-    // Small circle at joint
-    ctx.strokeStyle = ACCENT + "0.3)";
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.arc(0, 0, 3, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // Draw a valve symbol (bowtie)
-  function drawValve(ctx, x, y, rot, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const s = size;
-
-    // Lines in/out
-    ctx.strokeStyle = DIM + "0.18)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(-s * 2, 0);
-    ctx.lineTo(-s, 0);
-    ctx.moveTo(s, 0);
-    ctx.lineTo(s * 2, 0);
-    ctx.stroke();
-
-    // Bowtie
-    ctx.strokeStyle = ACCENT + "0.35)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(-s, -s * 0.7);
-    ctx.lineTo(0, 0);
-    ctx.lineTo(-s, s * 0.7);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(s, -s * 0.7);
-    ctx.lineTo(0, 0);
-    ctx.lineTo(s, s * 0.7);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // Draw a tee junction
-  function drawTee(ctx, x, y, rot, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const s = size;
-    ctx.strokeStyle = DIM + "0.18)";
-    ctx.lineWidth = 1.5;
-
-    // Horizontal
-    ctx.beginPath();
-    ctx.moveTo(-s * 2, 0);
-    ctx.lineTo(s * 2, 0);
-    ctx.stroke();
-
-    // Branch
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, -s * 2);
-    ctx.stroke();
-
-    // Junction dot
-    ctx.fillStyle = ACCENT + "0.3)";
-    ctx.beginPath();
-    ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.restore();
-  }
-
-  // Draw an angle annotation
-  function drawAngle(ctx, x, y, rot, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const r = size;
-    ctx.strokeStyle = ACCENT + "0.3)";
-    ctx.lineWidth = 0.7;
-
-    // Two lines forming the angle
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(r * 1.5, 0);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(r * 1.5 * Math.cos(Math.PI / 4), -r * 1.5 * Math.sin(Math.PI / 4));
-    ctx.stroke();
-
-    // Arc
-    ctx.beginPath();
-    ctx.arc(0, 0, r * 0.6, -Math.PI / 4, 0);
-    ctx.stroke();
-
-    // Label
-    ctx.fillStyle = ACCENT + "0.35)";
-    ctx.font = "8px 'DM Sans', sans-serif";
-    ctx.fillText("45", r * 0.45, -4);
-
-    ctx.restore();
-  }
-
-  // Draw crosshair / center mark
-  function drawCenterMark(ctx, x, y, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.globalAlpha = opacity;
-
-    const s = size;
-    ctx.strokeStyle = DIM + "0.1)";
-    ctx.lineWidth = 0.5;
-
-    ctx.beginPath();
-    ctx.moveTo(-s, 0);
-    ctx.lineTo(s, 0);
-    ctx.moveTo(0, -s);
-    ctx.lineTo(0, s);
-    ctx.stroke();
-
-    ctx.strokeStyle = DIM + "0.06)";
-    ctx.beginPath();
-    ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // Draw a small isometric pipe sketch
-  function drawIsoSketch(ctx, x, y, rot, size, opacity) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
-    ctx.globalAlpha = opacity;
-
-    const s = size;
-    ctx.strokeStyle = DIM + "0.14)";
-    ctx.lineWidth = 1;
-
-    // Isometric lines (30-degree angles)
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(s * 1.5, -s * 0.85);
-    ctx.lineTo(s * 3, -s * 0.85);
-    ctx.lineTo(s * 4, -s * 1.4);
-    ctx.stroke();
-
-    // Elbow dots
-    ctx.fillStyle = ACCENT + "0.2)";
-    [
-      [s * 1.5, -s * 0.85],
-      [s * 3, -s * 0.85],
-    ].forEach(([px, py]) => {
-      ctx.beginPath();
-      ctx.arc(px, py, 2, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    ctx.restore();
-  }
-
-  const DRAW_FUNCS = [
-    // [drawFunc, sizeMultiplier, weight]
-    [drawDimension, 1, 4],
-    [drawPipe, 1, 3],
-    [drawElbow, 1, 2],
-    [drawValve, 1, 2],
-    [drawTee, 1, 2],
-    [drawAngle, 1, 2],
-    [drawCenterMark, 1, 1],
-    [drawIsoSketch, 1, 2],
-  ];
-
-  // Build weighted pool
-  const drawPool = [];
-  DRAW_FUNCS.forEach(([fn, sm, w]) => {
-    for (let i = 0; i < w; i++) drawPool.push([fn, sm]);
-  });
-
-  function createParticle() {
-    const [drawFn, sizeMul] = drawPool[Math.floor(Math.random() * drawPool.length)];
-    const baseSize = 20 + Math.random() * 40;
-    return {
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-      rot: Math.random() * Math.PI * 2,
-      rotV: (Math.random() - 0.5) * 0.002,
-      size: baseSize * sizeMul,
-      baseOpacity: 0.15 + Math.random() * 0.35,
-      opacity: 0,
-      draw: drawFn,
-    };
-  }
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(createParticle());
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, W, H);
-
-    for (const p of particles) {
-      // Move
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.rotV;
-
-      // Wrap around
-      if (p.x < -100) p.x = W + 100;
-      if (p.x > W + 100) p.x = -100;
-      if (p.y < -100) p.y = H + 100;
-      if (p.y > H + 100) p.y = -100;
-
-      // Mouse proximity — brighten nearby particles
-      const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const proximity = Math.max(0, 1 - dist / MOUSE_RADIUS);
-      const targetOpacity = p.baseOpacity + proximity * 0.5;
-      p.opacity += (targetOpacity - p.opacity) * 0.06;
-
-      // Gentle repulsion from mouse
-      if (dist < MOUSE_RADIUS && dist > 0) {
-        const force = (1 - dist / MOUSE_RADIUS) * 0.15;
-        p.vx += (dx / dist) * force;
-        p.vy += (dy / dist) * force;
+  /* ── theme ──────────────────────────────────────────────────────── */
+  (function theme() {
+    var btn = $('#themeToggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-
-      // Dampen velocity
-      p.vx *= 0.995;
-      p.vy *= 0.995;
-
-      p.draw(ctx, p.x, p.y, p.rot, p.size, p.opacity);
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-})();
-
-// ─── Scroll animations ───
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) entry.target.classList.add("visible");
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('cad-theme', next); } catch (e) {}
     });
-  },
-  { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-);
+  })();
 
-// Apply fade-up to section elements
-document.querySelectorAll(
-  ".section-header, .ba-card, .ba-arrow, .feature-card, .step, .comp-card, .cta-box, .hero-badge, .hero h1, .hero-sub, .hero-actions, .hero-stats"
-).forEach((el) => {
-  el.classList.add("fade-up");
-  observer.observe(el);
-});
+  /* ── nav: shadow on scroll + current section + small-screen menu ── */
+  (function nav() {
+    var bar = $('#nav');
+    var links = $$('.nav-links a');
+    var menu = $('#navLinks'), burger = $('#navToggle');
 
-// ─── Smooth anchor scrolling ───
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener("click", (e) => {
-    const target = document.querySelector(link.getAttribute("href"));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth" });
+    if (burger) {
+      var shut = function () {
+        menu.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Open menu');
+      };
+      burger.addEventListener('click', function () {
+        var open = menu.classList.toggle('is-open');
+        burger.setAttribute('aria-expanded', String(open));
+        burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+      links.forEach(function (a) { a.addEventListener('click', shut); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
+      document.addEventListener('click', function (e) {
+        if (!menu.contains(e.target) && !burger.contains(e.target)) shut();
+      });
     }
-  });
-});
+
+    var sections = links
+      .map(function (a) { return $(a.getAttribute('href')); })
+      .filter(Boolean);
+
+    function onScroll() {
+      bar.classList.toggle('is-stuck', window.scrollY > 8);
+      var y = window.scrollY + 140, current = null;
+      sections.forEach(function (s) { if (s.offsetTop <= y) current = s.id; });
+      links.forEach(function (a) {
+        a.classList.toggle('is-current', a.getAttribute('href') === '#' + current);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  /* ── lightbox ───────────────────────────────────────────────────── */
+  (function lightbox() {
+    var box = $('#lightbox'), img = $('#lightboxImg'), close = $('#lightboxClose');
+    if (!box) return;
+
+    function open(src, alt) {
+      img.src = src; img.alt = alt || '';
+      box.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      close.focus();
+    }
+    function shut() {
+      box.classList.remove('is-open');
+      document.body.style.overflow = '';
+      img.src = '';
+    }
+
+    $$('.zoomable').forEach(function (fig) {
+      function fire() {
+        var i = fig.querySelector('img');
+        if (i) open(i.currentSrc || i.src, i.alt);
+      }
+      fig.addEventListener('click', fire);
+      fig.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); }
+      });
+    });
+
+    box.addEventListener('click', shut);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && box.classList.contains('is-open')) shut();
+    });
+  })();
+
+  /* ── comparison tabs ────────────────────────────────────────────── */
+  (function compare() {
+    var tabs = $$('.cmp-tab');
+    var grid = $('.cmp-grid');
+    var bad = $('#cmpBad'), good = $('#cmpGood');
+    var badLbl = $('#cmpBadLine'), goodLbl = $('#cmpGoodLine');
+    if (!tabs.length || !bad) return;
+
+    /* warm the other three pairs so switching is instant */
+    ['02', '03', '04'].forEach(function (n) {
+      new Image().src = 'assets/compare/autocad-' + n + '.png';
+      new Image().src = 'assets/compare/cadmium-' + n + '.png';
+    });
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        if (tab.classList.contains('is-active')) return;
+        var n = tab.dataset.line;
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', String(on));
+        });
+        grid.classList.add('is-swapping');
+        setTimeout(function () {
+          bad.src = 'assets/compare/autocad-' + n + '.png';
+          good.src = 'assets/compare/cadmium-' + n + '.png';
+          badLbl.textContent = goodLbl.textContent = 'Line ' + n;
+          grid.classList.remove('is-swapping');
+        }, 220);
+      });
+    });
+  })();
+
+  /* ── savings calculator ─────────────────────────────────────────── */
+  (function calculator() {
+    var isos = $('#calcIsos'), drafters = $('#calcDrafters'), hours = $('#calcHours');
+    var today = $('#outToday'), cad = $('#outCad'), saved = $('#outSaved'), pct = $('#outPct');
+    if (!isos) return;
+
+    var CAD_MINUTES = 10;
+
+    function num(el, min, fallback) {
+      var v = parseFloat(el.value);
+      if (!isFinite(v) || v < min) v = fallback;
+      return v;
+    }
+    function round(n) { return Math.round(n).toLocaleString('en-US'); }
+
+    function run() {
+      var n = num(isos, 0, 0), d = num(drafters, 1, 1), h = num(hours, 0, 0);
+      var now = (n * h) / d;
+      var next = (n * (CAD_MINUTES / 60)) / d;
+      var diff = Math.max(0, now - next);
+      today.textContent = round(now);
+      cad.textContent = round(next);
+      saved.textContent = round(diff);
+      var p = now > 0 ? Math.round((diff / now) * 100) : 0;
+      pct.textContent = 'hours per month — ' + p + '% less';
+    }
+
+    [isos, drafters, hours].forEach(function (el) {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+    run();
+  })();
+
+  /* ── contact form → mailto ──────────────────────────────────────── */
+  (function contact() {
+    var form = $('#contactForm');
+    var link = $('#formMailLink');
+    if (link) { link.href = 'mailto:' + CONTACT_EMAIL; link.textContent = CONTACT_EMAIL; }
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = $('#fName'), email = $('#fEmail'), notes = $('#fNotes'), company = $('#fCompany');
+      var ok = true;
+
+      [[name, name.value.trim().length > 0], [email, /\S+@\S+\.\S+/.test(email.value)]]
+        .forEach(function (pair) {
+          pair[0].parentElement.classList.toggle('is-bad', !pair[1]);
+          if (!pair[1]) ok = false;
+        });
+      if (!ok) { (name.value.trim() ? email : name).focus(); return; }
+
+      var body = [
+        'Name: ' + name.value.trim(),
+        'Company: ' + (company.value.trim() || '—'),
+        'Email: ' + email.value.trim(),
+        '',
+        notes.value.trim() || 'Sending a Plant 3D model for an isometric.',
+        '',
+        '(Please attach the model to this email.)'
+      ].join('\n');
+
+      window.location.href = 'mailto:' + CONTACT_EMAIL +
+        '?subject=' + encodeURIComponent('Isometric request — ' + (company.value.trim() || name.value.trim())) +
+        '&body=' + encodeURIComponent(body);
+    });
+  })();
+
+  /* ── year ───────────────────────────────────────────────────────── */
+  (function year() {
+    var y = $('#year');
+    if (y) y.textContent = String(new Date().getFullYear());
+  })();
+
+  /* ═══════════════════════════════════════════════════════════════
+     App walkthrough — a scripted run of the real drawing page
+     ══════════════════════════════════════════════════════════════ */
+  (function demo() {
+    var root = $('#demo');
+    if (!root) return;
+
+    var cursor   = $('#demoCursor');
+    var drop     = $('#demoDrop');
+    var fileA    = $('#demoFileA');
+    var fileB    = $('#demoFileB');
+    var pill     = $('#demoPill');
+    var generate = $('#demoGenerate');
+    var pipeCard = $('#demoPipelineCard');
+    var pipePill = $('#demoPipePill');
+    var progress = $('#demoProgress');
+    var logEl    = $('#demoLog');
+    var resCard  = $('#demoResultCard');
+    var page     = $('.ui-page', root);
+    var body     = $('.browser-body', root);
+    var stages   = $$('.ui-stages li', root);
+    var replay   = $('#demoReplay');
+
+    var LOG = [
+      '[1/7] acquiring geometry',
+      '[2/7] segmenting model',
+      '[3/7] calibrating layout',
+      '[4/7] reconciling spacing',
+      '[5/7] composing sheet',
+      '[6/7] placing annotation',
+      '[7/7] publishing -> Isometric 8.dxf'
+    ];
+
+    var timers = [];
+    function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function clearAll() { timers.forEach(clearTimeout); timers = []; }
+
+    function moveTo(el, pad) {
+      if (!el) return;
+      var a = root.getBoundingClientRect(), b = el.getBoundingClientRect();
+      var x = b.left - a.left + b.width / 2;
+      var y = b.top - a.top + (pad === undefined ? b.height / 2 : pad);
+      cursor.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    }
+    function click() {
+      cursor.classList.remove('is-click');
+      void cursor.offsetWidth;
+      cursor.classList.add('is-click');
+    }
+    function show(card) {
+      card.classList.add('is-shown');
+      requestAnimationFrame(function () { card.classList.add('is-in'); });
+    }
+    /* the page scrolls under the app's top bar, so that is the real top edge */
+    function bounds() {
+      var b = body.getBoundingClientRect();
+      return { top: $('.ui-top', root).getBoundingClientRect().bottom, bottom: b.bottom };
+    }
+    function shift(delta) {
+      if (!delta) return;
+      var next = Math.min(0, parseFloat(page.dataset.y || '0') + delta);
+      page.dataset.y = String(next);
+      page.style.transform = 'translateY(' + next + 'px)';
+    }
+    /* put `el` near the top of the visible area */
+    function scrollTo(el) {
+      var v = bounds();
+      shift((v.top + 14) - el.getBoundingClientRect().top);
+    }
+    /* …or nudge it just far enough to be in sight, so the cursor never clicks
+       off-screen and the page never jumps more than it has to */
+    function ensure(el) {
+      var v = bounds(), e = el.getBoundingClientRect();
+      if (e.bottom > v.bottom - 14) shift((v.bottom - 14) - e.bottom);
+      else if (e.top < v.top + 14) shift((v.top + 14) - e.top);
+    }
+
+    function loadFile(el, label, size) {
+      el.classList.add('is-loaded');
+      $('.ui-file-icon', el).textContent = '✓';
+      $('.ui-file-meta em', el).textContent = label + ' · ' + size;
+    }
+
+    function reset() {
+      clearAll();
+      root.dataset.stage = '0';
+      cursor.classList.remove('is-on', 'is-click');
+      cursor.style.transform = 'translate(-40px,-40px)';
+      page.dataset.y = '0';
+      page.style.transform = 'translateY(0)';
+      drop.classList.remove('is-hot');
+      [fileA, fileB].forEach(function (f, i) {
+        f.classList.remove('is-loaded');
+        $('.ui-file-icon', f).textContent = i ? 'I' : 'D';
+        $('.ui-file-meta em', f).textContent = 'REQUIRED';
+      });
+      pill.textContent = '• NEW';
+      pill.classList.remove('is-ready');
+      pipePill.textContent = '• RUNNING';
+      pipePill.classList.remove('is-done');
+      progress.style.width = '0%';
+      logEl.textContent = '';
+      stages.forEach(function (s) { s.classList.remove('is-run', 'is-ok'); });
+      [pipeCard, resCard].forEach(function (c) { c.classList.remove('is-shown', 'is-in'); });
+    }
+
+    function finish() {
+      root.dataset.stage = '3';
+      loadFile(fileA, 'DXF', '689 KB');
+      loadFile(fileB, 'IGES', '919 KB');
+      pill.textContent = '• READY';
+      pill.classList.add('is-ready');
+      show(pipeCard); show(resCard);
+      progress.style.width = '100%';
+      logEl.textContent = LOG.join('\n');
+      stages.forEach(function (s) { s.classList.add('is-ok'); });
+      pipePill.textContent = '• DONE';
+      pipePill.classList.add('is-done');
+    }
+
+    function play() {
+      reset();
+      if (reduced) { finish(); return; }
+
+      at(300,  function () { ensure(drop); });
+      at(900,  function () { cursor.classList.add('is-on'); moveTo(drop); });
+      at(1700, function () { drop.classList.add('is-hot'); });
+      at(2050, function () { click(); });
+      at(2250, function () {
+        root.dataset.stage = '1';
+        drop.classList.remove('is-hot');
+        loadFile(fileA, 'DXF', '689 KB');
+      });
+      at(2500, function () { loadFile(fileB, 'IGES', '919 KB'); });
+      at(2750, function () { pill.textContent = '• READY'; pill.classList.add('is-ready'); });
+
+      at(3150, function () { ensure(generate); });
+      at(3700, function () { moveTo(generate); });
+      at(4400, function () { click(); generate.classList.add('is-pressed'); });
+      at(4580, function () { generate.classList.remove('is-pressed'); });
+
+      at(4700, function () {
+        root.dataset.stage = '2';
+        cursor.classList.remove('is-on');
+        show(pipeCard);
+        stages[0].classList.add('is-run');
+      });
+      at(5000, function () { scrollTo(pipeCard); });
+
+      /* seven log lines, stages ticking alongside */
+      var stageOfLine = [0, 1, 1, 2, 2, 2, 3];
+      LOG.forEach(function (line, i) {
+        at(5300 + i * 620, function () {
+          logEl.textContent += (i ? '\n' : '') + line;
+          progress.style.width = Math.round(((i + 1) / LOG.length) * 100) + '%';
+          var s = stageOfLine[i];
+          stages.forEach(function (el, k) {
+            if (k < s) { el.classList.remove('is-run'); el.classList.add('is-ok'); }
+            else if (k === s) { el.classList.add('is-run'); }
+          });
+        });
+      });
+
+      var end = 5300 + LOG.length * 620;
+      at(end, function () {
+        stages.forEach(function (s) { s.classList.remove('is-run'); s.classList.add('is-ok'); });
+        pipePill.textContent = '• DONE';
+        pipePill.classList.add('is-done');
+        root.dataset.stage = '3';
+      });
+      at(end + 400, function () { show(resCard); });
+      /* nudge, not jump — the end of the pipeline stays in shot beside the result */
+      at(end + 900, function () { ensure(resCard); });
+    }
+
+    if (replay) replay.addEventListener('click', play);
+
+    var started = false;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && !started) { started = true; obs.disconnect(); play(); }
+        });
+      }, { threshold: 0.3 }).observe(root);
+    } else {
+      finish();
+    }
+  })();
+
+
+})();

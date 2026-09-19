@@ -125,10 +125,6 @@ h3{font-size:17px;font-weight:700;letter-spacing:-0.012em;margin:0}
 p{margin:0;max-width:66ch}
 .lead{font-size:clamp(16px,1.35vw,19px);line-height:1.65;color:var(--ink-2)}
 .lead--wide{max-width:60ch;margin-bottom:6px}
-.note{
-  font-family:var(--mono);font-size:12px;letter-spacing:0.02em;color:var(--ink-3);
-  margin-top:14px;
-}
 code{
   font-family:var(--mono);font-size:0.88em;color:var(--accent);
   background:var(--accent-soft);padding:1px 6px;border-radius:3px;
@@ -518,49 +514,76 @@ code{
 @keyframes ripple{ from{transform:scale(.2);opacity:.9} to{transform:scale(1);opacity:0} }
 
 /* ═══ 3D model section ═════════════════════════════════════════════ */
-/* the phone sits in a gutter to the right, so it never covers the app chrome */
-.viewer-stage{
-  position:relative;margin-top:clamp(26px,3.6vw,44px);
-  padding-right:clamp(0px,15vw,190px);padding-bottom:clamp(26px,5.2vw,74px);
+/* One drawing, three screens, overlapped front-to-back the way they would
+   sit on a desk: monitor behind, laptop in front of it, phone in front of
+   that. Widths keep roughly the real ratio between a 27" monitor, a 14"
+   laptop and a phone held sideways; the negative margins do the overlap and
+   z-index does the stacking. Every chassis is opaque, so the one behind is
+   properly occluded. */
+.devices{
+  display:flex;align-items:flex-end;justify-content:center;
+  margin-top:clamp(32px,4.2vw,56px);
 }
-.browser--still .browser-body{display:none}
-.browser-shot{width:100%;height:auto}
+.dev{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
+.dev--desktop{flex:0 0 50%;z-index:1}
+.dev--laptop {flex:0 0 33%;margin-left:-6%;z-index:2}
+.dev--phone  {flex:0 0 14%;margin-left:-3.5%;z-index:3}
+
+.dev-screen{
+  width:100%;position:relative;overflow:hidden;
+  background:linear-gradient(158deg,#2B3849 0%,#141D29 48%,#0B1420 100%);
+  border:1px solid rgba(156,198,242,.26);
+}
+.dev-screen img{width:100%;height:auto;border-radius:2px;background:#0A1119}
+
+/* monitor: thicker bezel, neck and foot */
+.dev--desktop .dev-screen{border-radius:8px;padding:10px;box-shadow:0 26px 58px rgba(6,26,51,.30)}
+.dev-stand{display:flex;flex-direction:column;align-items:center;width:100%}
+.dev-stand i{width:9%;height:clamp(16px,2.2vw,28px);background:linear-gradient(180deg,#27323F,#18212C)}
+.dev-stand b{
+  width:30%;height:7px;border-radius:0 0 5px 5px;
+  background:linear-gradient(180deg,#232D3A,#141C26);
+  box-shadow:0 10px 22px rgba(6,26,51,.22);
+}
+
+/* laptop: thin bezel with a chin, over a deck that flares out below it */
+.dev--laptop .dev-screen{
+  border-radius:7px 7px 2px 2px;padding:6px 6px 11px;
+  box-shadow:0 22px 46px rgba(6,26,51,.36);
+}
+.dev--laptop .dev-screen::after{
+  content:"";position:absolute;left:50%;bottom:3.5px;transform:translateX(-50%);
+  width:16%;height:2px;border-radius:100px;background:rgba(156,198,242,.22);
+}
+.dev-deck{
+  width:116%;height:clamp(8px,1.1vw,12px);
+  background:linear-gradient(180deg,#2B3849,#131C27);
+  border-radius:0 0 6px 6px;
+  clip-path:polygon(1.5% 0,98.5% 0,100% 100%,0 100%);
+  box-shadow:0 14px 26px rgba(6,26,51,.26);
+}
+
+/* phone: held sideways, earpiece on the short edge */
+.dev--phone .dev-screen{
+  border-radius:clamp(10px,1.3vw,15px);padding:4px 7px;
+  box-shadow:0 18px 36px rgba(6,26,51,.42);
+}
+.dev--phone .dev-screen::before{
+  content:"";position:absolute;left:2.5px;top:50%;transform:translateY(-50%);z-index:2;
+  width:2.5px;height:22%;border-radius:100px;background:rgba(156,198,242,.32);
+}
+
+@media (max-width:820px){
+  .dev--desktop{flex:0 0 56%}
+  .dev--laptop {flex:0 0 36%;margin-left:-6%}
+  .dev--phone  {flex:0 0 16%;margin-left:-4%}
+}
 
 .list--cols{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px clamp(20px,4vw,48px);
-  margin-top:clamp(18px,2.4vw,28px);
+  margin-top:clamp(26px,3.4vw,40px);
 }
 @media (max-width:700px){ .list--cols{grid-template-columns:minmax(0,1fr)} }
-
-.phone{
-  position:absolute;right:0;bottom:0;width:clamp(240px,32vw,400px);
-  border-radius:clamp(14px,1.6vw,20px);padding:7px 11px;
-  background:linear-gradient(160deg,#23303F,#0E1720);
-  border:1px solid rgba(156,198,242,.24);
-  box-shadow:0 22px 52px rgba(6,26,51,.44);
-}
-/* earpiece, on the short edge — the giveaway that it is held sideways */
-.phone::before{
-  content:"";position:absolute;left:4px;top:50%;transform:translateY(-50%);z-index:2;
-  width:3.5px;height:22%;border-radius:100px;background:rgba(156,198,242,.26);
-}
-/* the whole shot, uncropped — the phone shows what the desktop shows */
-.phone-screen{
-  position:relative;overflow:hidden;background:#0A1119;
-  border-radius:clamp(7px,0.9vw,11px);
-  display:flex;
-}
-.phone-screen img{position:static;width:100%;height:auto}
-.phone-tag{
-  position:absolute;left:50%;bottom:-11px;transform:translateX(-50%);
-  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--ink-3);background:var(--ground-2);
-  border:1px solid var(--rule);border-radius:100px;padding:2px 11px;white-space:nowrap;
-}
-@media (max-width:640px){
-  .phone{display:none}
-  .viewer-stage{padding-right:0;padding-bottom:0}
-}
 
 /* ── savings calculator ────────────────────────────────────────────── */
 .calcpad{

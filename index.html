@@ -302,10 +302,6 @@
       </span>
     </div>
 
-    <p class="note">
-      Every stage runs server-side in under a minute. The app previews the finished
-      sheet as an SVG; the download is the native DXF.
-    </p>
   </div>
 </section>
 
@@ -318,28 +314,33 @@
     <h2>The model and the sheet,<br />anywhere, any time.</h2>
     <p class="lead lead--wide">
       Every drawing keeps its 3D model beside the isometric it produced. Both live at
-      one link — open it on a laptop in the office, a tablet in the review room or a
-      phone on site. No AutoCAD licence, no viewer to install, nothing to download.
+      one link — the same drawing, the same view, on the desktop at your bench, a
+      laptop in the review room or a phone out on site. No AutoCAD licence, no viewer
+      to install, nothing to download.
     </p>
 
-    <div class="viewer-stage">
-      <div class="browser browser--still">
-        <div class="browser-bar">
-          <span class="browser-dots"><i></i><i></i><i></i></span>
-          <span class="browser-url">app.cadmium-ai.com/projects/2/drawings/8</span>
+    <div class="devices">
+      <div class="dev dev--desktop">
+        <div class="dev-screen">
+          <img src="assets/viewer-3d.png" loading="lazy"
+               alt="The Cadmium app on a desktop monitor: the 3D model tab, with the piping run in red, cyan dimension callouts, pipe supports, a view cube and a perspective-or-flat toggle." />
         </div>
-        <img class="browser-shot" src="assets/viewer-3d.png" loading="lazy"
-             alt="The Cadmium app showing the 3D model tab: the piping run rendered in red with cyan dimension callouts, pipe supports, a view cube and a perspective-or-flat toggle, with an Isometric tab beside it and a Download DXF button."
-             width="1224" height="862" />
+        <div class="dev-stand" aria-hidden="true"><i></i><b></b></div>
       </div>
 
-      <!-- held sideways, the way you would actually read a wide drawing -->
-      <div class="phone">
-        <div class="phone-screen">
+      <div class="dev dev--laptop">
+        <div class="dev-screen">
           <img src="assets/viewer-3d.png" loading="lazy"
-               alt="The same drawing open on a phone held sideways: the 3D model tab, its tabs and its Download DXF button, exactly as on the desktop." />
+               alt="The same drawing on a laptop." />
         </div>
-        <span class="phone-tag">On site</span>
+        <div class="dev-deck" aria-hidden="true"></div>
+      </div>
+
+      <div class="dev dev--phone">
+        <div class="dev-screen">
+          <img src="assets/viewer-3d.png" loading="lazy"
+               alt="The same drawing on a phone held sideways." />
+        </div>
       </div>
     </div>
 

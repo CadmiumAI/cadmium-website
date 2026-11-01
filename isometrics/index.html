@@ -67,7 +67,7 @@
         Cadmium takes your 3D piping model to a finished, annotated isometric on your template, in seconds.
       </p>
       <div class="hero-actions">
-        <a class="btn btn--primary" href="#contact">Send us your model</a>
+        <a class="btn btn--primary" href="#contact">Start a pilot</a>
         <a class="btn btn--ghost" href="#run">Watch the run</a>
       </div>
       <div class="rulewide"></div>
@@ -112,7 +112,7 @@
         </div>
       </div>
     </div>
-    <p class="fineprint">Recorded from one sample line of 71 parts: seven pipeline stages, 6.6 s end to end. Meshes are decimated for the web. The pipeline itself runs on our servers because it needs a full CAD kernel.</p>
+    <p class="fineprint">Recorded from one sample line of 71 parts: seven pipeline stages, 6.6 s end to end. Meshes are simplified for the web.</p>
   </div>
 </section>
 
@@ -198,29 +198,29 @@
 <section class="band" id="product">
   <div class="wrap">
     <p class="eyebrow">How it works</p>
-    <h2>Export, upload, download.</h2>
+    <h2>Open, generate, issue.</h2>
     <p class="lead lead--wide">Nothing changes about how you model.</p>
 
     <div class="flow">
       <div class="flow-step">
-        <span class="n">Source</span>
+        <span class="n">Open</span>
         <h3>Your 3D model</h3>
-        <p>The Plant 3D piping model exactly as you already have it.</p>
+        <p>The Plant 3D piping model exactly as you already have it, opened alongside its lines and sheets.</p>
       </div>
       <div class="flow-step">
-        <span class="n">Export</span>
+        <span class="n">Generate</span>
         <h3>One command</h3>
-        <p>Our AutoCAD plugin, <code>CADMIUMEXPORT</code>, writes an export folder next to your drawing containing <code>export.dxf</code> and <code>export.iges</code>.</p>
+        <p>Cadmium works out what connects to what, lays out the line and places every dimension, elevation and balloon.</p>
       </div>
       <div class="flow-step">
-        <span class="n">Upload</span>
-        <h3>Drop the pair</h3>
-        <p>Cadmium reads the exported files, projects the run to 2D and places every annotation.</p>
+        <span class="n">Check</span>
+        <h3>Engineer review</h3>
+        <p>Changes since the last revision are clouded, and the sheet is checked against the model and the bill of materials.</p>
       </div>
       <div class="flow-step">
-        <span class="n">Output</span>
+        <span class="n">Issue</span>
         <h3>The sheet</h3>
-        <p>An annotated isometric DXF on an A2 sheet or your own title block — native CAD entities, fully editable.</p>
+        <p>An annotated isometric on your own title block, in native DWG and DXF: real CAD entities, fully editable.</p>
       </div>
     </div>
 
@@ -330,37 +330,24 @@
   <div class="wrap">
     <div class="cta-grid">
       <div class="stack">
-        <p class="eyebrow">The ask</p>
-        <h2>Send us your model today.<br />We&rsquo;ll send back the iso.</h2>
-        <p class="lead">
-          Send us a Plant 3D model and we will send back the finished, annotated
-          isometric DXF.
-        </p>
+        <p class="eyebrow">Pilot</p>
+        <h2>See it on your own line.</h2>
+        <p class="lead">Bring real project data under NDA. We run it with your team, on your templates, so your engineers can judge the output against their own work.</p>
+        <ol class="pilot-steps">
+          <li><b>Scope</b><span>Pick a representative sample with your lead engineer.</span></li>
+          <li><b>Run</b><span>We run it on your template and standards.</span></li>
+          <li><b>Compare</b><span>Your team checks the output against the manual result.</span></li>
+        </ol>
       </div>
-
-      <form class="cta-form" id="contactForm" novalidate data-subject="Isometric request" data-default="Sending a Plant 3D model for an isometric." data-attach="(Please attach the model to this email.)">
-        <div class="field">
-          <label for="fName">Name</label>
-          <input id="fName" name="name" type="text" required placeholder="Jane Okoye" />
-        </div>
-        <div class="field">
-          <label for="fCompany">Company</label>
-          <input id="fCompany" name="company" type="text" placeholder="Acme Engineering" />
-        </div>
-        <div class="field">
-          <label for="fEmail">Work email</label>
-          <input id="fEmail" name="email" type="email" required placeholder="you@company.com" />
-        </div>
-        <div class="field">
-          <label for="fNotes">What are you sending?</label>
-          <textarea id="fNotes" name="notes" rows="3" placeholder="One 6&quot; CS line out of Plant 3D, ~40 m, two branches."></textarea>
-        </div>
-        <button class="btn btn--primary" type="submit">Request the isometric</button>
-        <p class="form-note" id="formNote">
-          Opens your mail client addressed to
-          <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.
-          Attach the model to that message.
-        </p>
+      <form class="cta-form" id="contactForm" novalidate data-subject="Pilot request" data-default="" data-attach="">
+        <div class="field"><label for="fName">Name</label><input id="fName" name="name" type="text" required placeholder="Jane Okoye" /></div>
+        <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
+        <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
+        <div class="field"><label for="fTrack">Where would you start?</label>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+        <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
+        <button class="btn btn--primary" type="submit">Request a pilot</button>
+        <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
       </form>
     </div>
   </div>

@@ -139,7 +139,7 @@ def head(title, desc, root, url):
 <a class="skip" href="#main">Skip to content</a>
 '''
 
-def pilot(h2='Start with one line, one sheet or one area.', lead='Send us real project data under NDA. We return the finished deliverables so your engineers can judge them against their own work.'):
+def pilot(h2='Start with one line, one sheet or one area.', lead='Bring real project data under NDA. We run it with your team, on your templates, so your engineers can judge the output against their own work.'):
     return f'''<section class="band band--cta" id="contact">
   <div class="wrap">
     <div class="cta-grid">
@@ -149,7 +149,7 @@ def pilot(h2='Start with one line, one sheet or one area.', lead='Send us real p
         <p class="lead">{lead}</p>
         <ol class="pilot-steps">
           <li><b>Scope</b><span>Pick a representative sample with your lead engineer.</span></li>
-          <li><b>Run</b><span>We process it on your template and standards.</span></li>
+          <li><b>Run</b><span>We run it on your template and standards.</span></li>
           <li><b>Compare</b><span>Your team checks the output against the manual result.</span></li>
         </ol>
       </div>
@@ -211,7 +211,7 @@ def lifecycle():
 </section>'''
 
 WALK_STEPS = [
- ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Drop in native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
+ ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
  ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
  ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium patches the DGN in place: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
  ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
@@ -286,7 +286,7 @@ INTEG = '''<section class="band" id="integrations">
   <div class="wrap">
     <p class="eyebrow">Fits your workflow</p>
     <h2>Keep the tools you already use.</h2>
-    <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and returns native files.</p>
+    <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and writes native files.</p>
     <div class="flowmap" data-inview>
       <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
@@ -594,6 +594,8 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
     s = open(f).read()
     s = re.sub(r'<header class="nav" id="nav">.*?</header>', lambda m: nav('../', cur), s, flags=re.S)
     s = re.sub(r'<footer class="footer.*?</footer>', lambda m: footer('../'), s, flags=re.S)
+    if path == 'isometrics':
+        s = re.sub(r'<section class="band band--cta" id="contact">.*?</section>', lambda m: pilot(h2='See it on your own line.'), s, flags=re.S)
     if path == 'isometrics' and 'class="subnav"' not in s:
         s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">''', 1)

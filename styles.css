@@ -6,6 +6,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 
 :root{
+  color-scheme:light;
   /* blueprint ramp */
   --bp-950:#061A33; --bp-900:#0B2A50; --bp-800:#123B6C; --bp-700:#1A4C86;
   --bp-600:#2E6BB0; --bp-400:#6BA0DA; --bp-300:#9CC6F2; --bp-200:#CFE6FF;
@@ -45,41 +46,7 @@
   --shadow-2:0 2px 4px rgba(11,42,80,.07),0 26px 60px rgba(11,42,80,.13);
 }
 
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --ground:#061A33; --ground-2:#08203E;
-    --sheet:#0B2A50;  --sheet-2:#0E3260;
-    --ink:#EAF3FF;    --ink-2:#CFE6FF;  --ink-3:#9CC6F2;
-    --rule:rgba(156,198,242,0.22); --rule-2:rgba(156,198,242,0.42);
-    --accent:#9CC6F2; --accent-ink:#061A33;
-    --accent-soft:rgba(156,198,242,0.10);
-    --grid:rgba(156,198,242,0.06);
-    --dim:#EE8C77; --elev:#D294EB; --pipe:#5CC793; --glyph:#8FBCEC; --warn:#D8A63F;
-    --shadow-1:0 1px 2px rgba(0,0,0,.30),0 12px 34px rgba(0,0,0,.34);
-    --shadow-2:0 2px 4px rgba(0,0,0,.34),0 26px 60px rgba(0,0,0,.44);
-  }
-}
-:root[data-theme="dark"]{
-  --ground:#061A33; --ground-2:#08203E;
-  --sheet:#0B2A50;  --sheet-2:#0E3260;
-  --ink:#EAF3FF;    --ink-2:#CFE6FF;  --ink-3:#9CC6F2;
-  --rule:rgba(156,198,242,0.22); --rule-2:rgba(156,198,242,0.42);
-  --accent:#9CC6F2; --accent-ink:#061A33;
-  --accent-soft:rgba(156,198,242,0.10);
-  --grid:rgba(156,198,242,0.06);
-  --dim:#EE8C77; --elev:#D294EB; --pipe:#5CC793; --glyph:#8FBCEC; --warn:#D8A63F;
-  --shadow-1:0 1px 2px rgba(0,0,0,.30),0 12px 34px rgba(0,0,0,.34);
-  --shadow-2:0 2px 4px rgba(0,0,0,.34),0 26px 60px rgba(0,0,0,.44);
-}
 
-/* logo lockups swap with the theme */
-.brand-logo--dark{display:none}
-:root[data-theme="dark"] .brand-logo--light{display:none}
-:root[data-theme="dark"] .brand-logo--dark{display:block}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .brand-logo--light{display:none}
-  :root:not([data-theme="light"]) .brand-logo--dark{display:block}
-}
 
 /* ── base ──────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box}
@@ -163,13 +130,6 @@ code{
 }
 .icon-btn:hover{background:var(--accent-soft);color:var(--ink)}
 .icon-btn svg{width:17px;height:17px}
-.i-moon{display:none}
-:root[data-theme="dark"] .i-sun{display:none}
-:root[data-theme="dark"] .i-moon{display:block}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .i-sun{display:none}
-  :root:not([data-theme="light"]) .i-moon{display:block}
-}
 
 /* ── nav ───────────────────────────────────────────────────────────── */
 .nav{

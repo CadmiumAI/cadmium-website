@@ -3,9 +3,6 @@
 Run from the repo root: python3 tools/build_pages.py"""
 import json, os, re
 
-SUN = '''<svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>'''
-
 PHASES = {
   'feed': dict(
     n='FEED', title='Front-end engineering', short='Turn licensor packages into live data',
@@ -88,9 +85,6 @@ def nav(root, cur):
       <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
-      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
-        {SUN}
-      </button>
       <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
     </div>
   </div>
@@ -104,8 +98,7 @@ def footer(root):
     <div class="foot-grid">
       <div class="foot-brand">
         <a href="{home}" class="footer-brand" aria-label="Cadmium — home">
-          <img class="brand-logo--light" src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
-          <img class="brand-logo--dark" src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="190" height="60" />
+          <img src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
         </a>
         <p>AI for engineering, procurement and construction.</p>
       </div>
@@ -133,6 +126,7 @@ def head(title, desc, root, url):
 <link rel="icon" href="{root}cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="{root}cadmium-brand/favicon/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="{root}cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
+<meta name="color-scheme" content="light" />
 <meta name="theme-color" content="#E9F1FB" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cadmium-ai.com/{url}" />
@@ -140,9 +134,6 @@ def head(title, desc, root, url):
 <meta property="og:description" content="{desc}" />
 <meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<script>
-  (function(){{try{{var t=localStorage.getItem('cad-theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}}})();
-</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -583,6 +574,10 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
     if path == 'isometrics' and 'class="subnav"' not in s:
         s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">''', 1)
+    s = re.sub(r"<script>\s*(/\*.*?\*/\s*)?\(function\(\)\{try\{var t=localStorage.*?</script>\s*", "", s, flags=re.S)
+    if 'name="color-scheme"' not in s:
+        s = s.replace('<meta name="theme-color"', '<meta name="color-scheme" content="light" />\n<meta name="theme-color"', 1)
+    s = re.sub(r'<meta name="theme-color" content="[^"]*"', '<meta name="theme-color" content="#E9F1FB"', s)
     if 'demos/motion.js' not in s:
         s = s.replace('<script src="../script.js"></script>', '<script src="../script.js"></script>\n<script src="../demos/motion.js"></script>')
     open(f, 'w').write(s)

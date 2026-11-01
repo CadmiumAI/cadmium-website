@@ -11,21 +11,6 @@
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* ── theme ──────────────────────────────────────────────────────── */
-  (function theme() {
-    var btn = $('#themeToggle');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var cur = document.documentElement.getAttribute('data-theme');
-      if (!cur) {
-        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      var next = cur === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('cad-theme', next); } catch (e) {}
-    });
-  })();
-
   /* ── nav: shadow on scroll + current section + small-screen menu ── */
   (function nav() {
     var bar = $('#nav');

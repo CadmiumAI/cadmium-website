@@ -66,11 +66,26 @@ PROJECT_TYPES = ('greenfield', 'brownfield')
 STAGES_ONLY = {k: p for k, p in PHASES.items() if k not in PROJECT_TYPES}
 PHOTO_OF = dict(greenfield='pipeline-trench', feed='plant-stacks', detailed='welder-mask', procurement='pipeline-joints', construction='insulation-crew', handover='valve-work', brownfield='refinery-dusk')
 
+PHASE_ICON = {
+ 'feed': '<rect x="2.5" y="7.5" width="6" height="9" rx="2"/><path d="M8.5 12H11"/><circle cx="13.5" cy="12" r="2.5"/><path d="M16 12h2.5"/><path d="M18.5 5v14h3V5z"/>',
+ 'detailed': '<path d="M4 20.5V4l16.5 16.5z"/><path d="M8 16.5v-4l4 4z"/><path d="M4 8h2M4 12h1.5M4 16h2"/>',
+ 'procurement': '<path d="M2 6.5h12v10.5H2zM14 10h4l4 4v3h-8z"/><circle cx="7" cy="18" r="2" fill="var(--ic-bg,#fff)"/><circle cx="18" cy="18" r="2" fill="var(--ic-bg,#fff)"/>',
+ 'construction': '<path d="M2.5 18h19"/><path d="M4.5 18v-3a7.5 7.5 0 0 1 15 0v3"/><path d="M10 7.8V13M14 7.8V13"/>',
+ 'handover': '<rect x="4.5" y="4.5" width="15" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="4" rx="1"/><path d="M8.5 13.5l2.5 2.5 4.5-5"/>',
+ 'greenfield': '<path d="M6 21h12M12 21v-9"/><path d="M12 15c0-4-3-6.5-8-6.5 0 4 3 6.5 8 6.5z"/><path d="M12 12c0-4 3-7 8-7 0 4.5-3 7-8 7z"/>',
+ 'brownfield': '<path d="M3 21V11.5l6 3.5v-3.5l6 3.5V4h5.5v17z"/><path d="M7 18h2M12 18h2"/>',
+}
+def phase_icon(k):
+    return f'<svg class="ni" viewBox="0 0 24 24" aria-hidden="true">{PHASE_ICON[k]}</svg>'
+
 def drop(label, root, items, key, cur):
     def row(k, h, t, d):
         if k is None:
             return f'<em class="nav-sub">{t}</em>'
         cur_attr = ' class="is-current" aria-current="page"' if k == cur else ''
+        if k in PHASE_ICON:
+            cls = ' class="has-ic is-current" aria-current="page"' if k == cur else ' class="has-ic"'
+            return f'<a href="{root}{h}"{cls}>{phase_icon(k)}<b>{t}</b><span>{d}</span></a>'
         return f'<a href="{root}{h}"{cur_attr}><b>{t}</b><span>{d}</span></a>'
     links = ''.join(row(*i) for i in items)
     on = ' is-current' if key in (cur or '') or any(k == cur for k, *_ in items) else ''
@@ -436,7 +451,7 @@ for k, p in PHASES.items():
     m, m2 = p['module'], p['module2']
     outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
     rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
-    others = ''.join(f'<a href="{{R}}phases/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in (STAGES_ONLY if k not in PROJECT_TYPES else {t: PHASES[t] for t in PROJECT_TYPES}).items())
+    others = ''.join(f'<a href="{{R}}phases/{o}/" class="{"on" if o == k else ""}">{phase_icon(o)}{q["n"]}</a>' for o, q in (STAGES_ONLY if k not in PROJECT_TYPES else {t: PHASES[t] for t in PROJECT_TYPES}).items())
     body = f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/{PHOTO_OF[k]}.jpg')"><div class="wrap">
     <nav class="phase-rail" aria-label="{'Project types' if k in PROJECT_TYPES else 'Project phases'}">{others}</nav>
     <div class="sub-grid">

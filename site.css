@@ -894,3 +894,18 @@ h2{font-weight:700;letter-spacing:-.018em}
 .footer--full .footer-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
 .footer--full .footer-brand img{width:30px;height:30px;border-radius:7px}
 .footer--full .footer-brand b{font-weight:800;letter-spacing:-.025em;font-size:17.5px}
+
+/* project phase icons */
+.ni{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.nav-links .nav-panel a.has-ic{display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:12px;align-items:center}
+.nav-panel a.has-ic .ni{grid-row:1/span 2;width:24px;height:24px;color:var(--accent)}
+.nav-panel a.has-ic b,.nav-panel a.has-ic span{grid-column:2}
+.nav-panel a.has-ic:hover{--ic-bg:#f1f3fe}
+.phase-rail a{display:inline-flex;align-items:center;gap:7px;--ic-bg:#12182c}
+.phase-rail a .ni{width:16px;height:16px}
+.phase-rail a.on{--ic-bg:#f1f5f9}
+@media (max-width:860px){
+  .nav-panel a.has-ic .ni{grid-row:1;width:20px;height:20px}
+  .nav-links .nav-panel a.has-ic{grid-template-columns:20px minmax(0,1fr);column-gap:10px}
+}
+@media (min-width:861px){.nav-panel:has(.has-ic){width:390px}}

@@ -1,5 +1,5 @@
-/* The isometric demo: one recorded run of the real Cadmium pipeline.
-   Mesh -> centreline graph -> compaction -> expansion -> projection -> the solved sheet.
+/* The isometric demo: one recorded run, from 3D model to finished sheet.
+   Model -> line extraction -> not-to-scale layout -> isometric view -> annotation and BOM.
    Graph vertices keep their indices through every stage, so what moves on screen is
    exactly what the pipeline moved. Data comes from tools/build_iso_demo.py. */
 (function () {
@@ -42,12 +42,11 @@
     function fail(m) { root.classList.add('iso-failed'); if (note) note.textContent = m; }
 
     var STAGES = [
-      { id: 'model', graph: 'graph3d', title: '3D model', text: 'The piping model as exported: {items} parts. Hover any part to read its catalogue entry.' },
-      { id: 'graph', graph: 'graph3d', title: 'Centreline graph', text: 'What is connected to what: {nodes} nodes and {edges} edges, recovered from the solids.' },
-      { id: 'compact', graph: 'compact', title: 'Compact', text: 'Long runs are capped so the whole line reads at one scale. Topology does not change.' },
-      { id: 'expand', graph: 'expand', title: 'Expand', text: 'Short runs are floored, and fittings pushed apart until every symbol has room.' },
-      { id: 'project', graph: 'expand', title: 'Project', text: 'The graph, viewed along the isometric axis from the top south-west.' },
-      { id: 'sheet', graph: 'expand', title: 'Annotate', text: 'Dimensions, elevations and balloons placed so nothing collides. Export writes native CAD entities.' }
+      { id: 'model', graph: 'graph3d', title: '3D model', text: 'The plant model as your designers built it: {items} components on this line. Hover any one to read its catalogue entry.' },
+      { id: 'graph', graph: 'graph3d', title: 'Line extraction', text: 'The line is isolated from the model and traced end to end, through every fitting and branch.' },
+      { id: 'expand', graph: 'expand', title: 'Not-to-scale layout', text: 'Isometrics are drawn not to scale. Long runs shorten and fittings spread, so the whole line reads clearly on one sheet.' },
+      { id: 'project', graph: 'expand', title: 'Isometric view', text: 'The line is set out on isometric axes, with north and elevations preserved.' },
+      { id: 'sheet', graph: 'expand', title: 'Annotation and BOM', text: 'Dimensions, elevations, callouts and the bill of materials, placed clear of each other on your title block.' }
     ];
 
     var data, renderer, scene, camera, mesh, tubes, joints, used, colorAttr, baseColors;
@@ -174,9 +173,7 @@
         b.setAttribute('aria-pressed', String(n === i));
       });
       if (note) note.textContent = s.text
-        .replace('{items}', data.items.length)
-        .replace('{nodes}', used.length)
-        .replace('{edges}', data.edges.length);
+        .replace('{items}', data.items.length);
       setHover(-1);
       dirty = true;
     }

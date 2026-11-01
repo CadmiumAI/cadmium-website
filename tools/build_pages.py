@@ -176,12 +176,41 @@ def page(path, title, desc, cur, body, scripts=''):
 
 # A small animated picture of each phase's work.
 VIG = {
- 'feed': '<svg viewBox="0 0 150 76"><g class="v-rows"><rect x="8" y="10" width="44" height="9"/><rect x="58" y="10" width="84" height="9" class="a1"/><rect x="8" y="26" width="44" height="9"/><rect x="58" y="26" width="62" height="9" class="a2"/><rect x="8" y="42" width="44" height="9"/><rect x="58" y="42" width="74" height="9" class="a3"/><rect x="8" y="58" width="44" height="9"/><rect x="58" y="58" width="50" height="9" class="a4"/></g></svg>',
- 'detailed': '<svg viewBox="0 0 150 76"><path class="v-draw" d="M12 62 52 39V18l34 20 22-13 30 18"/><path class="v-dim" d="M8 72 48 49M56 12l30 18M116 18l26 15"/><circle class="v-pop" cx="52" cy="39" r="3"/><circle class="v-pop p2" cx="86" cy="38" r="3"/><circle class="v-pop p3" cx="108" cy="25" r="3"/></svg>',
- 'procurement': '<svg viewBox="0 0 150 76"><g class="v-bars"><rect x="12" y="20" width="16" height="50"/><rect x="36" y="34" width="16" height="36" class="b2"/><rect x="60" y="12" width="16" height="58" class="b3"/><rect x="84" y="42" width="16" height="28" class="b4"/><rect x="108" y="26" width="16" height="44" class="b5"/></g></svg>',
- 'construction': '<svg viewBox="0 0 150 76"><rect class="v-frame" x="52" y="4" width="46" height="68" rx="6"/><g class="v-cube"><path d="M75 22 90 31v17l-15 9-15-9V31z"/><path d="M60 31l15 9 15-9M75 40v17"/></g></svg>',
- 'handover': '<svg viewBox="0 0 150 76"><g class="v-ticks"><rect x="44" y="11" width="92" height="7"/><path d="M14 15l5 5 9-10"/><rect x="44" y="33" width="72" height="7"/><path class="t2" d="M14 37l5 5 9-10"/><rect x="44" y="55" width="84" height="7"/><path class="t3" d="M14 59l5 5 9-10"/></g></svg>',
- 'brownfield': '<svg viewBox="0 0 150 76"><defs><pattern id="scanN" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="1.3" height="1.3" fill="#9CC6F2" opacity=".55"/><rect x="3" y="3" width="1" height="1" fill="#9CC6F2" opacity=".35"/></pattern></defs><rect width="150" height="76" fill="url(#scanN)"/><g class="v-clean"><rect width="150" height="76" fill="#0A2545"/><path d="M12 38h42M78 38h26v-22h34" stroke="#42E08F" stroke-width="2" fill="none"/><path d="M54 30l24 16V30l-24 16z" fill="none" stroke="#CFE6FF" stroke-width="1.5"/></g><path class="v-sweep" d="M0 0v76" stroke="#FFCF5C" stroke-width="1.5"/></svg>',
+ # A process flow diagram being sketched, then flow through it.
+ 'feed': """<svg viewBox="0 0 180 96"><g class="d l">
+   <rect style="--d:0s" pathLength="1" x="12" y="36" width="22" height="42" rx="10"/>
+   <circle style="--d:.9s" pathLength="1" cx="62" cy="60" r="8"/>
+   <circle style="--d:1.5s" pathLength="1" cx="98" cy="60" r="10"/>
+   <path style="--d:1.7s" pathLength="1" d="M88 60l5-6 5 12 5-12 5 6"/>
+   <rect style="--d:2.2s" pathLength="1" x="130" y="12" width="18" height="72" rx="9"/>
+   <path style="--d:2.6s" pathLength="1" d="M130 28h18M130 40h18M130 52h18M130 64h18"/></g>
+   <g class="d s"><path style="--d:.6s" pathLength="1" d="M34 60h20"/><path style="--d:1.2s" pathLength="1" d="M70 60h18"/><path style="--d:1.9s" pathLength="1" d="M108 60h22"/><path style="--d:2.9s" pathLength="1" d="M148 22h24M166 17l6 5-6 5"/><path style="--d:3s" pathLength="1" d="M148 74h24M166 69l6 5-6 5"/></g></svg>""",
+ # An isometric sheet drawing itself: frame, line, dimensions, callouts, title block.
+ 'detailed': """<svg viewBox="0 0 180 96"><g class="d l"><rect style="--d:0s" pathLength="1" x="8" y="6" width="164" height="84"/><path style="--d:.3s" pathLength="1" d="M120 90V70h52M120 78h52M146 70v20"/></g>
+   <g class="d s"><path style="--d:.7s;--t:1s" pathLength="1" d="M20 72 56 52V26l36 21 26-15"/></g>
+   <g class="d r"><path style="--d:1.8s" pathLength="1" d="M14 64 50 44M50 40l4 3M12 61l4 3"/><path style="--d:2.2s" pathLength="1" d="M62 18l30 17M60 21l3-5M90 38l3-5"/></g>
+   <g class="p"><circle style="--d:2.7s" cx="30" cy="48" r="5"/><circle style="--d:2.9s" cx="44" cy="30" r="5"/><circle style="--d:3.1s" cx="106" cy="52" r="5"/></g></svg>""",
+ # A purchase order is ticked off, and the truck leaves with the pipe.
+ 'procurement': """<svg viewBox="0 0 180 96"><g class="l solid"><rect x="8" y="8" width="44" height="66" rx="2"/></g>
+   <g class="rows"><rect style="--d:.2s" x="14" y="17" width="32" height="4"/><rect style="--d:.6s" x="14" y="28" width="32" height="4"/><rect style="--d:1s" x="14" y="39" width="32" height="4"/><rect style="--d:1.4s" x="14" y="50" width="32" height="4"/></g>
+   <text class="po" x="30" y="68" text-anchor="middle">PO</text>
+   <path class="road" d="M0 88H180"/>
+   <g class="truck"><rect class="bed" x="62" y="56" width="66" height="8"/><rect class="pipe" x="64" y="48" width="62" height="7" rx="3.5"/><rect class="pipe" x="66" y="41" width="58" height="7" rx="3.5"/><path class="cab" d="M130 64V44h16l10 11v9z"/><path class="glass" d="M135 48h9l6 7h-15z"/><circle class="wh" cx="76" cy="72" r="7"/><circle class="wh" cx="116" cy="72" r="7"/><circle class="wh" cx="146" cy="72" r="7"/></g></svg>""",
+ # A tower crane sets a pipe spool on the rack.
+ 'construction': """<svg viewBox="0 0 180 96"><g class="rack"><path d="M104 92V62M172 92V62M100 62h76M100 74h76M126 92V62M150 92V62"/></g>
+   <g class="crane"><path d="M34 92V10M26 92h16M12 14h156M12 14v6M34 6l-20 8M34 6l60 8"/><rect x="8" y="20" width="12" height="9"/></g>
+   <g class="tr"><rect class="trolley" x="54" y="13" width="12" height="4"/><rect class="cable" x="59.4" y="17" width="1.2" height="20"/>
+   <g class="load"><path d="M46 44h28v10"/><path class="hook" d="M60 37l-10 7M60 37l10 7"/></g></g></svg>""",
+ # Every document checked, then accepted.
+ 'handover': """<svg viewBox="0 0 180 96"><g class="l solid"><rect x="30" y="16" width="76" height="74" rx="3" transform="translate(10 -8)" opacity=".45"/><rect x="30" y="16" width="76" height="74" rx="3"/></g><rect class="clip" x="56" y="11" width="24" height="9" rx="2"/>
+   <g class="chk"><rect x="52" y="30" width="44" height="4"/><rect x="52" y="46" width="44" height="4"/><rect x="52" y="62" width="44" height="4"/><rect x="52" y="78" width="30" height="4"/></g>
+   <g class="d s"><path style="--d:.3s;--t:.3s" pathLength="1" d="M36 31l3 3 6-7"/><path style="--d:.8s;--t:.3s" pathLength="1" d="M36 47l3 3 6-7"/><path style="--d:1.3s;--t:.3s" pathLength="1" d="M36 63l3 3 6-7"/><path style="--d:1.8s;--t:.3s" pathLength="1" d="M36 79l3 3 6-7"/></g>
+   <g class="stamp"><rect x="104" y="36" width="68" height="24" rx="3"/><text x="138" y="52" text-anchor="middle">ACCEPTED</text></g></svg>""",
+ # An old plant is scanned into a digital model, and a new tie-in is added.
+ 'brownfield': """<svg viewBox="0 0 180 96"><path class="old" d="M10 88V58l22-12v12l22-12v12h14V22h8v36h10V14h8v44h14V40h24v48z"/><path class="old2" d="M10 88h156"/>
+   <g class="dig"><rect x="0" y="0" width="180" height="96" fill="#12182c"/><path class="wire" d="M10 88V58l22-12v12l22-12v12h14V22h8v36h10V14h8v44h14V40h24v48zM10 72h156M68 40h8M86 30h8M118 56h24"/></g>
+   <path class="scan" d="M0 0v96"/>
+   <g class="d s"><path style="--d:3s;--t:.7s" pathLength="1" d="M142 66h24v-30h8"/></g><circle class="tie" cx="142" cy="66" r="3.5"/></svg>""",
 }
 
 def lifecycle():
@@ -213,7 +242,7 @@ def lifecycle():
 WALK_STEPS = [
  ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
  ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
- ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium patches the DGN in place: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
+ ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
  ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
  ('review', 'Check', 'Engineers review changes, not whole sheets', 'Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.', ['Automatic clouding at every revision', 'Model, P&amp;ID and BOM checked against each other', 'A full record of who approved what, and when'], 'solutions/detailed/', 'See detailed engineering'),
  ('site', 'Build', 'The current drawing, at the workface', 'Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.', ['Isometric and 3D model on any phone or tablet', 'Superseded revisions clearly flagged', 'Test-pack boundaries worked out from the P&amp;IDs'], 'solutions/construction/', 'See construction'),
@@ -302,7 +331,7 @@ RUN = '''<section class="band band--dark fit-screen" id="run">
   <div class="wrap">
     <p class="eyebrow">A real line, start to finish</p>
     <h2>From 3D model to issued sheet.</h2>
-    <p class="lead lead--wide">One line taken through the pipeline, stage by stage. Drag the model to turn it.</p>
+    <p class="lead lead--wide">One line, taken from the plant model to a finished isometric. Drag the model to turn it.</p>
     <div class="lab iso-lab" id="hero">
       <div class="lab-view iso-view" data-iso-view><div class="iso-tip" data-iso-tip hidden></div></div>
       <div class="lab-foot">
@@ -570,7 +599,7 @@ page('gad', 'GAD annotation — Cadmium', 'Cadmium turns general arrangement pla
       <div data-mock="gad" data-root="{{{{R}}}}"></div>
     </div>
   </div></section>
-  <section class="proof proof--light"><div class="wrap proof-row proof-row--3"><div class="pf"><b>~10 s</b><span>per sheet, including preview</span></div><div class="pf"><b>DGN in, DGN out</b><span>patched in place, every other element untouched</span></div><div class="pf"><b>1:1 PDF</b><span>with your line weights and line styles</span></div></div></section>
+  <section class="proof proof--light"><div class="wrap proof-row proof-row--3"><div class="pf"><b>~10 s</b><span>per sheet, including preview</span></div><div class="pf"><b>DGN in, DGN out</b><span>your file stays your file, with nothing but annotation changed</span></div><div class="pf"><b>1:1 PDF</b><span>with your line weights and line styles</span></div></div></section>
   <section class="band"><div class="wrap">
     <p class="eyebrow">Deliverables</p>
     <h2>What changes on the job.</h2>

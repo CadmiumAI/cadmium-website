@@ -72,13 +72,13 @@
       steps: function (m) {
         return [[600, function () { m.point('[data-menu]'); }], [150, function () { m.click('[data-menu]'); m.add('[data-menu]', 'on'); m.add('[data-drop]', 'on'); }],
           [280, function () { m.point('[data-mi]'); m.add('[data-mi]', 'hover'); }],
-          [120, function () { m.click('[data-mi]'); m.rm('[data-drop]', 'on'); m.rm('[data-menu]', 'on'); m.status('Generating isometric...'); m.busy(true); m.prog(6); m.log('&gt; cadmium iso "Unit 210.dwg" --line 28-CW-008 --sheet ISO-008'); m.point('.d-r'); }],
-          [650, function () { m.log('Loaded 351 entities (71 solids, 280 metadata)'); m.prog(24); }],
-          [380, function () { m.log('Skeleton built; 62 nodes, 61 edges'); m.prog(33); }],
-          [170, function () { m.log('Compacting runs...'); m.prog(38); }],
-          [240, function () { m.log('Expanding for symbols...'); m.prog(45); m.tab('sheet'); m.reveal('frame', 120); }],
-          [200, function () { m.reveal('pipe', 520); m.status('Drawing centrelines...'); }],
-          [620, function () { m.reveal('fit', 760); m.prog(58); m.status('Placing fittings...'); m.log('Solving annotation layout...'); }],
+          [120, function () { m.click('[data-mi]'); m.rm('[data-drop]', 'on'); m.rm('[data-menu]', 'on'); m.status('Generating isometric...'); m.busy(true); m.prog(6); m.log('Generating ISO-008 from Unit 210.dwg, line 28-CW-008'); m.point('.d-r'); }],
+          [650, function () { m.log('Read model: 71 components on line 28-CW-008'); m.prog(24); }],
+          [380, function () { m.log('Line traced end to end; 0 open ends'); m.prog(33); }],
+          [170, function () { m.log('Applying isometric conventions...'); m.prog(38); }],
+          [240, function () { m.log('Laying out not to scale...'); m.prog(45); m.tab('sheet'); m.reveal('frame', 120); }],
+          [200, function () { m.reveal('pipe', 520); m.status('Drawing pipe runs...'); }],
+          [620, function () { m.reveal('fit', 760); m.prog(58); m.status('Placing fittings...'); m.log('Annotating...'); }],
           [880, function () { m.reveal('dim', 1250); m.prog(71); m.status('Placing dimensions...'); m.point('.canvas'); }],
           [1320, function () { m.val('dim', '24'); m.reveal('elev', 160); m.prog(79); m.log('Placed 24 dimensions, 4 elevations'); }],
           [200, function () { m.val('elev', '4'); m.reveal('text', 340); m.prog(85); }],
@@ -93,9 +93,9 @@
       label: 'Screen recording of Cadmium Studio cleaning up a general arrangement drawing: overlapping labels are placed clear of the piping and dimensions are chained.',
       build: function (R) {
         return {
-          file: 'GA-410-2108.dgn', area: 'Area 400 &middot; Unit 410', std: 'Client drafting', rev: 'P2', coord: 'X 412.880&ensp;Y 96.214&ensp;Level _Auto',
+          file: 'GA-410-2108.dgn', area: 'Area 400 &middot; Unit 410', std: 'Client drafting', rev: 'P2', coord: 'X 412.880&ensp;Y 96.214&ensp;Level ANNOTATION',
           tools: tool('play', 'Clean Up', 'data-go') + tool('export', 'Export DGN') + tool('sheet', 'Print PDF'),
-          tree: [[0, 'folder', 'Area 400'], [1, 'folder', 'General Arrangements'], [2, 'sheet', 'GA-410-2106', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2107', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2108', { leaf: 1, on: 1, b: 'P2', bc: 'wip' }], [2, 'sheet', 'GA-410-2109', { leaf: 1, b: 'P1' }], [2, 'sheet', 'GA-410-2110', { leaf: 1, b: 'P1' }], [1, 'folder', 'Levels'], [2, 'layers', 'PIPE', { leaf: 1 }], [2, 'layers', 'EQUIP', { leaf: 1 }], [2, 'layers', 'STEEL', { leaf: 1 }], [2, 'layers', 'SUPPORT', { leaf: 1 }], [2, 'layers', 'INSTRUMENT', { leaf: 1 }], [2, 'layers', '_Auto', { leaf: 1, b: 'notes' }], [1, 'folder', 'Rules', { shut: 1 }]],
+          tree: [[0, 'folder', 'Area 400'], [1, 'folder', 'General Arrangements'], [2, 'sheet', 'GA-410-2106', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2107', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2108', { leaf: 1, on: 1, b: 'P2', bc: 'wip' }], [2, 'sheet', 'GA-410-2109', { leaf: 1, b: 'P1' }], [2, 'sheet', 'GA-410-2110', { leaf: 1, b: 'P1' }], [1, 'folder', 'Levels'], [2, 'layers', 'PIPE', { leaf: 1 }], [2, 'layers', 'EQUIP', { leaf: 1 }], [2, 'layers', 'STEEL', { leaf: 1 }], [2, 'layers', 'SUPPORT', { leaf: 1 }], [2, 'layers', 'INSTRUMENT', { leaf: 1 }], [2, 'layers', 'ANNOTATION', { leaf: 1, b: 'notes' }], [1, 'folder', 'Rules', { shut: 1 }]],
           tabs: [['GA-410-2108.dgn', 1, 'sheet']],
           center: '<div class="pane on sheet">' + ruler() + '<div class="slot layers show-base" data-svg="gad.svg"></div></div>',
           bottomTabs: ['Output', 'Issues', 'Label Report'], bottom: mono(),
@@ -104,14 +104,14 @@
       },
       steps: function (m) {
         return [[700, function () { m.point('[data-go]'); }], [130, function () {
-            m.click('[data-go]'); m.status('Reading DGN...'); m.busy(true); m.prog(8); m.log('&gt; cadmium gad "GA-410-2108.dgn"'); m.point('.d-r'); }],
-          [520, function () { m.log('Read DGN V8, 2D; level _Auto holds annotation'); m.prog(19); }],
+            m.click('[data-go]'); m.status('Reading DGN...'); m.busy(true); m.prog(8); m.log('Cleaning up GA-410-2108.dgn'); m.point('.d-r'); }],
+          [520, function () { m.log('Read drawing: DGN V8, 2D plan'); m.prog(19); }],
           [340, function () { m.unreveal('dupe', 420); m.status('Removing duplicates...'); m.log('Removed 21 duplicate notes'); m.val('dup', '0'); m.prog(30); }],
-          [520, function () { m.log('Enumerating label slots...'); m.prog(38); m.status('Solving label placement...'); m.unreveal('raw', 500); }],
-          [560, function () { m.log('Solving placement; labels clear of piping and dimensions'); m.prog(52); m.reveal('label', 980); m.point('.canvas'); }],
+          [520, function () { m.log('Finding clear space for labels...'); m.prog(38); m.status('Placing labels...'); m.unreveal('raw', 500); }],
+          [560, function () { m.log('Placing labels clear of piping and dimensions'); m.prog(52); m.reveal('label', 980); m.point('.canvas'); }],
           [1060, function () { m.val('over', '0'); m.val('onp', '0'); m.prog(71); m.reveal('chain', 460); m.status('Chaining dimensions...'); m.log('Chained 11 dimensions at the matchline'); }],
           [520, function () { m.val('chn', '11'); m.prog(84); m.reveal('margin', 460); m.status('Writing margin entries...'); m.log('Moved 22 entries to the margin'); }],
-          [540, function () { m.val('mar', '22'); m.prog(95); m.log('Patched GA-410-2108.dgn in place'); m.status('Saving...'); }],
+          [540, function () { m.val('mar', '22'); m.prog(95); m.log('Saved GA-410-2108.dgn'); m.status('Saving...'); }],
           [420, function () { m.prog(100); m.busy(false); m.log('<g>Done in 9.8 s. DGN and PDF written.</g>'); m.status('Ready'); m.idle('.canvas'); }]];
       }
     },
@@ -131,7 +131,7 @@
         };
       },
       steps: function (m) {
-        return [[600, function () { m.point('[data-go]'); }], [130, function () { m.click('[data-go]'); m.status('Deskewing and thresholding...'); m.busy(true); m.prog(12); m.val('st', 'Reading'); m.point('.d-r'); }],
+        return [[600, function () { m.point('[data-go]'); }], [130, function () { m.click('[data-go]'); m.status('Preparing scan...'); m.busy(true); m.prog(12); m.val('st', 'Reading'); m.point('.d-r'); }],
           [620, function () { m.status('Tracing lines...'); m.prog(30); m.reveal('pipe', 720); m.point('.canvas'); }],
           [780, function () { m.val('lines', '7'); m.prog(52); m.status('Finding equipment...'); m.reveal('equip', 240); }],
           [300, function () { m.status('Matching symbols...'); m.prog(64); m.reveal('sym', 520); }],

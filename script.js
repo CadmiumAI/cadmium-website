@@ -51,6 +51,7 @@
     }
 
     var sections = links
+      .filter(function (a) { return a.getAttribute('href').charAt(0) === '#'; })
       .map(function (a) { return $(a.getAttribute('href')); })
       .filter(Boolean);
 
@@ -110,8 +111,8 @@
 
     /* warm the other three pairs so switching is instant */
     ['02', '03', '04'].forEach(function (n) {
-      new Image().src = 'assets/compare/autocad-' + n + '.png';
-      new Image().src = 'assets/compare/cadmium-' + n + '.png';
+      new Image().src = '../assets/compare/autocad-' + n + '.png';
+      new Image().src = '../assets/compare/cadmium-' + n + '.png';
     });
 
     tabs.forEach(function (tab) {
@@ -125,8 +126,8 @@
         });
         grid.classList.add('is-swapping');
         setTimeout(function () {
-          bad.src = 'assets/compare/autocad-' + n + '.png';
-          good.src = 'assets/compare/cadmium-' + n + '.png';
+          bad.src = '../assets/compare/autocad-' + n + '.png';
+          good.src = '../assets/compare/cadmium-' + n + '.png';
           badLbl.textContent = goodLbl.textContent = 'Line ' + n;
           grid.classList.remove('is-swapping');
         }, 220);
@@ -192,13 +193,13 @@
         'Company: ' + (company.value.trim() || '—'),
         'Email: ' + email.value.trim(),
         '',
-        notes.value.trim() || 'Sending a Plant 3D model for an isometric.',
+        notes.value.trim() || form.dataset.default || '',
         '',
-        '(Please attach the model to this email.)'
+        form.dataset.attach || ''
       ].join('\n');
 
       window.location.href = 'mailto:' + CONTACT_EMAIL +
-        '?subject=' + encodeURIComponent('Isometric request — ' + (company.value.trim() || name.value.trim())) +
+        '?subject=' + encodeURIComponent((form.dataset.subject || 'Enquiry') + ' — ' + (company.value.trim() || name.value.trim())) +
         '&body=' + encodeURIComponent(body);
     });
   })();

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Isometrics — Cadmium</title>
+<meta name="description" content="Cadmium takes your 3D piping model to a finished, annotated isometric on your template, in seconds. Native DXF, fully editable in AutoCAD." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="../site.css" />
+<link rel="icon" href="../cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../cadmium-brand/favicon/favicon.ico" sizes="any" />
+<link rel="icon" href="../cadmium-brand/favicon/favicon-32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="../cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
+<meta name="theme-color" content="#E9F1FB" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cadmium-ai.com/isometrics/" />
+<meta property="og:title" content="Cadmium Isometrics — automated piping isometrics" />
+<meta property="og:description" content="Cadmium takes your 3D piping model to a finished, annotated isometric on your template, in seconds." />
+<meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<script>
+  /* Pre-paint theme, so there is no flash. */
+  (function(){try{var t=localStorage.getItem('cad-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAV
+     ═════════════════════════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="nav-inner wrap">
+    <a class="nav-brand" href="../" aria-label="Cadmium — home">
+      <img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" />
+      <b>Cadmium</b>
+      <span class="nav-kicker">Isometrics</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Sections">
+      <a href="#run">The run</a>
+      <a href="#compare">Comparison</a>
+      <a href="#product">How it works</a>
+      <a href="#viewer">3D model</a>
+      <a href="#savings">Savings</a>
+      <a class="nav-out" href="../">All products</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-btn nav-burger" id="navToggle" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm" href="#contact">Send us your model</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+     ═════════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Automated piping isometrics</p>
+      <h1>Stop redrawing<br />your isometrics.</h1>
+      <p class="lead">
+        Cadmium takes your 3D piping model to a finished, annotated isometric on your template, in seconds.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#contact">Send us your model</a>
+        <a class="btn btn--ghost" href="#run">Watch the run</a>
+      </div>
+      <div class="rulewide"></div>
+      <div class="stat-row">
+        <div class="stat"><b>95%</b><span>Less manual rework</span></div>
+        <div class="stat"><b>Seconds</b><span>Not hours per sheet</span></div>
+        <div class="stat"><b>Native DXF</b><span>Editable in AutoCAD</span></div>
+      </div>
+    </div>
+
+    <figure class="hero-sheet viewport zoomable" tabindex="0">
+      <figcaption class="vp-label"><b>Generated isometric</b><span>Isometric 8 &middot; .dxf</span></figcaption>
+      <img src="../assets/sheet-cadmium.png"
+           alt="A finished Cadmium isometric sheet: green pipe run, red dimension chains, magenta elevation callouts, numbered component balloons and a bill of materials table in the corner of an A2 sheet."
+           width="1541" height="1090" fetchpriority="high" />
+    </figure>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     THE RUN — one recorded pipeline run
+     ═════════════════════════════════════════════════════════ -->
+<section class="band band--dark" id="run">
+  <div class="wrap">
+    <p class="eyebrow">The real pipeline, stage by stage</p>
+    <h2>One line, from model to sheet.</h2>
+    <p class="lead lead--wide">
+      This is a recorded run of the production pipeline, not an animation drawn for this page. Every stage&rsquo;s
+      data is what the pipeline produced, so what moves on screen is what it moved.
+    </p>
+    <div class="lab iso-lab" id="isoLab">
+      <div class="lab-view iso-view" data-iso-view>
+        <div class="iso-tip" data-iso-tip hidden></div>
+      </div>
+      <div class="lab-foot">
+        <div class="iso-steps" data-iso-steps></div>
+        <p class="lab-note" data-iso-note aria-live="polite">Loading the recorded run&hellip;</p>
+        <div class="lab-row">
+          <button class="btn btn--on-dark btn--sm" type="button" data-iso-play>Play the run</button>
+          <div class="chips" data-iso-layers aria-label="Sheet layers"></div>
+          <span class="lab-hint">Drag to rotate &middot; ctrl + scroll to zoom</span>
+        </div>
+      </div>
+    </div>
+    <p class="fineprint">Recorded from one sample line of 71 parts: seven pipeline stages, 6.6 s end to end. Meshes are decimated for the web. The pipeline itself runs on our servers because it needs a full CAD kernel.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     PROBLEM
+     ═════════════════════════════════════════════════════════ -->
+<section class="band" id="problem">
+  <div class="wrap">
+    <p class="eyebrow">The problem</p>
+    <h2>Isometric generation is costing you.</h2>
+
+    <div class="split split--copy-left">
+      <div class="stack">
+        <p class="lead">
+          Your project requires hundreds of isometrics, and you spend hours of draftsman
+          time on each one — cleaning up the cluttered, bloated mess that comes out of AutoCAD.
+        </p>
+        <ul class="list">
+          <li>Components colliding with each other.</li>
+          <li>Annotations overlapping each other.</li>
+          <li>Criss-crossing labels.</li>
+          <li>Unwanted information everywhere.</li>
+          <li>Completely illegible.</li>
+        </ul>
+      </div>
+
+      <figure class="viewport zoomable" tabindex="0">
+        <figcaption class="vp-label"><b>Straight out of AutoCAD</b><span>before cleanup</span></figcaption>
+        <img src="../assets/problem-autocad.png" loading="lazy"
+             alt="An isometric generated by AutoCAD: leader lines crossing in every direction, OPERATOR UP tags repeated a dozen times, dimensions and part codes overlapping each other and the pipe."
+             width="877" height="727" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     COMPARISON
+     ═════════════════════════════════════════════════════════ -->
+<section class="band band--alt" id="compare">
+  <div class="wrap">
+    <p class="eyebrow">Comparison</p>
+    <h2>The same lines, drawn both ways.</h2>
+    <p class="lead lead--wide">
+      Four production lines. On the left, what AutoCAD produces. On the right, what
+      Cadmium produces from the identical model. Click any drawing to enlarge.
+    </p>
+
+    <div class="cmp-tabs" role="tablist" aria-label="Choose a line">
+      <button class="cmp-tab is-active" role="tab" aria-selected="true"  data-line="01">Line 01</button>
+      <button class="cmp-tab"           role="tab" aria-selected="false" data-line="02">Line 02</button>
+      <button class="cmp-tab"           role="tab" aria-selected="false" data-line="03">Line 03</button>
+      <button class="cmp-tab"           role="tab" aria-selected="false" data-line="04">Line 04</button>
+    </div>
+
+    <div class="cmp-grid">
+      <figure class="viewport viewport--bad zoomable" tabindex="0">
+        <figcaption class="vp-label"><b class="k-bad">AutoCAD</b><span id="cmpBadLine">Line 01</span></figcaption>
+        <div class="vp-fit"><img id="cmpBad" src="../assets/compare/autocad-01.png" loading="lazy"
+             alt="AutoCAD's own isometric output: leaders crossing the drawing, repeated tags and overlapping dimensions." /></div>
+      </figure>
+
+      <figure class="viewport viewport--good zoomable" tabindex="0">
+        <figcaption class="vp-label"><b class="k-good">Cadmium</b><span id="cmpGoodLine">Line 01</span></figcaption>
+        <div class="vp-fit"><img id="cmpGood" src="../assets/compare/cadmium-01.png" loading="lazy"
+             alt="Cadmium's isometric for the same line: clean runs, dimensions on their own witness lines, numbered balloons." /></div>
+      </figure>
+    </div>
+
+    <div class="legend">
+      <span class="k-pipe"><i></i>Pipe run</span>
+      <span class="k-dim"><i></i>Dimensions</span>
+      <span class="k-elev"><i></i>Elevations</span>
+      <span class="k-glyph"><i></i>Component symbols</span>
+      <span class="k-bom"><i></i>Balloons &amp; BOM</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     PRODUCT — how it works + app demo
+     ═════════════════════════════════════════════════════════ -->
+<section class="band" id="product">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Export, upload, download.</h2>
+    <p class="lead lead--wide">Nothing changes about how you model.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <span class="n">Source</span>
+        <h3>Your 3D model</h3>
+        <p>The Plant 3D piping model exactly as you already have it.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">Export</span>
+        <h3>One command</h3>
+        <p>Our AutoCAD plugin, <code>CADMIUMEXPORT</code>, writes an export folder next to your drawing containing <code>export.dxf</code> and <code>export.iges</code>.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">Upload</span>
+        <h3>Drop the pair</h3>
+        <p>Cadmium reads the exported files, projects the run to 2D and places every annotation.</p>
+      </div>
+      <div class="flow-step">
+        <span class="n">Output</span>
+        <h3>The sheet</h3>
+        <p>An annotated isometric DXF on an A2 sheet or your own title block — native CAD entities, fully editable.</p>
+      </div>
+    </div>
+
+    <!-- ── live app walkthrough ──────────────────────────── -->
+    <div class="demo-head">
+      <h3 class="demo-title">The whole job, start to finish</h3>
+      <button class="btn btn--ghost btn--sm" id="demoReplay" type="button">Replay</button>
+    </div>
+
+    <div class="browser" id="demo" data-stage="0">
+      <div class="browser-bar">
+        <span class="browser-dots"><i></i><i></i><i></i></span>
+        <span class="browser-url">app.cadmium-ai.com/projects/2/drawings/8</span>
+      </div>
+
+      <div class="browser-body">
+        <!-- app top bar -->
+        <div class="ui-top">
+          <span class="ui-brand"><img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="22" height="22" /> Cadmium</span>
+          <span class="ui-avatar">AD</span>
+        </div>
+
+        <div class="ui-page">
+          <p class="ui-crumbs">Projects <em>/</em> Project 2 <em>/</em> <b>Isometric 8</b></p>
+
+          <div class="ui-head">
+            <div>
+              <h4>Isometric 8</h4>
+              <p>Upload the export pair, then generate the annotated isometric.</p>
+            </div>
+            <button class="ui-btn ui-btn--primary" id="demoGenerate" type="button" tabindex="-1">Generate ISO DXF</button>
+          </div>
+
+          <!-- input files -->
+          <div class="ui-card">
+            <div class="ui-card-head">
+              <span>Input files</span>
+              <span class="ui-pill" id="demoPill">&bull; NEW</span>
+            </div>
+            <div class="ui-files">
+              <div class="ui-file" id="demoFileA">
+                <span class="ui-file-icon">D</span>
+                <span class="ui-file-meta"><b>export.dxf</b><em>REQUIRED</em></span>
+              </div>
+              <div class="ui-file" id="demoFileB">
+                <span class="ui-file-icon">I</span>
+                <span class="ui-file-meta"><b>export.iges</b><em>REQUIRED</em></span>
+              </div>
+            </div>
+            <div class="ui-field">
+              <label>Sheet template</label>
+              <div class="ui-select">Default (blank A2) <em>(default)</em></div>
+            </div>
+            <div class="ui-drop" id="demoDrop">
+              <b>Drop export.dxf + export.iges</b>
+              <span>or click to browse — from your cadmium_export folder</span>
+            </div>
+          </div>
+
+          <!-- pipeline -->
+          <div class="ui-card ui-reveal" id="demoPipelineCard">
+            <div class="ui-card-head">
+              <span>Pipeline</span>
+              <span class="ui-pill" id="demoPipePill">&bull; RUNNING</span>
+            </div>
+            <div class="ui-progress"><i id="demoProgress"></i></div>
+            <div class="ui-pipeline">
+              <ol class="ui-stages">
+                <li data-stage="load"><i></i>Load</li>
+                <li data-stage="iso"><i></i>Generating Isometric</li>
+                <li data-stage="ann"><i></i>Annotating Isometric</li>
+                <li data-stage="exp"><i></i>Export</li>
+              </ol>
+              <pre class="ui-log" id="demoLog" aria-live="polite"></pre>
+            </div>
+            <div class="ui-actions">
+              <button class="ui-btn ui-btn--primary" type="button" tabindex="-1">&darr; Download DXF</button>
+              <button class="ui-btn" type="button" tabindex="-1">&#8635; Re-run</button>
+            </div>
+          </div>
+
+          <!-- result -->
+          <div class="ui-card ui-reveal" id="demoResultCard">
+            <div class="ui-card-head">
+              <span>Isometric</span>
+              <span class="ui-tabs"><b>3D Model</b><b class="is-on">Isometric</b></span>
+            </div>
+            <div class="ui-sheet">
+              <img src="../assets/isometric-preview.svg" loading="lazy"
+                   alt="The generated isometric previewed in the Cadmium app as an SVG: green pipe runs, red dimension chains, magenta elevations, numbered component balloons and a bill of materials." />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="demo-cursor" id="demoCursor" aria-hidden="true">
+        <svg viewBox="0 0 20 22" aria-hidden="true"><path d="M1 1 1 17.2 5.4 13.2 8.3 20 11.4 18.6 8.6 12 14.6 11.4Z" fill="#0B2A50" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     3D VIEWER
+     ═════════════════════════════════════════════════════════ -->
+<section class="band band--alt" id="viewer">
+  <div class="wrap">
+    <p class="eyebrow">The 3D model</p>
+    <h2>The model and the sheet,<br />anywhere, any time.</h2>
+    <p class="lead lead--wide">
+      Every drawing keeps its 3D model beside the generated isometric. View it
+      anywhere, anytime without having an AutoCAD license or a viewer installed.
+    </p>
+
+    <div class="devices">
+      <div class="dev dev--desktop">
+        <div class="dev-screen">
+          <img src="../assets/viewer-3d.png" loading="lazy"
+               alt="The Cadmium app on a desktop monitor: the 3D model tab, with the piping run in red, cyan dimension callouts, pipe supports, a view cube and a perspective-or-flat toggle." />
+        </div>
+        <div class="dev-stand" aria-hidden="true"><i></i><b></b></div>
+      </div>
+
+      <div class="dev dev--laptop">
+        <div class="dev-screen">
+          <img src="../assets/viewer-3d.png" loading="lazy"
+               alt="The same drawing on a laptop." />
+        </div>
+        <div class="dev-deck" aria-hidden="true"></div>
+      </div>
+
+      <div class="dev dev--phone">
+        <div class="dev-screen">
+          <img src="../assets/viewer-3d.png" loading="lazy"
+               alt="The same drawing on a phone held sideways." />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SAVINGS
+     ═════════════════════════════════════════════════════════ -->
+<section class="band" id="savings">
+  <div class="wrap">
+    <p class="eyebrow">The arithmetic</p>
+    <h2>The numbers speak for themselves.</h2>
+    <p class="lead lead--wide">See how much your team gets back every month.</p>
+
+    <div class="calcpad">
+      <form class="calc-inputs" id="calcForm" autocomplete="off" onsubmit="return false">
+        <div class="field">
+          <label for="calcIsos">Isometrics due per month</label>
+          <input id="calcIsos" type="number" min="0" step="1" value="800" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="calcDrafters">Number of draftsmen</label>
+          <input id="calcDrafters" type="number" min="1" step="1" value="4" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="calcHours">Time per isometric, per draftsman</label>
+          <div class="field-unit">
+            <input id="calcHours" type="number" min="0" step="0.25" value="2" inputmode="decimal" />
+            <span>hours</span>
+          </div>
+        </div>
+      </form>
+
+      <div class="calc-results">
+        <div class="result result--today">
+          <span>Today</span>
+          <b id="outToday">400</b>
+          <em>hours per draftsman, per month</em>
+        </div>
+        <div class="result result--cad">
+          <span>With Cadmium</span>
+          <b id="outCad">33</b>
+          <em>hours per draftsman &middot; 10 min per isometric</em>
+        </div>
+        <div class="result result--saved">
+          <span>You save</span>
+          <b id="outSaved">367</b>
+          <em id="outPct">hours per month — 92% less</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     CTA
+     ═════════════════════════════════════════════════════════ -->
+<section class="band band--cta" id="contact">
+  <div class="wrap">
+    <div class="cta-grid">
+      <div class="stack">
+        <p class="eyebrow">The ask</p>
+        <h2>Send us your model today.<br />We&rsquo;ll send back the iso.</h2>
+        <p class="lead">
+          Send us a Plant 3D model and we will send back the finished, annotated
+          isometric DXF.
+        </p>
+      </div>
+
+      <form class="cta-form" id="contactForm" novalidate data-subject="Isometric request" data-default="Sending a Plant 3D model for an isometric." data-attach="(Please attach the model to this email.)">
+        <div class="field">
+          <label for="fName">Name</label>
+          <input id="fName" name="name" type="text" required placeholder="Jane Okoye" />
+        </div>
+        <div class="field">
+          <label for="fCompany">Company</label>
+          <input id="fCompany" name="company" type="text" placeholder="Acme Engineering" />
+        </div>
+        <div class="field">
+          <label for="fEmail">Work email</label>
+          <input id="fEmail" name="email" type="email" required placeholder="you@company.com" />
+        </div>
+        <div class="field">
+          <label for="fNotes">What are you sending?</label>
+          <textarea id="fNotes" name="notes" rows="3" placeholder="One 6&quot; CS line out of Plant 3D, ~40 m, two branches."></textarea>
+        </div>
+        <button class="btn btn--primary" type="submit">Request the isometric</button>
+        <p class="form-note" id="formNote">
+          Opens your mail client addressed to
+          <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.
+          Attach the model to that message.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+     ═════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a href="../" class="footer-brand" aria-label="Cadmium — home">
+      <img class="brand-logo--light" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="220" height="69" />
+      <img class="brand-logo--dark"  src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg"  alt="Cadmium" width="220" height="69" />
+    </a>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="../">Home</a>
+      <a href="./">Isometrics</a>
+      <a href="../3d-from-2d/">3D from 2D</a>
+      <a href="../pid/">P&amp;ID</a>
+      <a href="#contact">Get in touch</a>
+    </nav>
+    <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged drawing">
+  <button class="lightbox-close" id="lightboxClose" type="button">Close &#10005;</button>
+  <img id="lightboxImg" src="" alt="" />
+</div>
+
+<script src="../script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../demos/iso.js"></script>
+<script>CadIso(document.getElementById('isoLab'), { data: '../demos/data/iso8', autoplay: false });</script>
+</body>
+</html>

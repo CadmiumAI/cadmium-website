@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>P&amp;ID intelligence — Cadmium</title>
+<meta name="description" content="A P&amp;ID read from its pixels into symbols, tags and connectivity, live in your browser. Degrade the scan, redraw a pipe, and ask which valves isolate a pump." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="../site.css" />
+<link rel="icon" href="../cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../cadmium-brand/favicon/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="../cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
+<meta name="theme-color" content="#061A33" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cadmium-ai.com/pid/" />
+<meta property="og:title" content="P&amp;ID intelligence — Cadmium" />
+<meta property="og:description" content="A P&amp;ID read from its pixels into symbols, tags and connectivity, live in your browser. Degrade the scan, redraw a pipe, and ask which valves isolate a pump." />
+<meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<script>
+  (function(){try{var t=localStorage.getItem('cad-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav" id="nav">
+  <div class="nav-inner wrap">
+    <a class="nav-brand" href="../" aria-label="Cadmium — home">
+      <img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" />
+      <b>Cadmium</b>
+      <span class="nav-kicker">P&amp;ID</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Products">
+      <a href="../isometrics/">Isometrics</a>
+      <a href="../3d-from-2d/">3D from 2D</a>
+      <a href="../pid/" class="is-current" aria-current="page">P&amp;ID</a>
+      <a href="../#capabilities">Capabilities</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm" href="#contact">Talk to us</a>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="band--dark demo-page">
+  <div class="wrap">
+    <p class="eyebrow">P&amp;ID intelligence</p>
+    <h1>A P&amp;ID you can ask questions.</h1>
+    <p class="lead lead--wide">This page reads a P&amp;ID from pixels into a connected graph. Make the scan worse, erase a pipe or draw a new one, and it reads the page again. Then click a pump to find out how to isolate it.</p>
+
+    <div class="lab" id="pidLab">
+      <div class="pid-grid">
+        <div class="pid-main">
+          <div class="stage-tabs" data-pid-stages></div>
+          <canvas data-pid-canvas data-tool="isolate" aria-label="A piping and instrumentation diagram, shown at the selected stage of reading it. Click an item to isolate it."></canvas>
+          <p class="pid-note" data-pid-note aria-live="polite"></p>
+          <p class="pid-answer" data-pid-answer aria-live="polite"></p>
+        </div>
+        <div class="pid-side">
+          <div>
+            <h4>Drawing</h4>
+            <div class="chips" data-pid-drawings></div>
+          </div>
+          <div>
+            <h4>Result</h4>
+            <div class="tiles" data-pid-score></div>
+          </div>
+          <div>
+            <h4>Scan quality</h4>
+            <label class="slider">Skew <output data-pid-val="skew"></output><input type="range" min="-4" max="4" step="0.1" value="-1.5" data-pid-range="skew" /></label>
+            <label class="slider">Noise <output data-pid-val="noise"></output><input type="range" min="0" max="100" step="1" value="12" data-pid-range="noise" /></label>
+            <label class="slider">Blur <output data-pid-val="blur"></output><input type="range" min="0" max="3" step="1" value="1" data-pid-range="blur" /></label>
+          </div>
+          <div>
+            <h4>Pointer</h4>
+            <div class="chips">
+              <button type="button" class="chip on" data-pid-tool="isolate" aria-pressed="true">Isolate</button>
+              <button type="button" class="chip" data-pid-tool="move" aria-pressed="false">Slide valve</button>
+              <button type="button" class="chip" data-pid-tool="erase" aria-pressed="false">Erase</button>
+              <button type="button" class="chip" data-pid-tool="pen" aria-pressed="false">Draw pipe</button>
+            </div>
+          </div>
+          <div class="chips">
+            <button type="button" class="btn btn--line-dark btn--sm" data-pid-reset>Reset</button>
+            <button type="button" class="btn btn--line-dark btn--sm" data-pid-export>Export CSV</button>
+          </div>
+        </div>
+      </div>
+      <div class="pid-tables">
+        <div>
+          <h4>Equipment, valves and instruments</h4>
+          <table class="dtable"><thead><tr><th>Tag</th><th>Type</th><th>Connected to</th></tr></thead><tbody data-pid-register></tbody></table>
+        </div>
+        <div>
+          <h4>Lines</h4>
+          <table class="dtable"><thead><tr><th>Line</th><th>Connects</th></tr></thead><tbody data-pid-lines></tbody></table>
+        </div>
+      </div>
+      <p class="pid-open" data-pid-open aria-live="polite"></p>
+    </div>
+    <p class="fineprint">Nothing is uploaded. The score compares the read against the drawing&rsquo;s own source, kept away from the reader. The drawings in this demo are synthetic.</p>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap">
+    <p class="eyebrow">What is happening</p>
+    <h2>From pixels to something you can query.</h2>
+    <div class="steps">
+      <div class="step"><h3>Clean</h3><p>Threshold between paper and ink, measure the skew from how sharply the pipework lines up, then remove it.</p></div>
+      <div class="step"><h3>Find</h3><p>Closed shapes become equipment and instruments. Long straight strokes become pipe. What remains is matched to a symbol library.</p></div>
+      <div class="step"><h3>Read</h3><p>Tags are read glyph by glyph and decoded as whole words against the tag grammar, which settles what shape alone cannot.</p></div>
+      <div class="step"><h3>Connect</h3><p>Touching strokes join into lines, and lines into a graph of what connects to what. Isolation is then a search on that graph.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band band--alt">
+  <div class="wrap">
+    <p class="eyebrow">What you get</p>
+    <h2>A drawing you can query, not just view.</h2>
+    <div class="split2">
+      <div>
+        <h3>Read from the page</h3>
+        <ul>
+          <li>Symbols, equipment and instruments</li>
+          <li>Tags and line numbers</li>
+          <li>A score for every read</li>
+          <li>Export to CSV</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Answers from the graph</h3>
+        <ul>
+          <li>What connects to what, line by line</li>
+          <li>Which valves isolate any item</li>
+          <li>Dangling line ends</li>
+          <li>Off-sheet connections</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:22px;font-size:15px">Isolation results are for engineer review. They are not a safety procedure and must not be used as one.</p>
+  </div>
+</section>
+
+<section class="band band--cta" id="contact">
+  <div class="wrap">
+    <div class="cta-grid">
+      <div class="stack">
+        <p class="eyebrow">Get in touch</p>
+        <h2>Sitting on a stack of P&amp;IDs?</h2>
+        <p class="lead">Tell us what you would want from them: line lists, valve lists, tag registers or a check against your 3D model.</p>
+      </div>
+      <form class="cta-form" id="contactForm" novalidate data-subject="P&ID enquiry" data-default="" data-attach="">
+        <div class="field"><label for="fName">Name</label><input id="fName" name="name" type="text" required placeholder="Jane Okoye" /></div>
+        <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
+        <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
+        <div class="field"><label for="fNotes">What are you working on?</label><textarea id="fNotes" name="notes" rows="3" placeholder="Around 400 scanned P&amp;IDs that we need as line and valve lists."></textarea></div>
+        <button class="btn btn--primary" type="submit">Send</button>
+        <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a href="../" class="footer-brand" aria-label="Cadmium — home">
+      <img class="brand-logo--light" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="220" height="69" />
+      <img class="brand-logo--dark" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="220" height="69" />
+    </a>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="../isometrics/">Isometrics</a>
+      <a href="../3d-from-2d/">3D from 2D</a>
+      <a href="../pid/">P&amp;ID</a>
+      <a href="../#capabilities">Capabilities</a>
+      <a href="#contact">Get in touch</a>
+    </nav>
+    <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="../demos/pid.js"></script>
+<script>CadPid(document.getElementById('pidLab'));</script>
+</body>
+</html>

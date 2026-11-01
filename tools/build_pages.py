@@ -624,8 +624,11 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
     s = open(f).read()
     s = re.sub(r'<header class="nav" id="nav">.*?</header>', lambda m: nav('../', cur), s, flags=re.S)
     s = re.sub(r'<footer class="footer.*?</footer>', lambda m: footer('../'), s, flags=re.S)
-    if path == 'isometrics':
-        s = re.sub(r'<section class="band band--cta" id="contact">.*?</section>', lambda m: pilot(h2='See it on your own line.'), s, flags=re.S)
+    # Every page closes with the same pilot section.
+    closing = {'isometrics': dict(h2='See it on your own line.'),
+               '3d-from-2d': dict(h2='Have drawings with no model?', lead='Bring real drawings under NDA. We run them with your team, so your engineers can judge the model against what they know of the plant.'),
+               'pid': dict(h2='Sitting on a stack of P&amp;IDs?', lead='Bring real sheets under NDA. We read them with your team, so your engineers can judge the lists against their own.')}[path]
+    s = re.sub(r'<section class="band band--cta" id="contact">.*?</section>', lambda m: pilot(**closing), s, flags=re.S)
     if path == 'isometrics' and 'class="subnav"' not in s:
         s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">''', 1)
@@ -635,5 +638,13 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
     s = re.sub(r'<meta name="theme-color" content="[^"]*"', '<meta name="theme-color" content="#E9F1FB"', s)
     if 'demos/motion.js' not in s:
         s = s.replace('<script src="../script.js"></script>', '<script src="../script.js"></script>\n<script src="../demos/motion.js"></script>')
+    open(f, 'w').write(s)
+# Version the stylesheets so a push reaches browsers straight away.
+import glob, hashlib
+tags = {n: hashlib.md5(open(n, 'rb').read()).hexdigest()[:8] for n in ('styles.css', 'site.css')}
+for f in glob.glob('**/index.html', recursive=True):
+    s = open(f).read()
+    for n, v in tags.items():
+        s = re.sub(r'(href="(?:\.\./)*)' + re.escape(n) + r'(\?v=\w+)?"', lambda m: f'{m.group(1)}{n}?v={v}"', s)
     open(f, 'w').write(s)
 print('ok')

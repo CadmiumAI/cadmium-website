@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cadmium — AI for engineering</title>
-<meta name="description" content="Cadmium builds AI for engineering documents: finished piping isometrics from 3D models, 3D models from 2D drawings, and P&IDs read into connected data. Try the live demos." />
+<title>Cadmium — AI for EPC engineering deliverables</title>
+<meta name="description" content="Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs for EPC contractors, so engineers review finished work instead of redrawing it." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -13,11 +13,11 @@
 <link rel="icon" href="cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="cadmium-brand/favicon/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
-<meta name="theme-color" content="#061A33" />
+<meta name="theme-color" content="#E9F1FB" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cadmium-ai.com/" />
-<meta property="og:title" content="Cadmium — AI for engineering" />
-<meta property="og:description" content="Cadmium builds AI for engineering documents: finished piping isometrics from 3D models, 3D models from 2D drawings, and P&IDs read into connected data. Try the live demos." />
+<meta property="og:title" content="Cadmium — AI for EPC engineering deliverables" />
+<meta property="og:description" content="Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs for EPC contractors, so engineers review finished work instead of redrawing it." />
 <meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <script>
@@ -31,13 +31,13 @@
     <a class="nav-brand" href="./" aria-label="Cadmium — home">
       <img src="cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" />
       <b>Cadmium</b>
-      <span class="nav-kicker">AI for engineering</span>
     </a>
-    <nav class="nav-links" id="navLinks" aria-label="Products">
-      <a href="isometrics/">Isometrics</a>
-      <a href="3d-from-2d/">3D from 2D</a>
-      <a href="pid/">P&amp;ID</a>
-      <a href="./#capabilities">Capabilities</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="isometrics/"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
+      <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Solutions</button><div class="nav-panel"><a href="solutions/feed/"><b>Front-end engineering</b><span>Turn licensor packages into live data</span></a><a href="solutions/detailed/"><b>Detailed engineering</b><span>Issue isometrics and MTOs in minutes</span></a><a href="solutions/procurement/"><b>Procurement and fabrication</b><span>MTOs and spools your shop can trust</span></a><a href="solutions/construction/"><b>Construction</b><span>The current drawing and model, at the workface</span></a><a href="solutions/handover/"><b>Commissioning and handover</b><span>As-builts and data your client will accept</span></a><a href="solutions/brownfield/"><b>Brownfield and revamps</b><span>Bring legacy plants back into data</span></a></div></div>
+      <a href="teams/">Teams</a>
+      <a href="security/">Security</a>
+      <a href="company/">Company</a>
     </nav>
     <div class="nav-actions">
       <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
@@ -47,15 +47,14 @@
         <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>
       </button>
-      <a class="btn btn--primary btn--sm" href="#contact">Talk to us</a>
+      <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
     </div>
   </div>
 </header>
 <main id="main">
-
 <section class="hq" id="top">
   <div class="hq-view" id="hero">
-    <div class="iso-view-fill" data-iso-view style="position:absolute;inset:0"></div>
+    <div data-iso-view style="position:absolute;inset:0"></div>
     <div class="hq-steps">
       <div class="iso-steps" data-iso-steps></div>
       <p class="hq-note" data-iso-note aria-live="polite"></p>
@@ -63,157 +62,244 @@
   </div>
   <div class="wrap hq-copy">
     <div>
-      <p class="eyebrow">Drawings &middot; models &middot; plant data</p>
-      <h1>AI for <em>engineering</em>.</h1>
-      <p class="lead">Plants are designed, built and run from documents that people still redraw and retype by hand. Cadmium turns them into each other: 3D models into isometrics, 2D drawings into 3D, P&amp;IDs into connected data.</p>
+      <p class="eyebrow">AI for EPC</p>
+      <h1>Engineering deliverables, without the rework.</h1>
+      <p class="lead">Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs, so your engineers review finished work instead of redrawing it.</p>
       <div class="hq-actions">
-        <a class="btn btn--on-dark" href="#products">Try the demos</a>
-        <a class="btn btn--line-dark" href="#contact">Talk to us</a>
+        <a class="btn btn--on-dark" href="#contact">Start a pilot</a>
+        <a class="btn btn--line-dark" href="#lifecycle">See it across the project</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="proof" aria-label="Cadmium in numbers"><div class="wrap proof-row">
-  <div class="pf"><b>7 s</b><span>from model to finished sheet on the line above, in the recorded run</span></div>
-  <div class="pf"><b>Native</b><span>DXF and DWG output: real CAD entities, not pictures of them</span></div>
-  <div class="pf"><b>3</b><span>products you can see working on this site, without an account</span></div>
-  <div class="pf"><b>0</b><span>uploads in the 3D and P&amp;ID demos: they run entirely in your browser</span></div>
+<section class="proof" aria-label="Results"><div class="wrap proof-row">
+  <div class="pf"><b><span class="count" data-to="95">95</span>%</b><span>less manual rework per isometric</span><div class="pf-viz"><em>Manual</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:5%"></u></i></div></div>
+  <div class="pf"><b><span class="count" data-to="10">10</span> min</b><span>per sheet, including engineer review</span><div class="pf-viz"><em>Today</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:8%"></u></i></div></div>
+  <div class="pf"><b><span class="count" data-to="98">98</span>%</b><span>tag accuracy reading clean P&amp;IDs</span><div class="pf-viz pf-dots"><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s class="miss"></s></div></div>
+  <div class="pf"><b>Native</b><span>DWG and DXF, editable in your CAD tools</span><div class="pf-viz pf-file"><code>ISO-008_RevB.dwg</code><code>MTO_Area200.xlsx</code></div></div>
 </div></section>
 
-<section class="band" id="products">
+<section class="band" id="lifecycle">
   <div class="wrap">
-    <p class="eyebrow">Products</p>
-    <h2>Try them, right here.</h2>
-    <p class="lead lead--wide">Edit the inputs and watch them respond. Every product has a working demo on its page.</p>
-
-    <article class="prod">
-      <div>
-        <h3>Isometrics</h3>
-        <p>Take a Plant 3D model to a finished, annotated isometric on your template: dimensions, elevations, balloons and bill of materials, as native CAD you can keep editing.</p>
-        <div class="prod-actions">
-          <a class="btn btn--primary btn--sm" href="isometrics/">See the pipeline run</a>
-          <a class="btn btn--ghost btn--sm" href="isometrics/#compare">Compare with AutoCAD</a>
-        </div>
-      </div>
-      <a class="prod-shot" href="isometrics/" aria-label="Open Isometrics"><img src="assets/posters/isometrics.png" width="1200" height="700" loading="lazy" alt="A generated isometric sheet with green pipe runs, red dimensions, numbered balloons and a bill of materials." /></a>
-    </article>
-
-    <article class="prod">
-      <div>
-        <h3>3D from 2D</h3>
-        <p>Recover a solid from orthographic views. Sketch on any view and the part rebuilds as you draw; views that contradict each other are marked. Download the result as STL.</p>
-        <div class="prod-actions">
-          <a class="btn btn--primary btn--sm" href="3d-from-2d/">Open the live demo</a>
-        </div>
-      </div>
-      <a class="prod-shot" href="3d-from-2d/" aria-label="Open 3D from 2D"><img src="assets/posters/3d-from-2d.png" width="1200" height="700" loading="lazy" alt="Three orthographic views of a bracket beside the solid reconstructed from them." /></a>
-    </article>
-
-    <article class="prod">
-      <div>
-        <h3>P&amp;ID intelligence</h3>
-        <p>Read a scanned P&amp;ID from its pixels into symbols, tags and connectivity, then ask it things: which valves isolate this pump? Break the scan and watch the score fall.</p>
-        <div class="prod-actions">
-          <a class="btn btn--primary btn--sm" href="pid/">Open the live demo</a>
-        </div>
-      </div>
-      <a class="prod-shot" href="pid/" aria-label="Open P&amp;ID intelligence"><img src="assets/posters/pid.png" width="1200" height="700" loading="lazy" alt="A P&amp;ID read into a coloured connectivity graph with valves, pumps and vessels boxed and labelled." /></a>
-    </article>
+    <p class="eyebrow">Across the project</p>
+    <h2>One platform, from FEED to handover.</h2>
+    <p class="lead lead--wide">Pick a phase to see the deliverables, where the hours go, and what Cadmium takes off your team.</p>
+    <div class="lc" id="lc" data-inview>
+      <div class="lc-line" role="tablist" aria-label="Project phases"><button type="button" class="lc-node" role="tab" data-phase="feed" id="lc-feed" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><g class="v-rows"><rect x="8" y="10" width="44" height="9"/><rect x="58" y="10" width="84" height="9" class="a1"/><rect x="8" y="26" width="44" height="9"/><rect x="58" y="26" width="62" height="9" class="a2"/><rect x="8" y="42" width="44" height="9"/><rect x="58" y="42" width="74" height="9" class="a3"/><rect x="8" y="58" width="44" height="9"/><rect x="58" y="58" width="50" height="9" class="a4"/></g></svg></span><i>01</i><b>FEED</b></button><button type="button" class="lc-node" role="tab" data-phase="detailed" id="lc-detailed" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><path class="v-draw" d="M12 62 52 39V18l34 20 22-13 30 18"/><path class="v-dim" d="M8 72 48 49M56 12l30 18M116 18l26 15"/><circle class="v-pop" cx="52" cy="39" r="3"/><circle class="v-pop p2" cx="86" cy="38" r="3"/><circle class="v-pop p3" cx="108" cy="25" r="3"/></svg></span><i>02</i><b>Detailed engineering</b></button><button type="button" class="lc-node" role="tab" data-phase="procurement" id="lc-procurement" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><g class="v-bars"><rect x="12" y="20" width="16" height="50"/><rect x="36" y="34" width="16" height="36" class="b2"/><rect x="60" y="12" width="16" height="58" class="b3"/><rect x="84" y="42" width="16" height="28" class="b4"/><rect x="108" y="26" width="16" height="44" class="b5"/></g></svg></span><i>03</i><b>Procurement</b></button><button type="button" class="lc-node" role="tab" data-phase="construction" id="lc-construction" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><rect class="v-frame" x="52" y="4" width="46" height="68" rx="6"/><g class="v-cube"><path d="M75 22 90 31v17l-15 9-15-9V31z"/><path d="M60 31l15 9 15-9M75 40v17"/></g></svg></span><i>04</i><b>Construction</b></button><button type="button" class="lc-node" role="tab" data-phase="handover" id="lc-handover" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><g class="v-ticks"><rect x="44" y="11" width="92" height="7"/><path d="M14 15l5 5 9-10"/><rect x="44" y="33" width="72" height="7"/><path class="t2" d="M14 37l5 5 9-10"/><rect x="44" y="55" width="84" height="7"/><path class="t3" d="M14 59l5 5 9-10"/></g></svg></span><i>05</i><b>Handover</b></button><button type="button" class="lc-node" role="tab" data-phase="brownfield" id="lc-brownfield" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><defs><pattern id="scanN" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="1.3" height="1.3" fill="#9CC6F2" opacity=".55"/><rect x="3" y="3" width="1" height="1" fill="#9CC6F2" opacity=".35"/></pattern></defs><rect width="150" height="76" fill="url(#scanN)"/><g class="v-clean"><rect width="150" height="76" fill="#0A2545"/><path d="M12 38h42M78 38h26v-22h34" stroke="#42E08F" stroke-width="2" fill="none"/><path d="M54 30l24 16V30l-24 16z" fill="none" stroke="#CFE6FF" stroke-width="1.5"/></g><path class="v-sweep" d="M0 0v76" stroke="#FFCF5C" stroke-width="1.5"/></svg></span><i>06</i><b>Brownfield</b></button></div>
+      <div id="lcPanel" class="lc-panels" role="tabpanel"><div class="lc-panel" data-panel="feed" hidden>
+          <div class="lc-col"><h3>Front-end engineering</h3><p>Retyping licensor packages, and re-checking counts every time a revision lands.</p><a class="btn btn--primary btn--sm" href="solutions/feed/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Line list</li><li>Valve and instrument index</li><li>Early MTO</li><li>Plot plan studies</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Days, not weeks</b><span>to a first line list from a licensor P&ID package</span></div><div class="lc-out"><b>98%</b><span>tag accuracy on clean P&IDs, reviewed by your engineers</span></div><div class="lc-out"><b>±10%</b><span>early MTO estimates from reconciled line data</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="pid/"><img src="assets/posters/pid.png" alt="" loading="lazy" /><span>P&amp;ID intelligence &rarr;</span></a><a class="lc-more" href="3d-from-2d/">3D from 2D &rarr;</a></div>
+        </div><div class="lc-panel" data-panel="detailed" hidden>
+          <div class="lc-col"><h3>Detailed engineering</h3><p>Cleaning up generated isometrics, and doing it again after every model change.</p><a class="btn btn--primary btn--sm" href="solutions/detailed/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Piping isometrics</li><li>Bill of materials</li><li>Revision control</li><li>Model and P&amp;ID checks</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>95%</b><span>less manual rework per isometric</span></div><div class="lc-out"><b>10 min</b><span>per sheet, including engineer review</span></div><div class="lc-out"><b>Every revision</b><span>compared automatically, sheet by sheet</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
+        </div><div class="lc-panel" data-panel="procurement" hidden>
+          <div class="lc-col"><h3>Procurement and fabrication</h3><p>Reconciling take-offs with the latest model, and chasing items that changed after the order went out.</p><a class="btn btn--primary btn--sm" href="solutions/procurement/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Material take-off</li><li>MTO revisions</li><li>Spool drawings</li><li>Weld maps</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Live</b><span>MTOs that update with every model revision</span></div><div class="lc-out"><b>Line by line</b><span>difference reports between MTO revisions</span></div><div class="lc-out"><b>Fewer</b><span>surplus and short-shipped items at site</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="3d-from-2d/">3D from 2D &rarr;</a></div>
+        </div><div class="lc-panel" data-panel="construction" hidden>
+          <div class="lc-col"><h3>Construction</h3><p>Finding the current revision, and marking up test-pack boundaries by hand.</p><a class="btn btn--primary btn--sm" href="solutions/construction/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Erection isometrics</li><li>3D model access</li><li>Test packs</li><li>Site queries</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Any device</b><span>isometric and 3D model, no CAD licence needed</span></div><div class="lc-out"><b>Always current</b><span>superseded sheets clearly flagged</span></div><div class="lc-out"><b>Hours, not days</b><span>to mark up test-pack boundaries</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/#viewer"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
+        </div><div class="lc-panel" data-panel="handover" hidden>
+          <div class="lc-col"><h3>Commissioning and handover</h3><p>Reconciling tags across thousands of documents in the last, most expensive weeks of the job.</p><a class="btn btn--primary btn--sm" href="solutions/handover/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Tag registers</li><li>As-built drawings</li><li>Data handover</li><li>Isolation lists</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Every tag</b><span>traced to the document it came from</span></div><div class="lc-out"><b>CFIHOS-ready</b><span>registers in the structure your client specifies</span></div><div class="lc-out"><b>Weeks</b><span>taken out of final document close-out</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="pid/"><img src="assets/posters/pid.png" alt="" loading="lazy" /><span>P&amp;ID intelligence &rarr;</span></a><a class="lc-more" href="isometrics/">Isometrics &rarr;</a></div>
+        </div><div class="lc-panel" data-panel="brownfield" hidden>
+          <div class="lc-col"><h3>Brownfield and revamps</h3><p>Redrawing legacy documents before the revamp engineering can even begin.</p><a class="btn btn--primary btn--sm" href="solutions/brownfield/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Legacy P&amp;IDs</li><li>3D of existing plant</li><li>Tie-in isolation</li><li>Document conflicts</li></ul></div>
+          <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Scanned to structured</b><span>P&amp;IDs read from image files</span></div><div class="lc-out"><b>Plan + elevation</b><span>to a 3D piping route</span></div><div class="lc-out"><b>Conflicts flagged</b><span>between drawings before they reach site</span></div></div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="3d-from-2d/"><img src="assets/posters/3d-from-2d.png" alt="" loading="lazy" /><span>3D from 2D &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
+        </div></div>
+    </div>
   </div>
 </section>
-
-<section class="band band--alt" id="capabilities">
+<section class="walk" id="walk">
+  <div class="wrap"><p class="eyebrow">Walkthrough</p><h2>A line, from first P&amp;ID to the workface.</h2></div>
+  <nav class="walk-bar" aria-label="Walkthrough steps"><div class="wrap"><a href="#w-pid"><i>01</i>Read</a><a href="#w-iso"><i>02</i>Generate</a><a href="#w-mto"><i>03</i>Take off</a><a href="#w-review"><i>04</i>Check</a><a href="#w-site"><i>05</i>Build</a></div></nav>
+  <div class="wrap"><article class="walk-step" id="w-pid">
+        <div class="walk-copy"><span class="walk-k">01 &middot; Read</span><h3>Turn a stack of P&amp;IDs into data by lunchtime</h3><p>Drop in native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.</p><ul><li>Line, valve and instrument lists, ready on day one</li><li>Every tag traced back to its place on the sheet</li><li>Dangling lines and missing tags flagged for review</li></ul><a href="pid/">See it read a P&amp;ID &rarr;</a></div>
+        <div data-mock="pid" data-root=""></div>
+      </article><article class="walk-step flip" id="w-iso">
+        <div class="walk-copy"><span class="walk-k">02 &middot; Generate</span><h3>From the model to a finished sheet</h3><p>Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.</p><ul><li>Hours of clean-up per sheet become minutes of review</li><li>Your title block and your drafting standards</li><li>Native DWG and DXF, editable by your team</li></ul><a href="isometrics/">Watch the pipeline run &rarr;</a></div>
+        <div data-mock="iso" data-root=""></div>
+      </article><article class="walk-step" id="w-mto">
+        <div class="walk-copy"><span class="walk-k">03 &middot; Take off</span><h3>MTOs that keep up with the model</h3><p>Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.</p><ul><li>Differences by item and by line, per revision</li><li>Late changes visible the day they happen</li><li>Fewer surplus and short-shipped items at site</li></ul><a href="solutions/procurement/">See procurement &rarr;</a></div>
+        <div data-mock="mto" data-root=""></div>
+      </article><article class="walk-step flip" id="w-review">
+        <div class="walk-copy"><span class="walk-k">04 &middot; Check</span><h3>Engineers review changes, not whole sheets</h3><p>Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.</p><ul><li>Automatic clouding at every revision</li><li>Model, P&amp;ID and BOM checked against each other</li><li>A full record of who approved what, and when</li></ul><a href="solutions/detailed/">See detailed engineering &rarr;</a></div>
+        <div data-mock="review" data-root=""></div>
+      </article><article class="walk-step" id="w-site">
+        <div class="walk-copy"><span class="walk-k">05 &middot; Build</span><h3>The current drawing, at the workface</h3><p>Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.</p><ul><li>Isometric and 3D model on any phone or tablet</li><li>Superseded revisions clearly flagged</li><li>Test-pack boundaries worked out from the P&amp;IDs</li></ul><a href="solutions/construction/">See construction &rarr;</a></div>
+        <div data-mock="site" data-root=""></div>
+      </article></div>
+</section>
+<section class="band band--alt" id="cost">
   <div class="wrap">
-    <p class="eyebrow">Capabilities</p>
-    <h2>What Cadmium does.</h2>
-    <div class="caps">
-      <div class="cap-col">
-        <h3>Generating drawings</h3>
-        <div class="cap"><span>Annotated isometrics from Plant 3D</span></div>
-        <div class="cap"><span>Bill of materials from the model</span></div>
-        <div class="cap"><span>Your title block and sheet template</span></div>
-        <div class="cap"><span>Native DXF and DWG output</span></div>
-        <div class="cap"><span>Browser 3D viewer for every drawing</span></div>
+    <div class="cost-grid">
+      <div>
+        <p class="eyebrow">The cost of redrawing</p>
+        <h2>What isometrics cost you today.</h2>
+        <p class="lead">Every revision sends the same sheets back to the same drafters. Put in your own numbers.</p>
       </div>
-      <div class="cap-col">
-        <h3>Reading drawings</h3>
-        <div class="cap"><span>P&amp;ID symbols, tags and line numbers</span></div>
-        <div class="cap"><span>Connectivity graph from a raster P&amp;ID</span></div>
-        <div class="cap"><span>Equipment, valve and line lists</span></div>
-        <div class="cap"><span>Isolation and dangling-line checks</span></div>
+      <form class="cost-calc" id="costCalc"  autocomplete="off" onsubmit="return false">
+        <div class="field"><label for="cIso">Isometrics on the project</label><input id="cIso" type="number" min="0" value="2400" /></div>
+        <div class="field"><label for="cHrs">Hours per isometric today</label><input id="cHrs" type="number" min="0" step="0.25" value="2" /></div>
+        <div class="field"><label for="cRev">Average revisions per sheet</label><input id="cRev" type="number" min="0" step="0.5" value="2" /></div>
+        <div class="field"><label for="cRate">Loaded rate, USD per hour</label><input id="cRate" type="number" min="0" value="35" /></div>
+        <div class="cost-out">
+          <div><span>Hours returned to the project</span><b id="cHours">0</b></div>
+          <div><span>Saved at your rate</span><b id="cSaved">0</b></div>
+          <div class="cost-bars"><em>Today</em><i><u id="cBarA"></u></i><b id="cA"></b><em>With Cadmium</em><i><u id="cBarB" class="good"></u></i><b id="cB"></b></div>
+          <p>Assumes 10 minutes per sheet with Cadmium, including review, and half the original effort for each manual revision.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<section class="band band--alt" id="thread">
+  <div class="wrap">
+    <p class="eyebrow">Connected data</p>
+    <h2>One revision. Every document.</h2>
+    <p class="lead lead--wide">P&amp;IDs, models, isometrics and MTOs describe the same plant, so Cadmium treats them as one dataset. Select a part to find it everywhere, or revise the line and watch the change carry through.</p>
+    <div class="thread" id="thread-demo" data-rev="A" data-inview>
+      <div class="thread-bar">
+        <div class="chips" data-parts></div>
+        <button type="button" class="btn btn--primary btn--sm" data-revise>Upsize line to 8 in</button>
+        <span class="thread-rev">Revision <b data-revtext>A</b></span>
       </div>
-      <div class="cap-col">
-        <h3>Models from drawings</h3>
-        <div class="cap"><span>Solids from orthographic views</span></div>
-        <div class="cap"><span>Conflict checks between views</span></div>
-        <div class="cap"><span>Pipe routes from plan and elevation</span></div>
-        <div class="cap"><span>STL export of the result</span></div>
+      <div class="thread-grid">
+        <figure><figcaption>P&amp;ID</figcaption><svg viewBox="0 0 320 170" class="t-pid">
+          <path class="t-l" d="M58 90H104M136 90H176M204 90H258"/>
+          <g data-part="pump"><circle class="t-s" cx="40" cy="90" r="18"/><text x="40" y="128" text-anchor="middle">P-101</text></g>
+          <g data-part="valve"><path class="t-s" d="M104 79l32 22V79l-32 22z"/><text x="120" y="68" text-anchor="middle">HV-101</text></g>
+          <g data-part="reducer"><path class="t-s" d="M176 76l28 8v12l-28 8z"/><text x="190" y="124" text-anchor="middle">R-1</text></g>
+          <g data-part="pipe"><text x="222" y="80" text-anchor="middle" data-linetag>6-PW-101</text></g>
+          <g data-part="elbow"><rect class="t-s" x="258" y="34" width="44" height="112" rx="20"/><text x="280" y="160" text-anchor="middle">D-101</text></g>
+        </svg></figure>
+        <figure><figcaption>3D model</figcaption><svg viewBox="0 0 320 170" class="t-3d">
+          <g data-part="pump"><ellipse class="t-v" cx="50" cy="128" rx="24" ry="18"/></g>
+          <g data-part="pipe"><path class="t-p" d="M68 118L132 82M172 60L226 30"/></g>
+          <g data-part="valve"><path class="t-p" d="M132 82L152 71"/><path class="t-h" d="M142 76V52M130 52h24"/></g>
+          <g data-part="reducer"><path class="t-p t-r" d="M152 71L172 60"/></g>
+          <g data-part="elbow"><path class="t-p" d="M226 30Q246 20 262 34L284 56"/></g>
+        </svg></figure>
+        <figure><figcaption>Isometric</figcaption><svg viewBox="0 0 320 170" class="t-iso">
+          <g data-part="pipe"><path class="t-g" d="M50 134L136 84M176 62L238 26"/><text class="t-d" x="84" y="86" transform="rotate(-30 84 86)">2400</text><text class="t-d" x="192" y="28" transform="rotate(-30 192 28)">3100</text></g>
+          <g data-part="pump"><circle class="t-b" cx="30" cy="150" r="9"/><text x="30" y="154" text-anchor="middle">1</text></g>
+          <g data-part="valve"><path class="t-q" d="M136 84l18-3-5 13-13-10z"/><circle class="t-b" cx="124" cy="116" r="9"/><text x="124" y="120" text-anchor="middle">2</text></g>
+          <g data-part="reducer"><path class="t-g" d="M154 74L176 62"/><circle class="t-b" cx="176" cy="94" r="9"/><text x="176" y="98" text-anchor="middle">3</text></g>
+          <g data-part="elbow"><path class="t-g" d="M238 26L280 62"/><circle class="t-b" cx="284" cy="30" r="9"/><text x="284" y="34" text-anchor="middle">4</text></g>
+          <text class="t-size" x="226" y="150" data-sizeflag>6 NB &middot; Rev A</text>
+        </svg></figure>
+        <figure class="t-bomf"><figcaption>Bill of materials</figcaption>
+          <table class="t-bom"><thead><tr><th>#</th><th>Item</th><th>Size</th></tr></thead><tbody>
+            <tr data-part="pump"><td>1</td><td>Pump flange</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+            <tr data-part="valve"><td>2</td><td>Gate valve</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+            <tr data-part="reducer"><td>3</td><td>Reducer</td><td data-a="6 &times; 4" data-b="8 &times; 6">6 &times; 4</td></tr>
+            <tr data-part="elbow"><td>4</td><td>Elbow, 90 LR</td><td data-a="4 in" data-b="6 in">4 in</td></tr>
+            <tr data-part="pipe"><td>5</td><td>Pipe, 5.5 m</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+          </tbody></table>
+        </figure>
       </div>
     </div>
   </div>
 </section>
-
-<section class="band" id="approach">
+<section class="band" id="integrations">
   <div class="wrap">
-    <p class="eyebrow">How we build</p>
-    <h2>Engineers have to be able to trust it.</h2>
-    <div class="tenets">
-      <div class="tenet"><h3>Output you can edit</h3><p>Deliverables are native CAD entities and structured data that fit how your team already works, never flattened images you have to redraw.</p></div>
-      <div class="tenet"><h3>Answers you can check</h3><p>Everything is tied back to its source. Read a tag and you can see where on the drawing it came from; rebuild a model and it is projected back onto the views.</p></div>
-      <div class="tenet"><h3>Accuracy you can see</h3><p>Results come with their scores, not just their answers. An engineering tool that hides its error rate is not one you can put in a workflow.</p></div>
+    <p class="eyebrow">Fits your workflow</p>
+    <h2>Keep the tools you already use.</h2>
+    <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and returns native files.</p>
+    <div class="flowmap" data-inview>
+      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>AVEVA E3D</p><p>Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
+      <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
+      <div class="flow-mid"><img src="cadmium-brand/icon/cadmium-icon.svg" alt="" width="64" height="64" /><b>One dataset</b><span>Tags, lines and geometry, linked across documents and revisions</span></div>
+      <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50H50V10H100"/><path d="M0 50H60V30H100"/><path d="M0 50H100"/><path d="M0 50H60V70H100"/><path d="M0 50H50V90H100"/></svg>
+      <div class="integ-col"><h3>Writes</h3><p>DWG and DXF, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
     </div>
+    <p class="connects"><b>Connects to</b> SharePoint &middot; Aconex &middot; ProjectWise &middot; SAP &middot; Oracle &middot; REST API</p>
   </div>
 </section>
-
+<section class="band band--dark has-flow" id="trust" data-flow>
+  <div class="wrap">
+    <p class="eyebrow">Security</p>
+    <h2>Built for client-confidential drawings.</h2>
+    <div class="trust-grid">
+      <div><b>SOC 2 Type II</b><span>and ISO 27001 certified</span></div>
+      <div><b>Your cloud or on-premises</b><span>including air-gapped sites</span></div>
+      <div><b>Never used for training</b><span>your data stays yours</span></div>
+      <div><b>SSO, roles and audit logs</b><span>project by project</span></div>
+    </div>
+    <a class="btn btn--line-dark btn--sm" href="security/" style="margin-top:22px">Read about security</a>
+  </div>
+</section>
 <section class="band band--cta" id="contact">
   <div class="wrap">
     <div class="cta-grid">
       <div class="stack">
-        <p class="eyebrow">Get in touch</p>
-        <h2>Bring us a drawing.</h2>
-        <p class="lead">A model that needs isometrics, a stack of scanned P&amp;IDs, a legacy plant with no 3D. Tell us what you are working with.</p>
+        <p class="eyebrow">Pilot</p>
+        <h2>Start with one line, one sheet or one area.</h2>
+        <p class="lead">Send us real project data under NDA. We return the finished deliverables so your engineers can judge them against their own work.</p>
+        <ol class="pilot-steps">
+          <li><b>Scope</b><span>Pick a representative sample with your lead engineer.</span></li>
+          <li><b>Run</b><span>We process it on your template and standards.</span></li>
+          <li><b>Compare</b><span>Your team checks the output against the manual result.</span></li>
+        </ol>
       </div>
-      <form class="cta-form" id="contactForm" novalidate data-subject="Cadmium enquiry" data-default="" data-attach="">
+      <form class="cta-form" id="contactForm" novalidate data-subject="Pilot request" data-default="" data-attach="">
         <div class="field"><label for="fName">Name</label><input id="fName" name="name" type="text" required placeholder="Jane Okoye" /></div>
         <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
         <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
-        <div class="field"><label for="fNotes">What are you working on?</label><textarea id="fNotes" name="notes" rows="3" placeholder="Around 400 scanned P&amp;IDs that we need as line and valve lists."></textarea></div>
-        <button class="btn btn--primary" type="submit">Send</button>
+        <div class="field"><label for="fTrack">Where would you start?</label>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+        <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
+        <button class="btn btn--primary" type="submit">Request a pilot</button>
         <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
       </form>
     </div>
   </div>
 </section>
-
 </main>
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <a href="./" class="footer-brand" aria-label="Cadmium — home">
-      <img class="brand-logo--light" src="cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="220" height="69" />
-      <img class="brand-logo--dark" src="cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="220" height="69" />
-    </a>
-    <nav class="footer-links" aria-label="Footer">
-      <a href="isometrics/">Isometrics</a>
-      <a href="3d-from-2d/">3D from 2D</a>
-      <a href="pid/">P&amp;ID</a>
-      <a href="./#capabilities">Capabilities</a>
-      <a href="#contact">Get in touch</a>
-    </nav>
+<footer class="footer footer--full">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="./" class="footer-brand" aria-label="Cadmium — home">
+          <img class="brand-logo--light" src="cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
+          <img class="brand-logo--dark" src="cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="190" height="60" />
+        </a>
+        <p>AI for engineering, procurement and construction.</p>
+      </div>
+      <div><h4>Platform</h4><a href="platform/">Overview</a><a href="isometrics/">Isometrics</a><a href="pid/">P&amp;ID intelligence</a><a href="3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Solutions</h4><a href="solutions/feed/">Front-end engineering</a><a href="solutions/detailed/">Detailed engineering</a><a href="solutions/procurement/">Procurement and fabrication</a><a href="solutions/construction/">Construction</a><a href="solutions/handover/">Commissioning and handover</a><a href="solutions/brownfield/">Brownfield and revamps</a></div>
+      <div><h4>Company</h4><a href="teams/">Teams</a><a href="security/">Security</a><a href="company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a></div>
+    </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>
 </footer>
-
-<script>
-  /* Old single-page links: the isometric sections moved to their own page. */
-  (function () {
-    var h = location.hash.slice(1);
-    if (['problem', 'compare', 'product', 'viewer', 'savings'].indexOf(h) >= 0) location.replace('isometrics/#' + h);
-  })();
-</script>
 <script src="script.js"></script>
+<script src="demos/motion.js"></script>
+<script src="demos/mocks.js"></script>
+<script>
+  (function () { var h = location.hash.slice(1);
+    if (['problem', 'compare', 'product', 'viewer', 'savings'].indexOf(h) >= 0) location.replace('isometrics/#' + h); })();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="demos/iso.js"></script>
+<script src="demos/home.js"></script>
 <script>CadIso(document.getElementById('hero'), { hero: true, data: 'demos/data/iso8' });</script>
 </body>
 </html>

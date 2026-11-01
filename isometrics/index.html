@@ -38,32 +38,28 @@
     <a class="nav-brand" href="../" aria-label="Cadmium — home">
       <img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" />
       <b>Cadmium</b>
-      <span class="nav-kicker">Isometrics</span>
     </a>
-
-    <nav class="nav-links" id="navLinks" aria-label="Sections">
-      <a href="#run">The run</a>
-      <a href="#compare">Comparison</a>
-      <a href="#product">How it works</a>
-      <a href="#viewer">3D model</a>
-      <a href="#savings">Savings</a>
-      <a class="nav-out" href="../">All products</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <div class="nav-drop"><button class="nav-drop-btn is-current" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="../platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="../isometrics/" class="is-current" aria-current="page"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="../pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="../3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
+      <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Solutions</button><div class="nav-panel"><a href="../solutions/feed/"><b>Front-end engineering</b><span>Turn licensor packages into live data</span></a><a href="../solutions/detailed/"><b>Detailed engineering</b><span>Issue isometrics and MTOs in minutes</span></a><a href="../solutions/procurement/"><b>Procurement and fabrication</b><span>MTOs and spools your shop can trust</span></a><a href="../solutions/construction/"><b>Construction</b><span>The current drawing and model, at the workface</span></a><a href="../solutions/handover/"><b>Commissioning and handover</b><span>As-builts and data your client will accept</span></a><a href="../solutions/brownfield/"><b>Brownfield and revamps</b><span>Bring legacy plants back into data</span></a></div></div>
+      <a href="../teams/">Teams</a>
+      <a href="../security/">Security</a>
+      <a href="../company/">Company</a>
     </nav>
-
     <div class="nav-actions">
-      <button class="icon-btn nav-burger" id="navToggle" type="button"
-              aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
       <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
         <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>
       </button>
-      <a class="btn btn--primary btn--sm" href="#contact">Send us your model</a>
+      <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
     </div>
   </div>
 </header>
 
+<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">
 
 <!-- ════════════════════════════════════════════════════════════
@@ -471,19 +467,20 @@
 <!-- ════════════════════════════════════════════════════════════
      FOOTER
      ═════════════════════════════════════════════════════════ -->
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <a href="../" class="footer-brand" aria-label="Cadmium — home">
-      <img class="brand-logo--light" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="220" height="69" />
-      <img class="brand-logo--dark"  src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg"  alt="Cadmium" width="220" height="69" />
-    </a>
-    <nav class="footer-links" aria-label="Footer">
-      <a href="../">Home</a>
-      <a href="./">Isometrics</a>
-      <a href="../3d-from-2d/">3D from 2D</a>
-      <a href="../pid/">P&amp;ID</a>
-      <a href="#contact">Get in touch</a>
-    </nav>
+<footer class="footer footer--full">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="../" class="footer-brand" aria-label="Cadmium — home">
+          <img class="brand-logo--light" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
+          <img class="brand-logo--dark" src="../cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="190" height="60" />
+        </a>
+        <p>AI for engineering, procurement and construction.</p>
+      </div>
+      <div><h4>Platform</h4><a href="../platform/">Overview</a><a href="../isometrics/">Isometrics</a><a href="../pid/">P&amp;ID intelligence</a><a href="../3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Solutions</h4><a href="../solutions/feed/">Front-end engineering</a><a href="../solutions/detailed/">Detailed engineering</a><a href="../solutions/procurement/">Procurement and fabrication</a><a href="../solutions/construction/">Construction</a><a href="../solutions/handover/">Commissioning and handover</a><a href="../solutions/brownfield/">Brownfield and revamps</a></div>
+      <div><h4>Company</h4><a href="../teams/">Teams</a><a href="../security/">Security</a><a href="../company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a></div>
+    </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>
 </footer>
@@ -495,6 +492,7 @@
 </div>
 
 <script src="../script.js"></script>
+<script src="../demos/motion.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="../demos/iso.js"></script>
 <script>CadIso(document.getElementById('isoLab'), { data: '../demos/data/iso8', autoplay: false });</script>

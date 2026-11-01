@@ -1,0 +1,550 @@
+#!/usr/bin/env python3
+"""Generates the company pages and keeps the nav and footer the same on every page.
+Run from the repo root: python3 tools/build_pages.py"""
+import os, re
+
+SUN = '''<svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>'''
+
+PHASES = {
+  'feed': dict(
+    n='FEED', title='Front-end engineering', short='Turn licensor packages into live data',
+    h1='Start FEED with data, not a stack of PDFs.',
+    lead='Licensor packages and vendor P&IDs arrive as drawings. Cadmium reads them into tagged, connected data on day one, so estimates and line lists start from something you can query.',
+    outcomes=[('Days, not weeks', 'to a first line list from a licensor P&ID package'), ('98%', 'tag accuracy on clean P&IDs, reviewed by your engineers'), ('±10%', 'early MTO estimates from reconciled line data')],
+    rows=[('Line list', 'Typed by hand from drawings', 'Generated from the P&ID graph'), ('Valve and instrument index', 'Counted and re-counted', 'Extracted with a source link to every tag'), ('Early MTO', 'Factored from similar jobs', 'Built up from real line and fitting data'), ('Plot plan studies', 'Modelled from scratch', 'Started from 3D recovered from 2D layouts')],
+    module=('P&amp;ID intelligence', 'pid/', 'pid.png'), module2=('3D from 2D', '3d-from-2d/'),
+    lost='Retyping licensor packages, and re-checking counts every time a revision lands.'),
+  'detailed': dict(
+    n='Detailed engineering', title='Detailed engineering', short='Issue isometrics and MTOs in minutes',
+    h1='Issue-ready isometrics, on your template, in minutes.',
+    lead='Piping isometrics are the most redrawn documents on a project. Cadmium takes your 3D model to a finished, annotated sheet, and regenerates only what changed at each revision.',
+    outcomes=[('95%', 'less manual rework per isometric'), ('10 min', 'per sheet, including engineer review'), ('Every revision', 'compared automatically, sheet by sheet')],
+    rows=[('Piping isometrics', 'Hours of clean-up per sheet', 'Finished sheet, native DWG and DXF'), ('Bill of materials', 'Rebuilt after each change', 'Generated from the model with every run'), ('Revision control', 'Manual clouding and comparison', 'Changes detected and clouded automatically'), ('Model and P&amp;ID checks', 'Sampled at review', 'Every line reconciled before issue')],
+    module=('Isometrics', 'isometrics/', 'isometrics.png'), module2=('P&amp;ID intelligence', 'pid/'),
+    lost='Cleaning up generated isometrics, and doing it again after every model change.'),
+  'procurement': dict(
+    n='Procurement', title='Procurement and fabrication', short='MTOs and spools your shop can trust',
+    h1='MTOs that keep up with the model.',
+    lead='Late changes reach procurement as surprises. Cadmium keeps material take-offs tied to the model, shows exactly what changed between revisions, and issues spool drawings fabrication can build from.',
+    outcomes=[('Live', 'MTOs that update with every model revision'), ('Line by line', 'difference reports between MTO revisions'), ('Fewer', 'surplus and short-shipped items at site')],
+    rows=[('Material take-off', 'Exported, then corrected in Excel', 'Generated from the model, tied to each line'), ('MTO revisions', 'Compared by hand', 'Automatic differences by item and line'), ('Spool drawings', 'Drafted one at a time', 'Generated with weld and cut data'), ('Weld maps', 'Marked up by hand', 'Numbered from the model')],
+    module=('Isometrics', 'isometrics/', 'isometrics.png'), module2=('3D from 2D', '3d-from-2d/'),
+    lost='Reconciling take-offs with the latest model, and chasing items that changed after the order went out.'),
+  'construction': dict(
+    n='Construction', title='Construction', short='The current drawing and model, at the workface',
+    h1='The right drawing and model, at the workface.',
+    lead='Site crews lose time finding out what is current. Cadmium puts every sheet and its 3D model on any device with no CAD licence, and works out test-pack boundaries from the P&IDs.',
+    outcomes=[('Any device', 'isometric and 3D model, no CAD licence needed'), ('Always current', 'superseded sheets clearly flagged'), ('Hours, not days', 'to mark up test-pack boundaries')],
+    rows=[('Erection isometrics', 'Printed, then superseded', 'Current revision on any device'), ('3D model access', 'Limited to CAD seats', 'Browser viewer for the whole crew'), ('Test packs', 'Boundaries marked up by hand', 'Generated from the P&amp;ID graph'), ('Site queries', 'Raised, then searched for', 'Answered with a link to the source')],
+    module=('Isometrics', 'isometrics/#viewer', 'isometrics.png'), module2=('P&amp;ID intelligence', 'pid/'),
+    lost='Finding the current revision, and marking up test-pack boundaries by hand.'),
+  'handover': dict(
+    n='Handover', title='Commissioning and handover', short='As-builts and data your client will accept',
+    h1='Hand over data the owner can actually use.',
+    lead='Handover is where missing tags and stale drawings become your problem. Cadmium reconciles as-built drawings against the model and produces clean, connected registers in the structure your client specifies.',
+    outcomes=[('Every tag', 'traced to the document it came from'), ('CFIHOS-ready', 'registers in the structure your client specifies'), ('Weeks', 'taken out of final document close-out')],
+    rows=[('Tag registers', 'Compiled from many spreadsheets', 'Generated and cross-checked from documents'), ('As-built drawings', 'Redlines updated by hand', 'Reconciled and redrawn from markups'), ('Data handover', 'Rejected, corrected, resubmitted', 'Validated against the client spec first'), ('Isolation lists', 'Built per procedure', 'Generated from the connected P&amp;IDs')],
+    module=('P&amp;ID intelligence', 'pid/', 'pid.png'), module2=('Isometrics', 'isometrics/'),
+    lost='Reconciling tags across thousands of documents in the last, most expensive weeks of the job.'),
+  'brownfield': dict(
+    n='Brownfield', title='Brownfield and revamps', short='Bring legacy plants back into data',
+    h1='Your plant has drawings. Now give it a model.',
+    lead='Revamps start from scanned drawings that nobody trusts. Cadmium reads legacy P&IDs into connected data, rebuilds 3D from 2D general arrangements, and shows where the documents contradict each other.',
+    outcomes=[('Scanned to structured', 'P&amp;IDs read from image files'), ('Plan + elevation', 'to a 3D piping route'), ('Conflicts flagged', 'between drawings before they reach site')],
+    rows=[('Legacy P&amp;IDs', 'Redrawn by hand in CAD', 'Read into a connected, tagged graph'), ('3D of existing plant', 'Modelled from scratch', 'Recovered from 2D drawings'), ('Tie-in isolation', 'Traced by hand with highlighters', 'Worked out from the graph, then reviewed'), ('Document conflicts', 'Found on site', 'Flagged before issue')],
+    module=('3D from 2D', '3d-from-2d/', '3d-from-2d.png'), module2=('P&amp;ID intelligence', 'pid/'),
+    lost='Redrawing legacy documents before the revamp engineering can even begin.'),
+}
+
+def drop(label, root, items, key, cur):
+    links = ''.join(f'<a href="{root}{h}"{" class=\"is-current\" aria-current=\"page\"" if k == cur else ""}><b>{t}</b><span>{d}</span></a>' for k, h, t, d in items)
+    on = ' is-current' if key in (cur or '') or any(k == cur for k, *_ in items) else ''
+    return f'''<div class="nav-drop"><button class="nav-drop-btn{on}" type="button" aria-expanded="false">{label}</button><div class="nav-panel">{links}</div></div>'''
+
+def nav(root, cur):
+    home = root or './'
+    plat = [('platform', 'platform/', 'Platform overview', 'How the modules share one dataset'), ('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
+    sol = [(k, f'solutions/{k}/', p['title'], p['short']) for k, p in PHASES.items()]
+    def link(h, t, k):
+        c = ' class="is-current" aria-current="page"' if k == cur else ''
+        return f'<a href="{root}{h}"{c}>{t}</a>'
+    return f'''<header class="nav" id="nav">
+  <div class="nav-inner wrap">
+    <a class="nav-brand" href="{home}" aria-label="Cadmium — home">
+      <img src="{root}cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" />
+      <b>Cadmium</b>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      {drop('Platform', root, plat, 'x', cur)}
+      {drop('Solutions', root, sol, 'x', cur)}
+      {link('teams/', 'Teams', 'teams')}
+      {link('security/', 'Security', 'security')}
+      {link('company/', 'Company', 'company')}
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        {SUN}
+      </button>
+      <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
+    </div>
+  </div>
+</header>'''
+
+def footer(root):
+    home = root or './'
+    sol = ''.join(f'<a href="{root}solutions/{k}/">{p["title"]}</a>' for k, p in PHASES.items())
+    return f'''<footer class="footer footer--full">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="{home}" class="footer-brand" aria-label="Cadmium — home">
+          <img class="brand-logo--light" src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
+          <img class="brand-logo--dark" src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-dark.svg" alt="Cadmium" width="190" height="60" />
+        </a>
+        <p>AI for engineering, procurement and construction.</p>
+      </div>
+      <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Solutions</h4>{sol}</div>
+      <div><h4>Company</h4><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a></div>
+    </div>
+    <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
+  </div>
+</footer>'''
+
+def head(title, desc, root, url):
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content="{desc}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{root}styles.css" />
+<link rel="stylesheet" href="{root}site.css" />
+<link rel="icon" href="{root}cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="{root}cadmium-brand/favicon/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="{root}cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
+<meta name="theme-color" content="#E9F1FB" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cadmium-ai.com/{url}" />
+<meta property="og:title" content="{title}" />
+<meta property="og:description" content="{desc}" />
+<meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<script>
+  (function(){{try{{var t=localStorage.getItem('cad-theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}}})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+'''
+
+def pilot(h2='Start with one line, one sheet or one area.', lead='Send us real project data under NDA. We return the finished deliverables so your engineers can judge them against their own work.'):
+    return f'''<section class="band band--cta" id="contact">
+  <div class="wrap">
+    <div class="cta-grid">
+      <div class="stack">
+        <p class="eyebrow">Pilot</p>
+        <h2>{h2}</h2>
+        <p class="lead">{lead}</p>
+        <ol class="pilot-steps">
+          <li><b>Scope</b><span>Pick a representative sample with your lead engineer.</span></li>
+          <li><b>Run</b><span>We process it on your template and standards.</span></li>
+          <li><b>Compare</b><span>Your team checks the output against the manual result.</span></li>
+        </ol>
+      </div>
+      <form class="cta-form" id="contactForm" novalidate data-subject="Pilot request" data-default="" data-attach="">
+        <div class="field"><label for="fName">Name</label><input id="fName" name="name" type="text" required placeholder="Jane Okoye" /></div>
+        <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
+        <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
+        <div class="field"><label for="fTrack">Where would you start?</label>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+        <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
+        <button class="btn btn--primary" type="submit">Request a pilot</button>
+        <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
+      </form>
+    </div>
+  </div>
+</section>'''
+
+def page(path, title, desc, cur, body, scripts=''):
+    root = '../' * (path.count('/') + 1) if path else ''
+    url = path
+    html = head(title, desc, root, url) + nav(root, cur) + '\n<main id="main">\n' + body.replace('{R}', root) + '\n' + pilot() + '\n</main>\n' + footer(root) + f'\n<script src="{root}script.js"></script>\n<script src="{root}demos/motion.js"></script>\n<script src="{root}demos/mocks.js"></script>\n' + scripts.replace('{R}', root) + '\n</body>\n</html>\n'
+    os.makedirs(path or '.', exist_ok=True)
+    open(os.path.join(path, 'index.html'), 'w').write(html)
+
+# A small animated picture of each phase's work.
+VIG = {
+ 'feed': '<svg viewBox="0 0 150 76"><g class="v-rows"><rect x="8" y="10" width="44" height="9"/><rect x="58" y="10" width="84" height="9" class="a1"/><rect x="8" y="26" width="44" height="9"/><rect x="58" y="26" width="62" height="9" class="a2"/><rect x="8" y="42" width="44" height="9"/><rect x="58" y="42" width="74" height="9" class="a3"/><rect x="8" y="58" width="44" height="9"/><rect x="58" y="58" width="50" height="9" class="a4"/></g></svg>',
+ 'detailed': '<svg viewBox="0 0 150 76"><path class="v-draw" d="M12 62 52 39V18l34 20 22-13 30 18"/><path class="v-dim" d="M8 72 48 49M56 12l30 18M116 18l26 15"/><circle class="v-pop" cx="52" cy="39" r="3"/><circle class="v-pop p2" cx="86" cy="38" r="3"/><circle class="v-pop p3" cx="108" cy="25" r="3"/></svg>',
+ 'procurement': '<svg viewBox="0 0 150 76"><g class="v-bars"><rect x="12" y="20" width="16" height="50"/><rect x="36" y="34" width="16" height="36" class="b2"/><rect x="60" y="12" width="16" height="58" class="b3"/><rect x="84" y="42" width="16" height="28" class="b4"/><rect x="108" y="26" width="16" height="44" class="b5"/></g></svg>',
+ 'construction': '<svg viewBox="0 0 150 76"><rect class="v-frame" x="52" y="4" width="46" height="68" rx="6"/><g class="v-cube"><path d="M75 22 90 31v17l-15 9-15-9V31z"/><path d="M60 31l15 9 15-9M75 40v17"/></g></svg>',
+ 'handover': '<svg viewBox="0 0 150 76"><g class="v-ticks"><rect x="44" y="11" width="92" height="7"/><path d="M14 15l5 5 9-10"/><rect x="44" y="33" width="72" height="7"/><path class="t2" d="M14 37l5 5 9-10"/><rect x="44" y="55" width="84" height="7"/><path class="t3" d="M14 59l5 5 9-10"/></g></svg>',
+ 'brownfield': '<svg viewBox="0 0 150 76"><defs><pattern id="scanN" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="1.3" height="1.3" fill="#9CC6F2" opacity=".55"/><rect x="3" y="3" width="1" height="1" fill="#9CC6F2" opacity=".35"/></pattern></defs><rect width="150" height="76" fill="url(#scanN)"/><g class="v-clean"><rect width="150" height="76" fill="#0A2545"/><path d="M12 38h42M78 38h26v-22h34" stroke="#42E08F" stroke-width="2" fill="none"/><path d="M54 30l24 16V30l-24 16z" fill="none" stroke="#CFE6FF" stroke-width="1.5"/></g><path class="v-sweep" d="M0 0v76" stroke="#FFCF5C" stroke-width="1.5"/></svg>',
+}
+
+def lifecycle():
+    btns = ''.join(f'''<button type="button" class="lc-node" role="tab" data-phase="{k}" id="lc-{k}" aria-selected="false" aria-controls="lcPanel">
+          <span class="lc-vig" aria-hidden="true">{VIG[k]}</span><i>{i+1:02d}</i><b>{p["n"]}</b></button>''' for i, (k, p) in enumerate(PHASES.items()))
+    panels = ''
+    for k, p in PHASES.items():
+        m = p['module']; m2 = p['module2']
+        rows = ''.join(f'<li>{r[0]}</li>' for r in p['rows'])
+        out = ''.join(f'<div class="lc-out"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
+        panels += f'''<div class="lc-panel" data-panel="{k}" hidden>
+          <div class="lc-col"><h3>{p["title"]}</h3><p>{p["lost"]}</p><a class="btn btn--primary btn--sm" href="solutions/{k}/">See the solution</a></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul>{rows}</ul></div>
+          <div class="lc-col"><h4>Results</h4>{out}</div>
+          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="{m[1]}"><img src="assets/posters/{m[2]}" alt="" loading="lazy" /><span>{m[0]} &rarr;</span></a><a class="lc-more" href="{m2[1]}">{m2[0]} &rarr;</a></div>
+        </div>'''
+    return f'''<section class="band" id="lifecycle">
+  <div class="wrap">
+    <p class="eyebrow">Across the project</p>
+    <h2>One platform, from FEED to handover.</h2>
+    <p class="lead lead--wide">Pick a phase to see the deliverables, where the hours go, and what Cadmium takes off your team.</p>
+    <div class="lc" id="lc" data-inview>
+      <div class="lc-line" role="tablist" aria-label="Project phases">{btns}</div>
+      <div id="lcPanel" class="lc-panels" role="tabpanel">{panels}</div>
+    </div>
+  </div>
+</section>'''
+
+WALK_STEPS = [
+ ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Drop in native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
+ ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
+ ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
+ ('review', 'Check', 'Engineers review changes, not whole sheets', 'Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.', ['Automatic clouding at every revision', 'Model, P&amp;ID and BOM checked against each other', 'A full record of who approved what, and when'], 'solutions/detailed/', 'See detailed engineering'),
+ ('site', 'Build', 'The current drawing, at the workface', 'Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.', ['Isometric and 3D model on any phone or tablet', 'Superseded revisions clearly flagged', 'Test-pack boundaries worked out from the P&amp;IDs'], 'solutions/construction/', 'See construction'),
+]
+def walkthrough():
+    bar = ''.join(f'<a href="#w-{k}"><i>{i+1:02d}</i>{t}</a>' for i, (k, t, *_) in enumerate(WALK_STEPS))
+    steps = ''
+    for i, (k, t, h, p, pts, href, cta) in enumerate(WALK_STEPS):
+        lis = ''.join(f'<li>{x}</li>' for x in pts)
+        steps += f'''<article class="walk-step{' flip' if i % 2 else ''}" id="w-{k}">
+        <div class="walk-copy"><span class="walk-k">{i+1:02d} &middot; {t}</span><h3>{h}</h3><p>{p}</p><ul>{lis}</ul><a href="{href}">{cta} &rarr;</a></div>
+        <div data-mock="{k}" data-root=""></div>
+      </article>'''
+    return f'''<section class="walk" id="walk">
+  <div class="wrap"><p class="eyebrow">Walkthrough</p><h2>A line, from first P&amp;ID to the workface.</h2></div>
+  <nav class="walk-bar" aria-label="Walkthrough steps"><div class="wrap">{bar}</div></nav>
+  <div class="wrap">{steps}</div>
+</section>'''
+
+THREAD = '''<section class="band band--alt" id="thread">
+  <div class="wrap">
+    <p class="eyebrow">Connected data</p>
+    <h2>One revision. Every document.</h2>
+    <p class="lead lead--wide">P&amp;IDs, models, isometrics and MTOs describe the same plant, so Cadmium treats them as one dataset. Select a part to find it everywhere, or revise the line and watch the change carry through.</p>
+    <div class="thread" id="thread-demo" data-rev="A" data-inview>
+      <div class="thread-bar">
+        <div class="chips" data-parts></div>
+        <button type="button" class="btn btn--primary btn--sm" data-revise>Upsize line to 8 in</button>
+        <span class="thread-rev">Revision <b data-revtext>A</b></span>
+      </div>
+      <div class="thread-grid">
+        <figure><figcaption>P&amp;ID</figcaption><svg viewBox="0 0 320 170" class="t-pid">
+          <path class="t-l" d="M58 90H104M136 90H176M204 90H258"/>
+          <g data-part="pump"><circle class="t-s" cx="40" cy="90" r="18"/><text x="40" y="128" text-anchor="middle">P-101</text></g>
+          <g data-part="valve"><path class="t-s" d="M104 79l32 22V79l-32 22z"/><text x="120" y="68" text-anchor="middle">HV-101</text></g>
+          <g data-part="reducer"><path class="t-s" d="M176 76l28 8v12l-28 8z"/><text x="190" y="124" text-anchor="middle">R-1</text></g>
+          <g data-part="pipe"><text x="222" y="80" text-anchor="middle" data-linetag>6-PW-101</text></g>
+          <g data-part="elbow"><rect class="t-s" x="258" y="34" width="44" height="112" rx="20"/><text x="280" y="160" text-anchor="middle">D-101</text></g>
+        </svg></figure>
+        <figure><figcaption>3D model</figcaption><svg viewBox="0 0 320 170" class="t-3d">
+          <g data-part="pump"><ellipse class="t-v" cx="50" cy="128" rx="24" ry="18"/></g>
+          <g data-part="pipe"><path class="t-p" d="M68 118L132 82M172 60L226 30"/></g>
+          <g data-part="valve"><path class="t-p" d="M132 82L152 71"/><path class="t-h" d="M142 76V52M130 52h24"/></g>
+          <g data-part="reducer"><path class="t-p t-r" d="M152 71L172 60"/></g>
+          <g data-part="elbow"><path class="t-p" d="M226 30Q246 20 262 34L284 56"/></g>
+        </svg></figure>
+        <figure><figcaption>Isometric</figcaption><svg viewBox="0 0 320 170" class="t-iso">
+          <g data-part="pipe"><path class="t-g" d="M50 134L136 84M176 62L238 26"/><text class="t-d" x="84" y="86" transform="rotate(-30 84 86)">2400</text><text class="t-d" x="192" y="28" transform="rotate(-30 192 28)">3100</text></g>
+          <g data-part="pump"><circle class="t-b" cx="30" cy="150" r="9"/><text x="30" y="154" text-anchor="middle">1</text></g>
+          <g data-part="valve"><path class="t-q" d="M136 84l18-3-5 13-13-10z"/><circle class="t-b" cx="124" cy="116" r="9"/><text x="124" y="120" text-anchor="middle">2</text></g>
+          <g data-part="reducer"><path class="t-g" d="M154 74L176 62"/><circle class="t-b" cx="176" cy="94" r="9"/><text x="176" y="98" text-anchor="middle">3</text></g>
+          <g data-part="elbow"><path class="t-g" d="M238 26L280 62"/><circle class="t-b" cx="284" cy="30" r="9"/><text x="284" y="34" text-anchor="middle">4</text></g>
+          <text class="t-size" x="226" y="150" data-sizeflag>6 NB &middot; Rev A</text>
+        </svg></figure>
+        <figure class="t-bomf"><figcaption>Bill of materials</figcaption>
+          <table class="t-bom"><thead><tr><th>#</th><th>Item</th><th>Size</th></tr></thead><tbody>
+            <tr data-part="pump"><td>1</td><td>Pump flange</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+            <tr data-part="valve"><td>2</td><td>Gate valve</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+            <tr data-part="reducer"><td>3</td><td>Reducer</td><td data-a="6 &times; 4" data-b="8 &times; 6">6 &times; 4</td></tr>
+            <tr data-part="elbow"><td>4</td><td>Elbow, 90 LR</td><td data-a="4 in" data-b="6 in">4 in</td></tr>
+            <tr data-part="pipe"><td>5</td><td>Pipe, 5.5 m</td><td data-a="6 in" data-b="8 in">6 in</td></tr>
+          </tbody></table>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>'''
+
+INTEG = '''<section class="band" id="integrations">
+  <div class="wrap">
+    <p class="eyebrow">Fits your workflow</p>
+    <h2>Keep the tools you already use.</h2>
+    <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and returns native files.</p>
+    <div class="flowmap" data-inview>
+      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>AVEVA E3D</p><p>Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
+      <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
+      <div class="flow-mid"><img src="{R}cadmium-brand/icon/cadmium-icon.svg" alt="" width="64" height="64" /><b>One dataset</b><span>Tags, lines and geometry, linked across documents and revisions</span></div>
+      <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50H50V10H100"/><path d="M0 50H60V30H100"/><path d="M0 50H100"/><path d="M0 50H60V70H100"/><path d="M0 50H50V90H100"/></svg>
+      <div class="integ-col"><h3>Writes</h3><p>DWG and DXF, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
+    </div>
+    <p class="connects"><b>Connects to</b> SharePoint &middot; Aconex &middot; ProjectWise &middot; SAP &middot; Oracle &middot; REST API</p>
+  </div>
+</section>'''
+
+SEC_BAND = '''<section class="band band--dark has-flow" id="trust" data-flow>
+  <div class="wrap">
+    <p class="eyebrow">Security</p>
+    <h2>Built for client-confidential drawings.</h2>
+    <div class="trust-grid">
+      <div><b>SOC 2 Type II</b><span>and ISO 27001 certified</span></div>
+      <div><b>Your cloud or on-premises</b><span>including air-gapped sites</span></div>
+      <div><b>Never used for training</b><span>your data stays yours</span></div>
+      <div><b>SSO, roles and audit logs</b><span>project by project</span></div>
+    </div>
+    <a class="btn btn--line-dark btn--sm" href="security/" style="margin-top:22px">Read about security</a>
+  </div>
+</section>'''
+
+COST = '''<section class="band band--alt" id="cost">
+  <div class="wrap">
+    <div class="cost-grid">
+      <div>
+        <p class="eyebrow">The cost of redrawing</p>
+        <h2>What isometrics cost you today.</h2>
+        <p class="lead">Every revision sends the same sheets back to the same drafters. Put in your own numbers.</p>
+      </div>
+      <form class="cost-calc" id="costCalc"  autocomplete="off" onsubmit="return false">
+        <div class="field"><label for="cIso">Isometrics on the project</label><input id="cIso" type="number" min="0" value="2400" /></div>
+        <div class="field"><label for="cHrs">Hours per isometric today</label><input id="cHrs" type="number" min="0" step="0.25" value="2" /></div>
+        <div class="field"><label for="cRev">Average revisions per sheet</label><input id="cRev" type="number" min="0" step="0.5" value="2" /></div>
+        <div class="field"><label for="cRate">Loaded rate, USD per hour</label><input id="cRate" type="number" min="0" value="35" /></div>
+        <div class="cost-out">
+          <div><span>Hours returned to the project</span><b id="cHours">0</b></div>
+          <div><span>Saved at your rate</span><b id="cSaved">0</b></div>
+          <div class="cost-bars"><em>Today</em><i><u id="cBarA"></u></i><b id="cA"></b><em>With Cadmium</em><i><u id="cBarB" class="good"></u></i><b id="cB"></b></div>
+          <p>Assumes 10 minutes per sheet with Cadmium, including review, and half the original effort for each manual revision.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>'''
+
+home = f'''<section class="hq" id="top">
+  <div class="hq-view" id="hero">
+    <div data-iso-view style="position:absolute;inset:0"></div>
+    <div class="hq-steps">
+      <div class="iso-steps" data-iso-steps></div>
+      <p class="hq-note" data-iso-note aria-live="polite"></p>
+    </div>
+  </div>
+  <div class="wrap hq-copy">
+    <div>
+      <p class="eyebrow">AI for EPC</p>
+      <h1>Engineering deliverables, without the rework.</h1>
+      <p class="lead">Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs, so your engineers review finished work instead of redrawing it.</p>
+      <div class="hq-actions">
+        <a class="btn btn--on-dark" href="#contact">Start a pilot</a>
+        <a class="btn btn--line-dark" href="#lifecycle">See it across the project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof" aria-label="Results"><div class="wrap proof-row">
+  <div class="pf"><b><span class="count" data-to="95">95</span>%</b><span>less manual rework per isometric</span><div class="pf-viz"><em>Manual</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:5%"></u></i></div></div>
+  <div class="pf"><b><span class="count" data-to="10">10</span> min</b><span>per sheet, including engineer review</span><div class="pf-viz"><em>Today</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:8%"></u></i></div></div>
+  <div class="pf"><b><span class="count" data-to="98">98</span>%</b><span>tag accuracy reading clean P&amp;IDs</span><div class="pf-viz pf-dots">'''+'<s></s>'*49+'<s class="miss"></s>'+f'''</div></div>
+  <div class="pf"><b>Native</b><span>DWG and DXF, editable in your CAD tools</span><div class="pf-viz pf-file"><code>ISO-008_RevB.dwg</code><code>MTO_Area200.xlsx</code></div></div>
+</div></section>
+
+{lifecycle()}
+{walkthrough()}
+{COST}
+{THREAD}
+{INTEG}
+{SEC_BAND}'''
+page('', 'Cadmium — AI for EPC engineering deliverables',
+     'Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs for EPC contractors, so engineers review finished work instead of redrawing it.', 'home', home,
+     '''<script>
+  (function () { var h = location.hash.slice(1);
+    if (['problem', 'compare', 'product', 'viewer', 'savings'].indexOf(h) >= 0) location.replace('isometrics/#' + h); })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="demos/iso.js"></script>
+<script src="demos/home.js"></script>
+<script>CadIso(document.getElementById('hero'), { hero: true, data: 'demos/data/iso8' });</script>''')
+
+MOCK_OF = dict(feed='pid', detailed='iso', procurement='mto', construction='site', handover='review', brownfield='pid')
+# Solutions
+for k, p in PHASES.items():
+    m, m2 = p['module'], p['module2']
+    outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
+    rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
+    others = ''.join(f'<a href="{{R}}solutions/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in PHASES.items())
+    body = f'''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    <nav class="phase-rail" aria-label="Project phases">{others}</nav>
+    <div class="sub-grid">
+      <div>
+        <p class="eyebrow">{p["title"]}</p>
+        <h1>{p["h1"]}</h1>
+        <p class="lead">{p["lead"]}</p>
+        <div class="hq-actions"><a class="btn btn--on-dark" href="#contact">Start a pilot</a><a class="btn btn--line-dark" href="{{R}}{m[1]}">See {m[0]} live</a></div>
+      </div>
+      <div data-mock="{MOCK_OF[k]}" data-root="{{R}}"></div>
+    </div>
+  </div></section>
+  <section class="proof proof--light"><div class="wrap proof-row proof-row--3">{outs}</div></section>
+  <section class="band"><div class="wrap">
+    <p class="eyebrow">Deliverables</p>
+    <h2>What changes on the job.</h2>
+    <div class="table-wrap"><table class="ltable"><thead><tr><th>Deliverable</th><th>Today</th><th>With Cadmium</th></tr></thead><tbody>{rows}</tbody></table></div>
+    <p class="also">Also used in this phase: <a href="{{R}}{m2[1]}">{m2[0]} &rarr;</a></p>
+  </div></section>'''
+    title = re.sub('<[^>]+>', '', p['title'])
+    page(f'solutions/{k}', f'{title} — Cadmium', re.sub('&amp;', '&amp;', p['lead']), k, body)
+
+# Platform
+platform = '''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    <p class="eyebrow">Platform</p>
+    <h1>Every engineering document, as one dataset.</h1>
+    <p class="lead lead--wide">Cadmium reads the documents your project already produces, links them through the tags, lines and geometry they share, and writes finished deliverables back out.</p>
+  </div></section>
+  <section class="band band--alt"><div class="wrap">
+    <p class="eyebrow">How it fits together</p>
+    <h2>Read, connect, generate, check.</h2>
+    <div class="steps">
+      <div class="step"><h3>Read</h3><p>3D models, P&amp;IDs and scanned drawings become structured data, with a link back to the source.</p></div>
+      <div class="step"><h3>Connect</h3><p>Tags, lines and geometry join into one graph of the plant, across documents and revisions.</p></div>
+      <div class="step"><h3>Generate</h3><p>Isometrics, MTOs, registers and models are produced on your templates and standards.</p></div>
+      <div class="step"><h3>Check</h3><p>Every output is verified against its sources, and conflicts go to an engineer for review.</p></div>
+    </div>
+  </div></section>
+  <section class="band"><div class="wrap">
+    <p class="eyebrow">Modules</p>
+    <h2>Start with one. They share the same data.</h2>
+    <article class="prod"><div><h3>Isometrics</h3><p>A 3D model to a finished, annotated isometric on your template, with bill of materials, spool data and automatic revision comparison.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}isometrics/">Watch the pipeline run</a></div></div><div data-mock="iso" data-root="{R}"></div></article>
+    <article class="prod"><div><h3>P&amp;ID intelligence</h3><p>Scanned or native P&amp;IDs into symbols, tags and connectivity, with line lists, valve lists and isolation answers on tap.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}pid/">Try the live demo</a></div></div><div data-mock="pid" data-root="{R}"></div></article>
+    <article class="prod"><div><h3>3D from 2D</h3><p>General arrangements and legacy drawings into 3D models and pipe routes, with conflicts between drawings marked before they reach site.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}3d-from-2d/">Try the live demo</a></div></div><a class="prod-shot" href="{R}3d-from-2d/" aria-label="3D from 2D"><img src="{R}assets/posters/3d-from-2d.png" alt="" loading="lazy" /></a></article>
+  </div></section>
+  ''' + INTEG.replace('band"', 'band band--alt"', 1)
+page('platform', 'Platform — Cadmium', 'Cadmium reads, connects, generates and checks engineering documents as one dataset, across P&amp;IDs, 3D models, isometrics and MTOs.', 'platform', platform)
+
+# Teams
+ROLES = [
+ ('Piping leads', 'Your designers stop cleaning up drawings.', ['Finished isometrics on your drafting standard', 'Native files your team can still edit', 'Review time spent on engineering, not layout'], 'detailed'),
+ ('Engineering managers', 'More deliverables from the team you have.', ['Man-hours per sheet you can plan around', 'Revision turnaround measured in minutes', 'A consistent standard across offices and subcontractors'], 'detailed'),
+ ('Project directors', 'Fewer late surprises on cost and schedule.', ['Isometric issue dates that hold', 'MTO changes visible the day they happen', 'Less rework reaching fabrication and site'], 'procurement'),
+ ('Digital and IT', 'Something you can actually approve.', ['Deploy in your cloud or on-premises', 'SSO, roles and full audit logs', 'A documented API into your existing systems'], 'security'),
+]
+cards = ''
+for t, h, pts, link in ROLES:
+    href = 'security/' if link == 'security' else f'solutions/{link}/'
+    lis = ''.join(f'<li>{x}</li>' for x in pts)
+    cards += f'<article class="role"><p class="eyebrow">{t}</p><h3>{h}</h3><ul>{lis}</ul><a href="{{R}}{href}">Read more &rarr;</a></article>'
+page('teams', 'Teams — Cadmium', 'What Cadmium changes for piping leads, engineering managers, project directors and digital teams at EPC contractors.', 'teams',
+ f'''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    <p class="eyebrow">Teams</p>
+    <h1>The same platform, a different day for each team.</h1>
+    <p class="lead lead--wide">Designers, managers, directors and IT each need something different from it.</p>
+  </div></section>
+  <section class="band band--alt"><div class="wrap"><div class="roles">{cards}</div></div></section>''')
+
+# Security
+FAQ = [
+ ('Is our data used to train models?', 'No. Customer drawings and models are never used to train models shared with other customers.'),
+ ('Where is our data stored?', 'In the region you choose, or entirely inside your own environment. Data never leaves it without your approval.'),
+ ('Can it run without internet access?', 'Yes. The on-premises edition runs on air-gapped networks, with updates delivered as signed packages.'),
+ ('How do we delete a project?', 'Project owners can delete a project at any time. Data is purged from storage and backups within 30 days.'),
+ ('Can we restrict access by project?', 'Yes. Access is role-based and set per project, including for joint-venture partners and subcontractors.'),
+ ('Will you complete our security questionnaire?', 'Yes. We provide our SOC 2 report under NDA and respond to vendor security reviews.'),
+]
+faq = ''.join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
+page('security', 'Security — Cadmium', 'SOC 2 Type II and ISO 27001 certified, deployable in your cloud or on-premises, with customer data never used for model training.', 'security',
+ f'''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    <p class="eyebrow">Security</p>
+    <h1>Your client&rsquo;s drawings stay under your control.</h1>
+    <p class="lead lead--wide">EPC projects run under strict confidentiality terms. Cadmium is built to meet them, wherever you need it to run.</p>
+  </div></section>
+  <section class="band band--dark"><div class="wrap">
+    <div class="trust-grid">
+      <div><b>SOC 2 Type II</b><span>audited annually</span></div>
+      <div><b>ISO 27001</b><span>certified information security</span></div>
+      <div><b>AES-256 and TLS 1.2+</b><span>encrypted at rest and in transit</span></div>
+      <div><b>No model training</b><span>on your data, ever</span></div>
+    </div>
+  </div></section>
+  <section class="band"><div class="wrap">
+    <p class="eyebrow">Deployment</p>
+    <h2>Run it where your contract says it must run.</h2>
+    <div class="boundary" data-inview aria-hidden="true"><svg viewBox="0 0 1000 170">
+      <rect class="b-zone" x="210" y="14" width="580" height="142" rx="10"/><text x="228" y="38">Your environment</text>
+      <g class="b-box"><rect x="256" y="66" width="130" height="58" rx="6"/><text x="321" y="100" text-anchor="middle">Drawings</text></g>
+      <g class="b-box b-core"><rect x="436" y="66" width="130" height="58" rx="6"/><text x="501" y="100" text-anchor="middle">Cadmium</text></g>
+      <g class="b-box"><rect x="616" y="66" width="130" height="58" rx="6"/><text x="681" y="100" text-anchor="middle">Deliverables</text></g>
+      <path class="b-flow" d="M386 95H436M566 95H616"/>
+      <path class="b-block" d="M790 95H880"/><path class="b-x" d="M806 83l24 24M830 83l-24 24"/><text x="890" y="100">Nothing leaves</text>
+    </svg></div>
+    <div class="table-wrap"><table class="ltable"><thead><tr><th>Option</th><th>Where it runs</th><th>Best for</th></tr></thead><tbody>
+      <tr><td>Cadmium Cloud</td><td>Single-tenant, in your chosen region</td><td>Fast starts and pilots</td></tr>
+      <tr><td>Your cloud</td><td>Your AWS, Azure or GCP account</td><td>Keeping data in your own tenancy</td></tr>
+      <tr><td>On-premises</td><td>Your data centre, including air-gapped</td><td>Restricted and government projects</td></tr>
+    </tbody></table></div>
+  </div></section>
+  <section class="band band--alt"><div class="wrap">
+    <p class="eyebrow">Access and control</p>
+    <h2>Who saw what, and when.</h2>
+    <div class="tenets">
+      <div class="tenet"><h3>Single sign-on</h3><p>SAML and OIDC with your identity provider, with SCIM provisioning and enforced multi-factor authentication.</p></div>
+      <div class="tenet"><h3>Project-level roles</h3><p>Separate access for each project, discipline and partner, with least privilege by default.</p></div>
+      <div class="tenet"><h3>Full audit trail</h3><p>Every view, download, run and change is logged and can be exported to your SIEM.</p></div>
+    </div>
+  </div></section>
+  <section class="band"><div class="wrap">
+    <p class="eyebrow">Questions security teams ask</p>
+    <h2>Common questions.</h2>
+    <div class="faqs">{faq}</div>
+  </div></section>''')
+
+# Company
+page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, procurement and construction, so engineers spend their time on engineering.', 'company',
+ '''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    <p class="eyebrow">Company</p>
+    <h1>Engineers should spend their time on engineering.</h1>
+    <p class="lead lead--wide">A plant is designed, bought and built from documents that are still redrawn and retyped by hand. We started Cadmium to take that work away, beginning with the piping isometric.</p>
+  </div></section>
+  <section class="band band--alt"><div class="wrap">
+    <p class="eyebrow">How we build</p>
+    <h2>Engineers have to be able to trust it.</h2>
+    <div class="tenets">
+      <div class="tenet"><h3>Output you can edit</h3><p>Deliverables are native CAD entities and structured data that fit how your team works, never flattened images you have to redraw.</p></div>
+      <div class="tenet"><h3>Answers you can check</h3><p>Everything links back to its source, so an engineer can see where each tag, dimension and quantity came from.</p></div>
+      <div class="tenet"><h3>The engineer signs off</h3><p>Cadmium does the production work. Responsibility for what is issued stays with a qualified engineer, and our tools are built around that review.</p></div>
+    </div>
+  </div></section>''')
+
+# Shared chrome on the three product pages.
+for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')):
+    f = os.path.join(path, 'index.html')
+    s = open(f).read()
+    s = re.sub(r'<header class="nav" id="nav">.*?</header>', lambda m: nav('../', cur), s, flags=re.S)
+    s = re.sub(r'<footer class="footer.*?</footer>', lambda m: footer('../'), s, flags=re.S)
+    if path == 'isometrics' and 'class="subnav"' not in s:
+        s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
+<main id="main">''', 1)
+    if 'demos/motion.js' not in s:
+        s = s.replace('<script src="../script.js"></script>', '<script src="../script.js"></script>\n<script src="../demos/motion.js"></script>')
+    open(f, 'w').write(s)
+print('ok')

@@ -29,7 +29,7 @@
   /* ── nav: shadow on scroll + current section + small-screen menu ── */
   (function nav() {
     var bar = $('#nav');
-    var links = $$('.nav-links a');
+    var links = $$('.nav-links a, .subnav a');
     var menu = $('#navLinks'), burger = $('#navToggle');
 
     if (burger) {
@@ -65,6 +65,28 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  })();
+
+  /* ── nav menus: hover on desktop (CSS), click and keyboard here ─── */
+  (function menus() {
+    var btns = $$('.nav-drop-btn');
+    function shut(except) {
+      btns.forEach(function (b) {
+        if (b === except) return;
+        b.setAttribute('aria-expanded', 'false');
+        b.parentElement.classList.remove('is-open');
+      });
+    }
+    btns.forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = b.parentElement.classList.toggle('is-open');
+        b.setAttribute('aria-expanded', String(open));
+        shut(b);
+      });
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.nav-panel')) shut(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') shut(); });
   })();
 
   /* ── lightbox ───────────────────────────────────────────────────── */
@@ -193,6 +215,7 @@
         'Company: ' + (company.value.trim() || '—'),
         'Email: ' + email.value.trim(),
         '',
+        ($('#fTrack') ? 'Start with: ' + $('#fTrack').value : ''),
         notes.value.trim() || form.dataset.default || '',
         '',
         form.dataset.attach || ''

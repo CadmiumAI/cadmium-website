@@ -583,7 +583,6 @@ h2{font-weight:700;letter-spacing:-.018em}
 .b-x{fill:none;stroke:var(--dim);stroke-width:3}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 .pf b .count{display:inline;font-size:inherit;color:inherit;margin:0;line-height:inherit}
-.walk > .wrap:last-child{max-width:1320px}
 .walk-step{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
 .walk-step.flip{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}
 @media (max-width:900px){.walk-step,.walk-step.flip{grid-template-columns:1fr}}
@@ -666,19 +665,31 @@ h2{font-weight:700;letter-spacing:-.018em}
 @media (max-width:860px){.fit-screen{height:calc(100svh - 61px);scroll-margin-top:61px}.fit-screen .lead{display:none}}
 @media (max-height:640px){.fit-screen .fineprint,.fit-screen .eyebrow{display:none}}
 
-/* ═══ walkthrough: copy, then the recording at full size, never taller than the screen ═══ */
-.walk-step,.walk-step.flip{display:block}
-.walk-step .walk-copy{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:6px clamp(24px,4vw,56px);align-items:start;margin-bottom:22px;order:0}
-.walk-copy .walk-k,.walk-copy h3,.walk-copy > p{grid-column:1}
-.walk-copy ul{grid-column:2;grid-row:1/span 3;margin:4px 0 0}
-.walk-copy > a{grid-column:2}
-@media (max-width:760px){.walk-step .walk-copy{display:block}}
-.walk > .wrap:last-child{max-width:1320px}
-.walk-step .mock-wrap,.sub-rec .mock-wrap{max-width:min(100%,calc((100svh - 150px)*1.6));margin-inline:auto}
-.sub-grid{grid-template-columns:minmax(0,1fr)}
-.sub-grid > div:first-child{max-width:760px}
+/* ═══ text beside the recording, swapping sides on each step ═══ */
+.walk .wrap{max-width:1560px}
+.walk-step{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:center}
+.walk-step.flip{grid-template-columns:minmax(0,1fr) minmax(300px,380px)}
+.walk-step.flip .walk-copy{order:2}
+.walk-copy{display:block}
+.walk-step .mock-wrap{max-width:min(100%,calc((100svh - 150px)*1.6));margin-inline:auto}
+.walk-copy h3{font-size:clamp(22px,2vw,28px)}
+.walk-copy p,.walk-copy li{font-size:15px}
+.sub-hero .wrap:has(.sub-grid){max-width:1560px}
+.sub-grid{grid-template-columns:minmax(320px,400px) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:center}
+.sub-grid > div:first-child{max-width:none}
+.sub-grid h1{font-size:clamp(30px,2.9vw,42px)}
+.sub-grid .lead{font-size:16px}
 .sub-grid .mock-wrap{max-width:min(100%,calc((100svh - 120px)*1.6));margin-inline:auto;width:100%}
+.prod:nth-of-type(even) > div:first-child{order:2}
 .prod .mock-wrap{align-self:center}
+.rec-split{display:grid;grid-template-columns:minmax(260px,320px) minmax(0,1fr);gap:clamp(24px,3vw,44px);align-items:center;margin-top:34px}
+.rec-split .demo-title{margin:0 0 8px}
+.rec-split p{color:var(--ink-2);font-size:15px}
+@media (max-width:1000px){
+  .walk-step,.walk-step.flip,.sub-grid,.rec-split{grid-template-columns:minmax(0,1fr)}
+  .walk-step.flip .walk-copy{order:0}
+  .prod:nth-of-type(even) > div:first-child{order:0}
+}
 
 /* ═══ the recording frame ═══ */
 .mock-wrap{position:relative;min-width:0;width:100%;aspect-ratio:1280/800}

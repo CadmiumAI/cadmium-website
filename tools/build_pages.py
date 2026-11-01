@@ -44,6 +44,14 @@ PHASES = {
     rows=[('Tag registers', 'Compiled from many spreadsheets', 'Generated and cross-checked from documents'), ('As-built drawings', 'Redlines updated by hand', 'Reconciled and redrawn from markups'), ('Data handover', 'Rejected, corrected, resubmitted', 'Validated against the client spec first'), ('Isolation lists', 'Built per procedure', 'Generated from the connected P&amp;IDs')],
     module=('P&amp;ID intelligence', 'pid/', 'pid.png'), module2=('Isometrics', 'isometrics/'),
     lost='Reconciling tags across thousands of documents in the last, most expensive weeks of the job.'),
+  'greenfield': dict(
+    n='Greenfield', title='Greenfield projects', short='Start a new build with connected data',
+    h1='Building new? Start connected from day one.',
+    lead='A new plant is the one chance to get the data right from the start. Cadmium links P&amp;IDs, equipment models, isometrics and MTOs from the first licensor package, so nothing has to be reconciled at handover.',
+    outcomes=[('From the first package', 'P&amp;IDs read into tagged data at the start of FEED'), ('Connected throughout', 'one dataset from FEED to handover'), ('Ready for handover', 'registers built as the job runs, not at the end')],
+    rows=[('Line and valve lists', 'Typed up from licensor drawings', 'Generated from the P&amp;IDs from the first issue'), ('Equipment models', 'Placeholders until late in the job', 'Built from each vendor drawing as it arrives'), ('Isometrics and MTOs', 'Redrawn and recounted at every revision', 'Regenerated from the model at every revision'), ('Handover data', 'Compiled in the final weeks', 'Built up throughout the project')],
+    module=('Equipment 3D modelling', 'equipment/', 'pid.png'), module2=('P&amp;ID intelligence', 'pid/'),
+    lost='Reconciling documents at the end that could have stayed connected from the start.'),
   'brownfield': dict(
     n='Brownfield', title='Brownfield and revamps', short='Bring legacy plants back into data',
     h1='Your plant has drawings. Now give it a model.',
@@ -54,8 +62,9 @@ PHASES = {
     lost='Redrawing legacy documents before the revamp engineering can even begin.'),
 }
 
-STAGES_ONLY = {k: p for k, p in PHASES.items() if k != 'brownfield'}
-PHOTO_OF = dict(feed='plant-stacks', detailed='welder-mask', procurement='pipeline-joints', construction='insulation-crew', handover='valve-work', brownfield='refinery-dusk')
+PROJECT_TYPES = ('greenfield', 'brownfield')
+STAGES_ONLY = {k: p for k, p in PHASES.items() if k not in PROJECT_TYPES}
+PHOTO_OF = dict(greenfield='pipeline-trench', feed='plant-stacks', detailed='welder-mask', procurement='pipeline-joints', construction='insulation-crew', handover='valve-work', brownfield='refinery-dusk')
 
 def drop(label, root, items, key, cur):
     def row(k, h, t, d):
@@ -71,7 +80,7 @@ def nav(root, cur):
     home = root or './'
     plat = [('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'Your GAs, annotated and ready to issue'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('equip', 'equipment/', 'Equipment 3D modelling', 'Vendor drawings to plant-ready models'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
     sol = [(k, f'phases/{k}/', p['title'], p['short']) for k, p in STAGES_ONLY.items()]
-    sol += [(None, '', 'Project type', ''), ('brownfield', 'phases/brownfield/', PHASES['brownfield']['title'], PHASES['brownfield']['short'])]
+    sol += [(None, '', 'Project type', '')] + [(k, f'phases/{k}/', PHASES[k]['title'], PHASES[k]['short']) for k in PROJECT_TYPES]
     def link(h, t, k):
         c = ' class="is-current" aria-current="page"' if k == cur else ''
         return f'<a href="{root}{h}"{c}>{t}</a>'
@@ -239,7 +248,7 @@ def lifecycle():
       <div class="lc-line" role="tablist" aria-label="Project phases">{btns}</div>
       <div id="lcPanel" class="lc-panels" role="tabpanel">{panels}</div>
     </div>
-    <p class="lc-note">Revamping an existing plant? <a href="phases/brownfield/">See brownfield and revamps &rarr;</a></p>
+    <p class="lc-note">The same phases apply to any project: <a href="phases/greenfield/">greenfield new builds &rarr;</a> &ensp; <a href="phases/brownfield/">brownfield and revamps &rarr;</a></p>
   </div>
 </section>'''
 
@@ -421,18 +430,18 @@ page('', 'Cadmium — AI for engineering',
 </script>
 <script src="demos/home.js"></script>''')
 
-MOCK_OF = dict(feed='pid', detailed='iso', procurement='mto', construction='site', handover='review', brownfield='pid')
+MOCK_OF = dict(greenfield='equip', feed='pid', detailed='iso', procurement='mto', construction='site', handover='review', brownfield='pid')
 # Solutions
 for k, p in PHASES.items():
     m, m2 = p['module'], p['module2']
     outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
     rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
-    others = ''.join(f'<a href="{{R}}phases/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in STAGES_ONLY.items())
+    others = ''.join(f'<a href="{{R}}phases/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in (STAGES_ONLY if k not in PROJECT_TYPES else {t: PHASES[t] for t in PROJECT_TYPES}).items())
     body = f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/{PHOTO_OF[k]}.jpg')"><div class="wrap">
-    {f'<nav class="phase-rail" aria-label="Project phases">{others}</nav>' if k != 'brownfield' else ''}
+    <nav class="phase-rail" aria-label="{'Project types' if k in PROJECT_TYPES else 'Project phases'}">{others}</nav>
     <div class="sub-grid">
       <div>
-        <p class="eyebrow">{'Project type' if k == 'brownfield' else p["title"]}</p>
+        <p class="eyebrow">{'Project type' if k in PROJECT_TYPES else p["title"]}</p>
         <h1>{p["h1"]}</h1>
         <p class="lead">{p["lead"]}</p>
         <div class="hq-actions"><a class="btn btn--on-dark" href="#contact">Start a pilot</a><a class="btn btn--line-dark" href="{{R}}{m[1]}">See {m[0]} live</a></div>
@@ -652,7 +661,7 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
         s = s.replace('<script src="../script.js"></script>', '<script src="../script.js"></script>\n<script src="../demos/motion.js"></script>')
     open(f, 'w').write(s)
 # The phase pages used to live under /solutions/.
-for k in PHASES:
+for k in (k for k in PHASES if k != 'greenfield'):
     os.makedirs(f'solutions/{k}', exist_ok=True)
     open(f'solutions/{k}/index.html', 'w').write(f'<!DOCTYPE html><meta charset="utf-8"><title>Moved</title><link rel="canonical" href="/phases/{k}/"><meta http-equiv="refresh" content="0; url=../../phases/{k}/"><a href="../../phases/{k}/">This page has moved.</a>\n')
 

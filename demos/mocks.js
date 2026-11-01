@@ -118,11 +118,11 @@
       }
     },
     gad: {
-      label: 'Screen recording of Cadmium Studio cleaning up a general arrangement drawing: overlapping labels are placed clear of the piping and dimensions are chained.',
+      label: 'Screen recording of Cadmium Studio annotating an existing general arrangement drawing: overlapping labels are placed clear of the piping and dimensions are chained.',
       build: function (R) {
         return {
           file: 'GA-410-2108.dgn', area: 'Area 400 &middot; Unit 410', std: 'Client drafting', rev: 'P2', coord: 'X 412.880&ensp;Y 96.214&ensp;Level ANNOTATION',
-          tools: tool('play', 'Clean Up', 'data-go') + tool('export', 'Export DGN') + tool('sheet', 'Print PDF'),
+          tools: tool('play', 'Annotate', 'data-go') + tool('export', 'Export DGN') + tool('sheet', 'Print PDF'),
           tree: [[0, 'folder', 'Area 400'], [1, 'folder', 'General Arrangements'], [2, 'sheet', 'GA-410-2106', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2107', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2108', { leaf: 1, on: 1, b: 'P2', bc: 'wip' }], [2, 'sheet', 'GA-410-2109', { leaf: 1, b: 'P1' }], [2, 'sheet', 'GA-410-2110', { leaf: 1, b: 'P1' }], [1, 'folder', 'Levels'], [2, 'layers', 'PIPE', { leaf: 1 }], [2, 'layers', 'EQUIP', { leaf: 1 }], [2, 'layers', 'STEEL', { leaf: 1 }], [2, 'layers', 'SUPPORT', { leaf: 1 }], [2, 'layers', 'INSTRUMENT', { leaf: 1 }], [2, 'layers', 'ANNOTATION', { leaf: 1, b: 'notes' }], [1, 'folder', 'Rules', { shut: 1 }]],
           tabs: [['GA-410-2108.dgn', 1, 'sheet']],
           center: '<div class="pane on sheet">' + ruler() + '<div class="slot layers show-base" data-svg="gad.svg"></div></div>',
@@ -132,7 +132,7 @@
       },
       steps: function (m) {
         return [[700, function () { m.point('[data-go]'); }], [130, function () {
-            m.click('[data-go]'); m.status('Reading DGN...'); m.busy(true); m.prog(8); m.log('Cleaning up GA-410-2108.dgn'); m.point('.d-r'); }],
+            m.click('[data-go]'); m.status('Reading DGN...'); m.busy(true); m.prog(8); m.log('Annotating GA-410-2108.dgn'); m.point('.d-r'); }],
           [520, function () { m.log('Read drawing: DGN V8, 2D plan'); m.prog(19); }],
           [340, function () { m.unreveal('dupe', 420); m.status('Removing duplicates...'); m.log('Removed 21 duplicate notes'); m.val('dup', '0'); m.prog(30); }],
           [520, function () { m.log('Finding clear space for labels...'); m.prog(38); m.status('Placing labels...'); m.unreveal('raw', 500); }],

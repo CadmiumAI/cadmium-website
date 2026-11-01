@@ -378,14 +378,14 @@ home = f'''<section class="hq hq--photo" id="top">
       </div>
     </div>
   </div>
-</section>
-
-<section class="proof" aria-label="Results"><div class="wrap proof-row">
+<div class="proof proof--over" aria-label="Results"><div class="wrap proof-row">
   <div class="pf"><b><span class="count" data-to="95">95</span>%</b><span>less manual rework per isometric</span><div class="pf-viz"><em>Manual</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:5%"></u></i></div></div>
   <div class="pf"><b><span class="count" data-to="10">10</span> min</b><span>per sheet, including engineer review</span><div class="pf-viz"><em>Today</em><i><u style="--w:100%" class="slow"></u></i><em>Cadmium</em><i><u style="--w:8%"></u></i></div></div>
   <div class="pf"><b><span class="count" data-to="98">98</span>%</b><span>tag accuracy reading clean P&amp;IDs</span><div class="pf-viz pf-dots">'''+'<s></s>'*49+'<s class="miss"></s>'+f'''</div></div>
   <div class="pf"><b>Native</b><span>DWG and DXF, editable in your CAD tools</span><div class="pf-viz pf-file"><code>ISO-008_RevB.dwg</code><code>MTO_Area200.xlsx</code></div></div>
-</div></section>
+</div></div>
+</section>
+
 
 {lifecycle()}
 {RUN}

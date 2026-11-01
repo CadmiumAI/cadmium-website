@@ -69,9 +69,9 @@ def drop(label, root, items, key, cur):
 
 def nav(root, cur):
     home = root or './'
-    plat = [('platform', 'platform/', 'Platform overview', 'How the modules share one dataset'), ('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'General arrangements, issue-ready'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('equip', 'equipment/', 'Equipment 3D modelling', 'Vendor drawings to plant-ready models'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
-    sol = [(k, f'solutions/{k}/', p['title'], p['short']) for k, p in STAGES_ONLY.items()]
-    sol += [(None, '', 'Project type', ''), ('brownfield', 'solutions/brownfield/', PHASES['brownfield']['title'], PHASES['brownfield']['short'])]
+    plat = [('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'General arrangements, issue-ready'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('equip', 'equipment/', 'Equipment 3D modelling', 'Vendor drawings to plant-ready models'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
+    sol = [(k, f'phases/{k}/', p['title'], p['short']) for k, p in STAGES_ONLY.items()]
+    sol += [(None, '', 'Project type', ''), ('brownfield', 'phases/brownfield/', PHASES['brownfield']['title'], PHASES['brownfield']['short'])]
     def link(h, t, k):
         c = ' class="is-current" aria-current="page"' if k == cur else ''
         return f'<a href="{root}{h}"{c}>{t}</a>'
@@ -82,8 +82,8 @@ def nav(root, cur):
       <b>Cadmium</b>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      {drop('Platform', root, plat, 'x', cur)}
-      {drop('Solutions', root, sol, 'x', cur)}
+      {drop('Solutions', root, plat, 'x', cur)}
+      {drop('Project phases', root, sol, 'x', cur)}
       {link('teams/', 'Teams', 'teams')}
       {link('security/', 'Security', 'security')}
       {link('company/', 'Company', 'company')}
@@ -99,7 +99,7 @@ def nav(root, cur):
 
 def footer(root):
     home = root or './'
-    sol = ''.join(f'<a href="{root}solutions/{k}/">{p["title"]}</a>' for k, p in PHASES.items())
+    sol = ''.join(f'<a href="{root}phases/{k}/">{p["title"]}</a>' for k, p in PHASES.items())
     return f'''<footer class="footer footer--full">
   <div class="wrap">
     <div class="foot-grid">
@@ -109,9 +109,9 @@ def footer(root):
         </a>
         <p>AI for engineering.</p>
       </div>
-      <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}equipment/">Equipment 3D modelling</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
-      <div><h4>Solutions</h4>{sol}</div>
-      <div><h4>Company</h4><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
+      <div><h4>Solutions</h4><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}equipment/">Equipment 3D modelling</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Project phases</h4>{sol}</div>
+      <div><h4>Company</h4><a href="{root}platform/">Platform</a><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
     </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>
@@ -225,10 +225,10 @@ def lifecycle():
         rows = ''.join(f'<li>{r[0]}</li>' for r in p['rows'])
         out = ''.join(f'<div class="lc-out"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
         panels += f'''<div class="lc-panel" data-panel="{k}" hidden>
-          <div class="lc-col"><img class="lc-photo" src="assets/photos/{PHOTO_OF[k]}.jpg" alt="" loading="lazy" /><h3>{p["title"]}</h3><p>{p["lost"]}</p><a class="btn btn--primary btn--sm" href="solutions/{k}/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/{PHOTO_OF[k]}.jpg" alt="" loading="lazy" /><h3>{p["title"]}</h3><p>{p["lost"]}</p><a class="btn btn--primary btn--sm" href="phases/{k}/">See this phase</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul>{rows}</ul></div>
           <div class="lc-col"><h4>Results</h4>{out}</div>
-          <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="{m[1]}"><img src="assets/posters/{m[2]}" alt="" loading="lazy" /><span>{m[0]} &rarr;</span></a><a class="lc-more" href="{m2[1]}">{m2[0]} &rarr;</a></div>
+          <div class="lc-col"><h4>Solutions used</h4><a class="lc-shot" href="{m[1]}"><img src="assets/posters/{m[2]}" alt="" loading="lazy" /><span>{m[0]} &rarr;</span></a><a class="lc-more" href="{m2[1]}">{m2[0]} &rarr;</a></div>
         </div>'''
     return f'''<section class="band" id="lifecycle">
   <div class="wrap">
@@ -239,7 +239,7 @@ def lifecycle():
       <div class="lc-line" role="tablist" aria-label="Project phases">{btns}</div>
       <div id="lcPanel" class="lc-panels" role="tabpanel">{panels}</div>
     </div>
-    <p class="lc-note">Revamping an existing plant? <a href="solutions/brownfield/">See brownfield and revamps &rarr;</a></p>
+    <p class="lc-note">Revamping an existing plant? <a href="phases/brownfield/">See brownfield and revamps &rarr;</a></p>
   </div>
 </section>'''
 
@@ -248,9 +248,9 @@ WALK_STEPS = [
  ('equip', 'Model', 'Equipment models from vendor drawings', 'Vendor drawings arrive as PDFs, and someone has to model every vessel and exchanger by hand. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them, ready to place in your plant model.', ['Vessels, exchangers, pumps and more', 'Nozzles with size, rating and orientation', 'Checked against the vendor drawing'], 'equipment/', 'See equipment modelling'),
  ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
  ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
- ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
- ('review', 'Check', 'Engineers review changes, not whole sheets', 'Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.', ['Automatic clouding at every revision', 'Model, P&amp;ID and BOM checked against each other', 'A full record of who approved what, and when'], 'solutions/detailed/', 'See detailed engineering'),
- ('site', 'Build', 'The current drawing, at the workface', 'Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.', ['Isometric and 3D model on any phone or tablet', 'Superseded revisions clearly flagged', 'Test-pack boundaries worked out from the P&amp;IDs'], 'solutions/construction/', 'See construction'),
+ ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'phases/procurement/', 'See procurement'),
+ ('review', 'Check', 'Engineers review changes, not whole sheets', 'Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.', ['Automatic clouding at every revision', 'Model, P&amp;ID and BOM checked against each other', 'A full record of who approved what, and when'], 'phases/detailed/', 'See detailed engineering'),
+ ('site', 'Build', 'The current drawing, at the workface', 'Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.', ['Isometric and 3D model on any phone or tablet', 'Superseded revisions clearly flagged', 'Test-pack boundaries worked out from the P&amp;IDs'], 'phases/construction/', 'See construction'),
 ]
 def walkthrough():
     bar = ''.join(f'<a href="#w-{k}"><i>{i+1:02d}</i>{t}</a>' for i, (k, t, *_) in enumerate(WALK_STEPS))
@@ -271,7 +271,7 @@ THREAD = '''<section class="band band--alt" id="thread">
   <div class="wrap">
     <p class="eyebrow">Connected data</p>
     <h2>One revision. Every document.</h2>
-    <p class="lead lead--wide">P&amp;IDs, models, isometrics and MTOs describe the same plant, so Cadmium treats them as one dataset. Select a part to find it everywhere, or revise the line and watch the change carry through.</p>
+    <p class="lead lead--wide">P&amp;IDs, models, isometrics and MTOs describe the same plant, so Cadmium treats them as one dataset. Select a part to find it everywhere, or revise the line and watch the change carry through. <a href="platform/">How the platform fits together &rarr;</a></p>
     <div class="thread" id="thread-demo" data-rev="A" data-inview>
       <div class="thread-bar">
         <div class="chips" data-parts></div>
@@ -427,7 +427,7 @@ for k, p in PHASES.items():
     m, m2 = p['module'], p['module2']
     outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
     rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
-    others = ''.join(f'<a href="{{R}}solutions/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in STAGES_ONLY.items())
+    others = ''.join(f'<a href="{{R}}phases/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in STAGES_ONLY.items())
     body = f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/{PHOTO_OF[k]}.jpg')"><div class="wrap">
     {f'<nav class="phase-rail" aria-label="Project phases">{others}</nav>' if k != 'brownfield' else ''}
     <div class="sub-grid">
@@ -445,10 +445,10 @@ for k, p in PHASES.items():
     <p class="eyebrow">Deliverables</p>
     <h2>What changes on the job.</h2>
     <div class="table-wrap"><table class="ltable"><thead><tr><th>Deliverable</th><th>Today</th><th>With Cadmium</th></tr></thead><tbody>{rows}</tbody></table></div>
-    <p class="also">Also used in this phase: <a href="{{R}}{m2[1]}">{m2[0]} &rarr;</a></p>
+    <p class="also">Solutions used in this phase: <a href="{{R}}{m[1]}">{m[0]} &rarr;</a> &ensp; <a href="{{R}}{m2[1]}">{m2[0]} &rarr;</a></p>
   </div></section>'''
     title = re.sub('<[^>]+>', '', p['title'])
-    page(f'solutions/{k}', f'{title} — Cadmium', re.sub('&amp;', '&amp;', p['lead']), k, body)
+    page(f'phases/{k}', f'{title} — Cadmium', re.sub('&amp;', '&amp;', p['lead']), k, body)
 
 # Platform
 platform = '''<section class="sub-hero has-photo" style="background-image:url('{R}assets/photos/pipeline-joints.jpg')"><div class="wrap">
@@ -467,7 +467,7 @@ platform = '''<section class="sub-hero has-photo" style="background-image:url('{
     </div>
   </div></section>
   <section class="band"><div class="wrap">
-    <p class="eyebrow">Modules</p>
+    <p class="eyebrow">Solutions</p>
     <h2>Start with one. They share the same data.</h2>
     <article class="prod"><div><h3>Isometrics</h3><p>A 3D model to a finished, annotated isometric on your template, with bill of materials, spool data and automatic revision comparison.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}isometrics/">Watch the pipeline run</a></div></div><div data-mock="iso" data-root="{R}"></div></article>
     <article class="prod"><div><h3>GAD annotation</h3><p>General arrangement plans extracted from the model become issue-ready drawings: labels clear of piping, chained dimensions, margin entries, in your native DGN with a 1:1 PDF.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}gad/">See GAD annotation</a></div></div><div data-mock="gad" data-root="{R}"></div></article>
@@ -488,7 +488,7 @@ ROLES = [
 cards = ''
 ROLE_PHOTO = {'Piping leads': 'welder-mask', 'Engineering managers': 'pipefitters', 'Project directors': 'pipeline-trench', 'Digital and IT': 'plant-stacks'}
 for t, h, pts, link in ROLES:
-    href = 'security/' if link == 'security' else f'solutions/{link}/'
+    href = 'security/' if link == 'security' else f'phases/{link}/'
     lis = ''.join(f'<li>{x}</li>' for x in pts)
     cards += f'<article class="role"><img src="{{R}}assets/photos/{ROLE_PHOTO[t]}.jpg" alt="" loading="lazy" /><p class="eyebrow">{t}</p><h3>{h}</h3><ul>{lis}</ul><a href="{{R}}{href}">Read more &rarr;</a></article>'
 page('teams', 'Teams — Cadmium', 'What Cadmium changes for piping leads, engineering managers, project directors and digital teams at EPC contractors.', 'teams',
@@ -651,6 +651,11 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
     if 'demos/motion.js' not in s:
         s = s.replace('<script src="../script.js"></script>', '<script src="../script.js"></script>\n<script src="../demos/motion.js"></script>')
     open(f, 'w').write(s)
+# The phase pages used to live under /solutions/.
+for k in PHASES:
+    os.makedirs(f'solutions/{k}', exist_ok=True)
+    open(f'solutions/{k}/index.html', 'w').write(f'<!DOCTYPE html><meta charset="utf-8"><title>Moved</title><link rel="canonical" href="/phases/{k}/"><meta http-equiv="refresh" content="0; url=../../phases/{k}/"><a href="../../phases/{k}/">This page has moved.</a>\n')
+
 # Version the stylesheets so a push reaches browsers straight away.
 import glob, hashlib
 tags = {n: hashlib.md5(open(n, 'rb').read()).hexdigest()[:8] for n in ('styles.css', 'site.css')}

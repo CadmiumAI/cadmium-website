@@ -1,49 +1,8 @@
 #!/usr/bin/env python3
 """Builds the vector content shown inside the product recordings.
-sheet.svg is the real isometric from the recorded pipeline run. gad-*.svg is a synthetic general
-arrangement drawn here: customer drawings must never be published.
+gad.svg is a synthetic general arrangement drawn here: customer drawings must never be published.
 Run from the repo root: python3 tools/build_screens.py"""
-import json, random, re
-
-d = json.load(open('demos/data/iso8.json'))
-s = d['sheet']['svg'].replace('<rect width="100%" height="100%" fill="white"/>', '')
-for a, b in {'#00aa00': '#42e08f', '#00aa55': '#9fb4d0', '#1565c0': '#9fb4d0', '#ff0000': '#ff7b6b', '#ff00ff': '#d6a2f5', '#333': '#e2e8f0', '#000000': '#e2e8f0', '#999999': '#8a97ad'}.items():
-    s = s.replace(f'"{a}"', f'"{b}"')
-s = s.replace('fill="white"', 'fill="#14181f"').replace('fill="#eeeeee"', 'fill="#232a35"')
-W, H = d['sheet']['w'], d['sheet']['h']
-vb = (-500, 100, W + 1000, 13300)
-s = re.sub(r'<svg [^>]*>', f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]} {vb[1]} {vb[2]} {vb[3]}" font-family="ui-monospace,Consolas,monospace">'
-           f'<rect x="{vb[0]+120}" y="{vb[1]+120}" width="{vb[2]-240}" height="{vb[3]-240}" fill="none" stroke="#5b6675" stroke-width="28"/>'
-           f'<rect x="{vb[0]+240}" y="{vb[1]+240}" width="{vb[2]-480}" height="{vb[3]-480}" fill="none" stroke="#5b6675" stroke-width="10"/>', s, count=1)
-# Tag each entity with the pass a CAD regen would draw it in: frame, centrelines, then detail, text last.
-import xml.etree.ElementTree as ET
-ET.register_namespace('', 'http://www.w3.org/2000/svg')
-root = ET.fromstring(s)
-PASS = {'#42e08f': 'pipe', '#9fb4d0': 'fit', '#ff7b6b': 'dim', '#d6a2f5': 'elev', '#e2e8f0': 'bal', '#5b6675': 'frame', '#8a97ad': 'fit'}
-def first_x(el):
-    t = el.get('transform') or ''
-    m = re.search(r'translate\(([-\d.]+)', t)
-    if m: return float(m.group(1))
-    for k in ('x', 'x1', 'cx'):
-        if el.get(k): return float(el.get(k))
-    for c in el:
-        v = first_x(c)
-        if v is not None: return v
-    return None
-counts = {}
-for el in root:
-    blob = ET.tostring(el, encoding='unicode')
-    x = first_x(el)
-    col = next((v for k, v in PASS.items() if f'"{k}"' in blob), 'fit')
-    tag = el.tag.split('}')[1]
-    if col == 'frame': kind = 'frame'
-    elif x is not None and x > 19400: kind = 'bomtext' if tag == 'text' else 'bom'
-    elif tag == 'text': kind = 'text' if col != 'bal' else 'baltext'
-    else: kind = col
-    el.set('data-l', kind); counts[kind] = counts.get(kind, 0) + 1
-s = ET.tostring(root, encoding='unicode')
-print(counts)
-open('assets/screens/sheet.svg', 'w').write(s)
+import random
 
 # ── a synthetic piping GA ──
 random.seed(48)

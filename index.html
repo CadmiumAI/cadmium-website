@@ -139,20 +139,6 @@
     </div>
   </div>
 </section>
-<section class="band band--dark fit-screen" id="run">
-  <div class="wrap">
-    <p class="eyebrow">A real line, start to finish</p>
-    <h2>From 3D model to issued sheet.</h2>
-    <p class="lead lead--wide">One line, taken from the plant model to a finished isometric. Drag the model to turn it.</p>
-    <div class="lab iso-lab" id="hero">
-      <div class="lab-view iso-view" data-iso-view><div class="iso-tip" data-iso-tip hidden></div></div>
-      <div class="lab-foot">
-        <div class="iso-steps" data-iso-steps></div>
-        <p class="lab-note" data-iso-note aria-live="polite"></p>
-      </div>
-    </div>
-  </div>
-</section>
 <section class="walk" id="walk">
   <div class="wrap"><p class="eyebrow">Walkthrough</p><h2>A line, from first P&amp;ID to the workface.</h2></div>
   <nav class="walk-bar" aria-label="Walkthrough steps"><div class="wrap"><a href="#w-pid"><i>01</i>Read</a><a href="#w-iso"><i>02</i>Generate</a><a href="#w-gad"><i>03</i>Annotate</a><a href="#w-mto"><i>04</i>Take off</a><a href="#w-review"><i>05</i>Check</a><a href="#w-site"><i>06</i>Build</a></div></nav>
@@ -160,7 +146,7 @@
         <div class="walk-copy"><span class="walk-k">01 &middot; Read</span><h3>Turn a stack of P&amp;IDs into data by lunchtime</h3><p>Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.</p><ul><li>Line, valve and instrument lists, ready on day one</li><li>Every tag traced back to its place on the sheet</li><li>Dangling lines and missing tags flagged for review</li></ul><a href="pid/">See it read a P&amp;ID &rarr;</a></div>
         <div data-mock="pid" data-root=""></div>
       </article><article class="walk-step flip" id="w-iso">
-        <div class="walk-copy"><span class="walk-k">02 &middot; Generate</span><h3>From the model to a finished sheet</h3><p>Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.</p><ul><li>Hours of clean-up per sheet become minutes of review</li><li>Your title block and your drafting standards</li><li>Native DWG and DXF, editable by your team</li></ul><a href="isometrics/">Watch the pipeline run &rarr;</a></div>
+        <div class="walk-copy"><span class="walk-k">02 &middot; Generate</span><h3>From the model to a finished sheet</h3><p>Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.</p><ul><li>Hours of clean-up per sheet become minutes of review</li><li>Your title block and your drafting standards</li><li>Native DWG and DXF, editable by your team</li></ul><a href="isometrics/">Watch the pipeline run &rarr;</a></div>
         <div data-mock="iso" data-root=""></div>
       </article><article class="walk-step" id="w-gad">
         <div class="walk-copy"><span class="walk-k">03 &middot; Annotate</span><h3>General arrangements, ready to issue</h3><p>Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.</p><ul><li>A clean sheet in about ten seconds</li><li>Still your native DGN, plus a 1:1 PDF</li><li>Every label clear of piping and of other labels</li></ul><a href="gad/">See GAD annotation &rarr;</a></div>
@@ -338,9 +324,6 @@
   (function () { var h = location.hash.slice(1);
     if (['problem', 'compare', 'product', 'viewer', 'savings'].indexOf(h) >= 0) location.replace('isometrics/#' + h); })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="demos/iso.js"></script>
 <script src="demos/home.js"></script>
-<script>CadIso(document.getElementById('hero'), { data: 'demos/data/iso8' });</script>
 </body>
 </html>

@@ -52,7 +52,7 @@
   </div>
 </header>
 
-<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
+<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">
 
 <!-- ════════════════════════════════════════════════════════════
@@ -68,7 +68,7 @@
       </p>
       <div class="hero-actions">
         <a class="btn btn--primary" href="#contact">Start a pilot</a>
-        <a class="btn btn--ghost" href="#run">Watch the run</a>
+        <a class="btn btn--ghost" href="#compare">See the comparison</a>
       </div>
       <div class="rulewide"></div>
       <div class="stat-row">
@@ -84,32 +84,6 @@
            alt="A finished Cadmium isometric sheet: green pipe run, red dimension chains, magenta elevation callouts, numbered component balloons and a bill of materials table in the corner of an A2 sheet."
            width="1541" height="1090" fetchpriority="high" />
     </figure>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════
-     THE RUN — one recorded pipeline run
-     ═════════════════════════════════════════════════════════ -->
-<section class="band band--dark fit-screen" id="run">
-  <div class="wrap">
-    <p class="eyebrow">From model to issued sheet</p>
-    <h2>One line, from model to sheet.</h2>
-    <p class="lead lead--wide">A recorded run on a real line, from the plant model to a finished isometric. Drag the model to turn it.</p>
-    <div class="lab iso-lab" id="isoLab">
-      <div class="lab-view iso-view" data-iso-view>
-        <div class="iso-tip" data-iso-tip hidden></div>
-      </div>
-      <div class="lab-foot">
-        <div class="iso-steps" data-iso-steps></div>
-        <p class="lab-note" data-iso-note aria-live="polite">Loading the recorded run&hellip;</p>
-        <div class="lab-row">
-          <button class="btn btn--on-dark btn--sm" type="button" data-iso-play>Play the run</button>
-          <div class="chips" data-iso-layers aria-label="Sheet layers"></div>
-          <span class="lab-hint">Drag to rotate &middot; ctrl + scroll to zoom</span>
-        </div>
-      </div>
-    </div>
-    <p class="fineprint">One sample line of 71 components, 6.6 s end to end. Model detail is simplified for the web.</p>
   </div>
 </section>
 
@@ -207,7 +181,7 @@
       <div class="flow-step">
         <span class="n">Generate</span>
         <h3>One command</h3>
-        <p>Cadmium works out what connects to what, lays out the line and places every dimension, elevation and balloon.</p>
+        <p>Cadmium produces the annotated isometric, with every dimension, elevation and balloon in place.</p>
       </div>
       <div class="flow-step">
         <span class="n">Check</span>
@@ -381,8 +355,5 @@
 <script src="../script.js"></script>
 <script src="../demos/motion.js"></script>
 <script src="../demos/mocks.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="../demos/iso.js"></script>
-<script>CadIso(document.getElementById('isoLab'), { data: '../demos/data/iso8', autoplay: false });</script>
 </body>
 </html>

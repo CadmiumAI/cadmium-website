@@ -242,7 +242,7 @@ def lifecycle():
 
 WALK_STEPS = [
  ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
- ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. It works out what connects to what, lays out each line so nothing collides, and places every dimension, elevation and balloon on your template, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
+ ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
  ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
  ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
  ('review', 'Check', 'Engineers review changes, not whole sheets', 'Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.', ['Automatic clouding at every revision', 'Model, P&amp;ID and BOM checked against each other', 'A full record of who approved what, and when'], 'solutions/detailed/', 'See detailed engineering'),
@@ -328,21 +328,6 @@ INTEG = '''<section class="band" id="integrations">
   </div>
 </section>'''
 
-RUN = '''<section class="band band--dark fit-screen" id="run">
-  <div class="wrap">
-    <p class="eyebrow">A real line, start to finish</p>
-    <h2>From 3D model to issued sheet.</h2>
-    <p class="lead lead--wide">One line, taken from the plant model to a finished isometric. Drag the model to turn it.</p>
-    <div class="lab iso-lab" id="hero">
-      <div class="lab-view iso-view" data-iso-view><div class="iso-tip" data-iso-tip hidden></div></div>
-      <div class="lab-foot">
-        <div class="iso-steps" data-iso-steps></div>
-        <p class="lab-note" data-iso-note aria-live="polite"></p>
-      </div>
-    </div>
-  </div>
-</section>'''
-
 FIELD = '''<section class="band" id="field">
   <div class="wrap">
     <p class="eyebrow">At the workface</p>
@@ -418,7 +403,6 @@ home = f'''<section class="hq hq--photo" id="top">
 
 
 {lifecycle()}
-{RUN}
 {walkthrough()}
 {FIELD}
 {COST}
@@ -431,10 +415,7 @@ page('', 'Cadmium — AI for engineering',
   (function () { var h = location.hash.slice(1);
     if (['problem', 'compare', 'product', 'viewer', 'savings'].indexOf(h) >= 0) location.replace('isometrics/#' + h); })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="demos/iso.js"></script>
-<script src="demos/home.js"></script>
-<script>CadIso(document.getElementById('hero'), { data: 'demos/data/iso8' });</script>''')
+<script src="demos/home.js"></script>''')
 
 MOCK_OF = dict(feed='pid', detailed='iso', procurement='mto', construction='site', handover='review', brownfield='pid')
 # Solutions
@@ -630,7 +611,7 @@ for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')
                'pid': dict(h2='Sitting on a stack of P&amp;IDs?', lead='Bring real sheets under NDA. We read them with your team, so your engineers can judge the lists against their own.')}[path]
     s = re.sub(r'<section class="band band--cta" id="contact">.*?</section>', lambda m: pilot(**closing), s, flags=re.S)
     if path == 'isometrics' and 'class="subnav"' not in s:
-        s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#run">The run</a><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
+        s = s.replace('<main id="main">', '''<nav class="subnav" aria-label="On this page"><div class="wrap"><b>Isometrics</b><a href="#compare">Comparison</a><a href="#product">How it works</a><a href="#viewer">3D model</a><a href="#savings">Savings</a></div></nav>
 <main id="main">''', 1)
     s = re.sub(r"<script>\s*(/\*.*?\*/\s*)?\(function\(\)\{try\{var t=localStorage.*?</script>\s*", "", s, flags=re.S)
     if 'name="color-scheme"' not in s:

@@ -118,13 +118,13 @@
       c.clearRect(0, 0, W, H);
       c.lineWidth = 1;
       runs.forEach(function (r) {
-        c.strokeStyle = 'rgba(156,198,242,.13)';
+        c.strokeStyle = 'rgba(148,163,184,.14)';
         c.beginPath();
         r.pts.forEach(function (p, i) { i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1]); });
         c.stroke();
         r.valves.forEach(function (i) {
           var a = r.pts[i], b = r.pts[i + 1], x = (a[0] + b[0]) / 2, y = (a[1] + b[1]) / 2, h = a[1] === b[1];
-          c.strokeStyle = 'rgba(156,198,242,.22)';
+          c.strokeStyle = 'rgba(148,163,184,.24)';
           c.beginPath();
           if (h) { c.moveTo(x - 7, y - 5); c.lineTo(x + 7, y + 5); c.lineTo(x + 7, y - 5); c.lineTo(x - 7, y + 5); }
           else { c.moveTo(x - 5, y - 7); c.lineTo(x + 5, y + 7); c.lineTo(x - 5, y + 7); c.lineTo(x + 5, y - 7); }
@@ -136,7 +136,7 @@
         d.at += d.sp; if (d.at > r.len) d.at = 0;
         for (var k = 0; k < 9; k++) {
           var p = at(r, Math.max(0, d.at - k * 5)), near = Math.hypot(p[0] - mx, p[1] - my) < 130;
-          c.fillStyle = near ? 'rgba(255,207,92,' + (.85 - k * .09) + ')' : 'rgba(92,224,162,' + (.7 - k * .075) + ')';
+          c.fillStyle = near ? 'rgba(255,207,92,' + (.85 - k * .09) + ')' : 'rgba(159,188,255,' + (.7 - k * .075) + ')';
           c.fillRect(p[0] - 1, p[1] - 1, 2, 2);
         }
       });

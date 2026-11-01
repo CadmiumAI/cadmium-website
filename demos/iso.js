@@ -8,16 +8,16 @@
   var ISO_DIR = [-1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)]; // top-south-west
   var SVG_PER_MODEL = Math.sqrt(1.5);                                    // isometric drawing scale
   var TYPE_COLOR = {
-    Pipe: 0x5b8fca, Elbow: 0x8fbdf0, Flange: 0xcfe6ff, Gasket: 0xffffff,
-    Valve: 0xff9a5a, Tee: 0x79a9de, Reducer: 0x8fd0c4, Support: 0x54657c
+    Pipe: 0x8d99ad, Elbow: 0xb4bdcb, Flange: 0xdde2ea, Gasket: 0xffffff,
+    Valve: 0x6f86ff, Tee: 0xb4bdcb, Reducer: 0xa3acc0, Support: 0x4d5868
   };
   var HOT = new (function () { this.r = 1; this.g = 0.85; this.b = 0.35; })();
   var LAYERS = [
-    { id: 'pipe', label: 'Pipe', stroke: ['#00aa00'], to: '#42e08f' },
-    { id: 'glyph', label: 'Fittings', stroke: ['#00aa55', '#1565c0'], to: '#8fc3f7' },
+    { id: 'pipe', label: 'Pipe', stroke: ['#00aa00'], to: '#34d399' },
+    { id: 'glyph', label: 'Fittings', stroke: ['#00aa55', '#1565c0'], to: '#a9b6ca' },
     { id: 'dim', label: 'Dimensions', stroke: ['#ff0000'], to: '#ff7b6b' },
     { id: 'elev', label: 'Elevations', stroke: ['#ff00ff'], to: '#e59af7' },
-    { id: 'bom', label: 'Balloons', stroke: ['#333', '#000000', '#999999'], to: '#dbeafe' }
+    { id: 'bom', label: 'Balloons', stroke: ['#333', '#000000', '#999999'], to: '#e2e8f0' }
   ];
 
   function vLerp(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
@@ -300,7 +300,7 @@
           svgText = svgText.split('"' + c + '"').join('"' + l.to + '"');
         });
       });
-      svgText = svgText.replace(/fill="white"/g, 'fill="#0B2A50"').replace(/fill="#eeeeee"/g, 'fill="#123B6C"');
+      svgText = svgText.replace(/fill="white"/g, 'fill="#12182c"').replace(/fill="#eeeeee"/g, 'fill="#182038"');
       host.innerHTML = svgText;
       var svg = host.querySelector('svg');
       svg.setAttribute('width', data.sheet.w);
@@ -348,7 +348,7 @@
       camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 1000);
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setClearColor(0x000000, 0);
-      scene.add(new THREE.HemisphereLight(0xdcecff, 0x1c2c44, 1.0));
+      scene.add(new THREE.HemisphereLight(0xeef1f6, 0x1a2030, 1.0));
       var sun = new THREE.DirectionalLight(0xffffff, 0.75);
       sun.position.set(-1, -2, 3);
       scene.add(sun);
@@ -371,7 +371,7 @@
       colorAttr = new THREE.BufferAttribute(baseColors.slice(), 3);
       g.setAttribute('color', colorAttr);
       g.setIndex(new THREE.BufferAttribute(idx, 1));
-      mesh = new THREE.Mesh(g, new THREE.MeshPhongMaterial({ vertexColors: true, flatShading: true, shininess: 30, side: THREE.DoubleSide }));
+      mesh = new THREE.Mesh(g, new THREE.MeshPhongMaterial({ vertexColors: true, flatShading: true, shininess: 70, specular: 0x8892a4, side: THREE.DoubleSide }));
       scene.add(mesh);
 
       var seen = {};
@@ -380,7 +380,7 @@
 
       _m = new THREE.Matrix4(); _q = new THREE.Quaternion(); _v = new THREE.Vector3();
       _s = new THREE.Vector3(); _y = new THREE.Vector3(0, 1, 0); _p = new THREE.Vector3();
-      tubes = new THREE.InstancedMesh(new THREE.CylinderGeometry(1, 1, 1, 8), new THREE.MeshBasicMaterial({ color: 0x42e08f }), data.edges.length);
+      tubes = new THREE.InstancedMesh(new THREE.CylinderGeometry(1, 1, 1, 8), new THREE.MeshBasicMaterial({ color: 0x34d399 }), data.edges.length);
       joints = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), new THREE.MeshBasicMaterial({ color: 0xcfe6ff }), used.length);
       tubes.frustumCulled = joints.frustumCulled = false;
       scene.add(tubes); scene.add(joints);

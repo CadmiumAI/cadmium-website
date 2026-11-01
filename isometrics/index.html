@@ -37,7 +37,7 @@
       <b>Cadmium</b>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <div class="nav-drop"><button class="nav-drop-btn is-current" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="../platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="../isometrics/" class="is-current" aria-current="page"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="../pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="../3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
+      <div class="nav-drop"><button class="nav-drop-btn is-current" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="../platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="../isometrics/" class="is-current" aria-current="page"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="../gad/"><b>GAD annotation</b><span>General arrangements, issue-ready</span></a><a href="../pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="../3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
       <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Solutions</button><div class="nav-panel"><a href="../solutions/feed/"><b>Front-end engineering</b><span>Turn licensor packages into live data</span></a><a href="../solutions/detailed/"><b>Detailed engineering</b><span>Issue isometrics and MTOs in minutes</span></a><a href="../solutions/procurement/"><b>Procurement and fabrication</b><span>MTOs and spools your shop can trust</span></a><a href="../solutions/construction/"><b>Construction</b><span>The current drawing and model, at the workface</span></a><a href="../solutions/handover/"><b>Commissioning and handover</b><span>As-builts and data your client will accept</span></a><a href="../solutions/brownfield/"><b>Brownfield and revamps</b><span>Bring legacy plants back into data</span></a></div></div>
       <a href="../teams/">Teams</a>
       <a href="../security/">Security</a>
@@ -90,7 +90,7 @@
 <!-- ════════════════════════════════════════════════════════════
      THE RUN — one recorded pipeline run
      ═════════════════════════════════════════════════════════ -->
-<section class="band band--dark" id="run">
+<section class="band band--dark fit-screen" id="run">
   <div class="wrap">
     <p class="eyebrow">The real pipeline, stage by stage</p>
     <h2>One line, from model to sheet.</h2>
@@ -224,103 +224,9 @@
       </div>
     </div>
 
-    <!-- ── live app walkthrough ──────────────────────────── -->
-    <div class="demo-head">
-      <h3 class="demo-title">The whole job, start to finish</h3>
-      <button class="btn btn--ghost btn--sm" id="demoReplay" type="button">Replay</button>
-    </div>
-
-    <div class="browser" id="demo" data-stage="0">
-      <div class="browser-bar">
-        <span class="browser-dots"><i></i><i></i><i></i></span>
-        <span class="browser-url">app.cadmium-ai.com/projects/2/drawings/8</span>
-      </div>
-
-      <div class="browser-body">
-        <!-- app top bar -->
-        <div class="ui-top">
-          <span class="ui-brand"><img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="22" height="22" /> Cadmium</span>
-          <span class="ui-avatar">AD</span>
-        </div>
-
-        <div class="ui-page">
-          <p class="ui-crumbs">Projects <em>/</em> Project 2 <em>/</em> <b>Isometric 8</b></p>
-
-          <div class="ui-head">
-            <div>
-              <h4>Isometric 8</h4>
-              <p>Upload the export pair, then generate the annotated isometric.</p>
-            </div>
-            <button class="ui-btn ui-btn--primary" id="demoGenerate" type="button" tabindex="-1">Generate ISO DXF</button>
-          </div>
-
-          <!-- input files -->
-          <div class="ui-card">
-            <div class="ui-card-head">
-              <span>Input files</span>
-              <span class="ui-pill" id="demoPill">&bull; NEW</span>
-            </div>
-            <div class="ui-files">
-              <div class="ui-file" id="demoFileA">
-                <span class="ui-file-icon">D</span>
-                <span class="ui-file-meta"><b>export.dxf</b><em>REQUIRED</em></span>
-              </div>
-              <div class="ui-file" id="demoFileB">
-                <span class="ui-file-icon">I</span>
-                <span class="ui-file-meta"><b>export.iges</b><em>REQUIRED</em></span>
-              </div>
-            </div>
-            <div class="ui-field">
-              <label>Sheet template</label>
-              <div class="ui-select">Default (blank A2) <em>(default)</em></div>
-            </div>
-            <div class="ui-drop" id="demoDrop">
-              <b>Drop export.dxf + export.iges</b>
-              <span>or click to browse — from your cadmium_export folder</span>
-            </div>
-          </div>
-
-          <!-- pipeline -->
-          <div class="ui-card ui-reveal" id="demoPipelineCard">
-            <div class="ui-card-head">
-              <span>Pipeline</span>
-              <span class="ui-pill" id="demoPipePill">&bull; RUNNING</span>
-            </div>
-            <div class="ui-progress"><i id="demoProgress"></i></div>
-            <div class="ui-pipeline">
-              <ol class="ui-stages">
-                <li data-stage="load"><i></i>Load</li>
-                <li data-stage="iso"><i></i>Generating Isometric</li>
-                <li data-stage="ann"><i></i>Annotating Isometric</li>
-                <li data-stage="exp"><i></i>Export</li>
-              </ol>
-              <pre class="ui-log" id="demoLog" aria-live="polite"></pre>
-            </div>
-            <div class="ui-actions">
-              <button class="ui-btn ui-btn--primary" type="button" tabindex="-1">&darr; Download DXF</button>
-              <button class="ui-btn" type="button" tabindex="-1">&#8635; Re-run</button>
-            </div>
-          </div>
-
-          <!-- result -->
-          <div class="ui-card ui-reveal" id="demoResultCard">
-            <div class="ui-card-head">
-              <span>Isometric</span>
-              <span class="ui-tabs"><b>3D Model</b><b class="is-on">Isometric</b></span>
-            </div>
-            <div class="ui-sheet">
-              <img src="../assets/isometric-preview.svg" loading="lazy"
-                   alt="The generated isometric previewed in the Cadmium app as an SVG: green pipe runs, red dimension chains, magenta elevations, numbered component balloons and a bill of materials." />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <span class="demo-cursor" id="demoCursor" aria-hidden="true">
-        <svg viewBox="0 0 20 22" aria-hidden="true"><path d="M1 1 1 17.2 5.4 13.2 8.3 20 11.4 18.6 8.6 12 14.6 11.4Z" fill="#0B2A50" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      </span>
-    </div>
-
+    <!-- ── a recording of the job ── -->
+    <div class="demo-head"><h3 class="demo-title">The whole job, start to finish</h3></div>
+    <div data-mock="iso" data-root="../"></div>
   </div>
 </section>
 
@@ -469,7 +375,7 @@
         </a>
         <p>AI for engineering, procurement and construction.</p>
       </div>
-      <div><h4>Platform</h4><a href="../platform/">Overview</a><a href="../isometrics/">Isometrics</a><a href="../pid/">P&amp;ID intelligence</a><a href="../3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Platform</h4><a href="../platform/">Overview</a><a href="../isometrics/">Isometrics</a><a href="../gad/">GAD annotation</a><a href="../pid/">P&amp;ID intelligence</a><a href="../3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4><a href="../solutions/feed/">Front-end engineering</a><a href="../solutions/detailed/">Detailed engineering</a><a href="../solutions/procurement/">Procurement and fabrication</a><a href="../solutions/construction/">Construction</a><a href="../solutions/handover/">Commissioning and handover</a><a href="../solutions/brownfield/">Brownfield and revamps</a></div>
       <div><h4>Company</h4><a href="../teams/">Teams</a><a href="../security/">Security</a><a href="../company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="../credits/">Photo credits</a></div>
     </div>
@@ -485,6 +391,7 @@
 
 <script src="../script.js"></script>
 <script src="../demos/motion.js"></script>
+<script src="../demos/mocks.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="../demos/iso.js"></script>
 <script>CadIso(document.getElementById('isoLab'), { data: '../demos/data/iso8', autoplay: false });</script>

@@ -793,7 +793,7 @@
   }
 
   /* ═══ the page ═══════════════════════════════════════════════════════ */
-  var COLORS = ['#6fe3a8', '#7cc4ff', '#ffb36b', '#e39bff', '#ffe27a', '#6fe3d8', '#ff9db0', '#b5c8ff', '#c6f26f', '#ffc7f2', '#9cf0ff', '#ffd2a8'];
+  var COLORS = ['#6fe3a8', '#8ea0ff', '#ffb36b', '#e39bff', '#ffe27a', '#6fe3d8', '#ff9db0', '#b5c8ff', '#c6f26f', '#ffc7f2', '#9cf0ff', '#ffd2a8'];
   var STAGES = [
     { id: 'scan', label: 'Scan', note: 'What the reader is given: pixels and nothing else.' },
     { id: 'clean', label: 'Clean', note: 'Threshold, measure the skew and remove it, drop the specks.' },
@@ -880,15 +880,15 @@
     }
     function draw() {
       if (!R) return;
-      var BG = [8, 30, 58];
+      var BG = [11, 16, 32];
       if (stage === 'scan') {
         var img = ctx.createImageData(W, H);
         for (var i = 0; i < W * H; i++) { var v = gray[i]; img.data[i * 4] = v; img.data[i * 4 + 1] = v; img.data[i * 4 + 2] = v * .97; img.data[i * 4 + 3] = 255; }
         ctx.putImageData(img, 0, 0);
         return;
       }
-      if (stage === 'clean') { lut(R.bin, function (v) { return v; }, [207, 230, 255], BG); label(14, H - 18, 'measured skew ' + R.skew.toFixed(2) + '° · ' + R.ms.toFixed(0) + ' ms for the whole read', '#9CC6F2'); return; }
-      lut(R.bin, function (v) { return v; }, stage === 'graph' ? [64, 92, 128] : [66, 96, 134], BG);
+      if (stage === 'clean') { lut(R.bin, function (v) { return v; }, [203, 213, 225], BG); label(14, H - 18, 'measured skew ' + R.skew.toFixed(2) + '° · ' + R.ms.toFixed(0) + ' ms for the whole read', '#94a3b8'); return; }
+      lut(R.bin, function (v) { return v; }, stage === 'graph' ? [64, 76, 100] : [64, 76, 100], BG);
       ctx.lineCap = 'round';
       if (stage === 'lines' || stage === 'graph') R.segs.forEach(function (s) {
         var dim = iso && iso.nets.indexOf(s.net) < 0;
@@ -898,11 +898,11 @@
       });
       if (stage === 'text') R.inst.forEach(function (n) { label(n.x - 22, n.y - n.r - 8, n.tag || '?', '#e39bff'); });
       if (stage === 'symbols' || stage === 'graph') {
-        ctx.fillStyle = 'rgb(8,30,58)';
+        ctx.fillStyle = 'rgb(11,16,32)';
         R.words.forEach(function (w) { if (w.cls === 'equip' || w.cls === 'valve') ctx.fillRect(w.x0 - 3, w.y0 - 3, w.x1 - w.x0 + 6, w.y1 - w.y0 + 6); });
       }
       if (stage === 'symbols' || stage === 'graph') R.nodes.forEach(function (n) {
-        var b = n.box, pad = 4, col = n.type === 'equip' ? '#7cc4ff' : n.type === 'inst' ? '#e39bff' : '#6fe3a8';
+        var b = n.box, pad = 4, col = n.type === 'equip' ? '#8ea0ff' : n.type === 'inst' ? '#e39bff' : '#6fe3a8';
         var closing = iso && iso.close.indexOf(n.id) >= 0;
         if (stage === 'graph' && iso) col = closing ? '#ff6b57' : n.id === selected ? '#ffcf5c' : 'rgba(150,180,215,.5)';
         ctx.strokeStyle = col; ctx.lineWidth = closing || n.id === selected ? 3 : 2;
@@ -913,21 +913,21 @@
         label(b.x0 - pad, b.y0 - pad - 5, text, col);
       });
       if (stage === 'text') R.words.forEach(function (w) {
-        ctx.fillStyle = 'rgba(6,26,51,.86)'; ctx.fillRect(w.x0 - 4, w.y0 - 4, w.x1 - w.x0 + 8, w.y1 - w.y0 + 8);
+        ctx.fillStyle = 'rgba(11,16,32,.86)'; ctx.fillRect(w.x0 - 4, w.y0 - 4, w.x1 - w.x0 + 8, w.y1 - w.y0 + 8);
         ctx.strokeStyle = w.cls ? '#ffcf5c' : 'rgba(255,207,92,.45)'; ctx.lineWidth = 1.5;
         ctx.strokeRect(w.x0 - 4, w.y0 - 4, w.x1 - w.x0 + 8, w.y1 - w.y0 + 8);
         ctx.font = "500 13px 'Fira Mono', monospace"; ctx.fillStyle = w.cls ? '#ffcf5c' : '#c9a85f';
         ctx.fillText(w.cls ? w.tag : w.s, w.x0, w.y1);
       });
       if (stage === 'graph') R.open.forEach(function (o) {
-        ctx.strokeStyle = o.label ? '#7cc4ff' : '#ff6b57'; ctx.lineWidth = 2.5;
+        ctx.strokeStyle = o.label ? '#8ea0ff' : '#ff6b57'; ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.arc(o.x, o.y, 8, 0, 7); ctx.stroke();
       });
     }
     function label(x, y, text, col) {
       ctx.font = "500 13px 'Fira Mono', monospace";
       var w = ctx.measureText(text).width;
-      ctx.fillStyle = 'rgba(6,26,51,.82)'; ctx.fillRect(x - 2, y - 12, w + 5, 16);
+      ctx.fillStyle = 'rgba(11,16,32,.82)'; ctx.fillRect(x - 2, y - 12, w + 5, 16);
       ctx.fillStyle = col; ctx.fillText(text, x, y);
     }
 

@@ -258,7 +258,7 @@
       VIEWS.forEach(function (v) {
         var ctx = viewEls[v].getContext('2d');
         ctx.clearRect(0, 0, RES, RES);
-        ctx.fillStyle = 'rgba(156,198,242,.16)';
+        ctx.fillStyle = 'rgba(148,163,184,.16)';
         ctx.fillRect(0, 0, RES, RES);
         ctx.globalCompositeOperation = 'destination-in';
         ctx.drawImage(masks[v], 0, 0);
@@ -273,7 +273,7 @@
         e.globalCompositeOperation = 'destination-out';
         e.drawImage(masks[v], 0, 0);
         e.globalCompositeOperation = 'source-in';
-        e.fillStyle = '#CFE6FF';
+        e.fillStyle = '#cbd5e1';
         e.fillRect(0, 0, RES, RES);
         ctx.drawImage(edge, 0, 0);
         ctx.restore();
@@ -393,9 +393,9 @@
       d.position.set(-.6, 1.4, 1.2);
       scene.add(d);
       var g = new THREE.BufferGeometry();
-      mesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xcfe6ff, roughness: .5, metalness: .1, side: THREE.FrontSide }));
+      mesh = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xd5dbe5, roughness: .38, metalness: .35, side: THREE.FrontSide }));
       scene.add(mesh);
-      var box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(N, N, N)), new THREE.LineBasicMaterial({ color: 0x2e6bb0, transparent: true, opacity: .55 }));
+      var box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(N, N, N)), new THREE.LineBasicMaterial({ color: 0x637fff, transparent: true, opacity: .55 }));
       box.rotation.x = 0;
       scene.add(box);
       lastGeom = g;

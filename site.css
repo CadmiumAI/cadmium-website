@@ -277,7 +277,7 @@ h2{font-weight:700;letter-spacing:-.018em}
 
 /* lifecycle */
 .lc{--progress:25%;margin-top:26px;background:var(--sheet);border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow-1);overflow:hidden}
-.lc-line{position:relative;display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:18px;padding:18px 16px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid var(--rule);background:var(--sheet-2)}
+.lc-line{position:relative;display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:18px;padding:18px 16px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid var(--rule);background:var(--sheet-2)}
 .lc-node{position:relative;appearance:none;background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-family:var(--display);padding:0 4px;z-index:1}
 .lc-node::before,.lc-node::after{content:"";position:absolute;top:32px;height:3px;background:var(--rule-2);z-index:-1}
 .lc-node::before{left:0;width:calc(50% - 32px)}
@@ -522,17 +522,6 @@ h2{font-weight:700;letter-spacing:-.018em}
 .lc-vig .stamp text{font:700 11px var(--mono);fill:#34d399}
 .lc.in .lc-vig .stamp{animation:vg-stamp 6.5s infinite both}
 @keyframes vg-stamp{0%,40%{opacity:0;transform:rotate(-9deg) scale(1.9)}44%{opacity:1;transform:rotate(-9deg) scale(1)}86%{opacity:1;transform:rotate(-9deg) scale(1)}94%,100%{opacity:0;transform:rotate(-9deg) scale(1)}}
-/* brownfield */
-.lc-vig .old{fill:#6d5a45}.lc-vig .old2{stroke:#8a7458;stroke-width:1.6}
-.lc-vig .wire{fill:none;stroke:#7f96ff;stroke-width:1.3;stroke-linejoin:round}
-.lc-vig .scan{stroke:#ffcf5c;stroke-width:1.6;opacity:0}
-.lc-vig .tie{fill:#ffcf5c}
-.lc.in .lc-vig .dig{animation:vg-wipe 6.5s infinite both}
-.lc.in .lc-vig .scan{animation:vg-scan 6.5s infinite both}
-.lc.in .lc-vig .tie{animation:vg-pop2 6.5s infinite both}
-@keyframes vg-wipe{0%,6%{clip-path:inset(0 100% 0 0)}42%,90%{clip-path:inset(0 0 0 0)}96%,100%{clip-path:inset(0 100% 0 0)}}
-@keyframes vg-scan{0%,6%{opacity:1;transform:translateX(0)}42%{opacity:1;transform:translateX(180px)}43%,100%{opacity:0;transform:translateX(180px)}}
-@keyframes vg-pop2{0%,44%{opacity:0}47%,86%{opacity:1}94%,100%{opacity:0}}
 .lc-panel:not([hidden]){animation:lc-in .4s ease}
 @keyframes lc-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
@@ -888,3 +877,7 @@ h2{font-weight:700;letter-spacing:-.018em}
 }
 .btn[href="#contact"]:hover::after,.cta-form .btn[type="submit"]:hover::after{transform:translateX(2px)}
 @media (max-width:420px){.nav-actions .btn[href="#contact"]::after,.cta-form .btn[type="submit"]::after{display:none}}
+
+.lc-note{margin-top:14px;font-size:15px;color:var(--ink-2);max-width:none}
+.lc-note a{font-weight:600;text-decoration:none}
+.nav-panel .nav-sub{display:block;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 11px 3px;margin-top:4px;border-top:1px solid var(--rule)}

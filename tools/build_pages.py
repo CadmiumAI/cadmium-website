@@ -54,17 +54,24 @@ PHASES = {
     lost='Redrawing legacy documents before the revamp engineering can even begin.'),
 }
 
+STAGES_ONLY = {k: p for k, p in PHASES.items() if k != 'brownfield'}
 PHOTO_OF = dict(feed='plant-stacks', detailed='welder-mask', procurement='pipeline-joints', construction='insulation-crew', handover='valve-work', brownfield='refinery-dusk')
 
 def drop(label, root, items, key, cur):
-    links = ''.join(f'<a href="{root}{h}"{" class=\"is-current\" aria-current=\"page\"" if k == cur else ""}><b>{t}</b><span>{d}</span></a>' for k, h, t, d in items)
+    def row(k, h, t, d):
+        if k is None:
+            return f'<em class="nav-sub">{t}</em>'
+        cur_attr = ' class="is-current" aria-current="page"' if k == cur else ''
+        return f'<a href="{root}{h}"{cur_attr}><b>{t}</b><span>{d}</span></a>'
+    links = ''.join(row(*i) for i in items)
     on = ' is-current' if key in (cur or '') or any(k == cur for k, *_ in items) else ''
     return f'''<div class="nav-drop"><button class="nav-drop-btn{on}" type="button" aria-expanded="false">{label}</button><div class="nav-panel">{links}</div></div>'''
 
 def nav(root, cur):
     home = root or './'
     plat = [('platform', 'platform/', 'Platform overview', 'How the modules share one dataset'), ('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'General arrangements, issue-ready'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
-    sol = [(k, f'solutions/{k}/', p['title'], p['short']) for k, p in PHASES.items()]
+    sol = [(k, f'solutions/{k}/', p['title'], p['short']) for k, p in STAGES_ONLY.items()]
+    sol += [(None, '', 'Project type', ''), ('brownfield', 'solutions/brownfield/', PHASES['brownfield']['title'], PHASES['brownfield']['short'])]
     def link(h, t, k):
         c = ' class="is-current" aria-current="page"' if k == cur else ''
         return f'<a href="{root}{h}"{c}>{t}</a>'
@@ -207,18 +214,13 @@ VIG = {
    <g class="chk"><rect x="52" y="30" width="44" height="4"/><rect x="52" y="46" width="44" height="4"/><rect x="52" y="62" width="44" height="4"/><rect x="52" y="78" width="30" height="4"/></g>
    <g class="d s"><path style="--d:.3s;--t:.3s" pathLength="1" d="M36 31l3 3 6-7"/><path style="--d:.8s;--t:.3s" pathLength="1" d="M36 47l3 3 6-7"/><path style="--d:1.3s;--t:.3s" pathLength="1" d="M36 63l3 3 6-7"/><path style="--d:1.8s;--t:.3s" pathLength="1" d="M36 79l3 3 6-7"/></g>
    <g class="stamp"><rect x="104" y="36" width="68" height="24" rx="3"/><text x="138" y="52" text-anchor="middle">ACCEPTED</text></g></svg>""",
- # An old plant is scanned into a digital model, and a new tie-in is added.
- 'brownfield': """<svg viewBox="0 0 180 96"><path class="old" d="M10 88V58l22-12v12l22-12v12h14V22h8v36h10V14h8v44h14V40h24v48z"/><path class="old2" d="M10 88h156"/>
-   <g class="dig"><rect x="0" y="0" width="180" height="96" fill="#12182c"/><path class="wire" d="M10 88V58l22-12v12l22-12v12h14V22h8v36h10V14h8v44h14V40h24v48zM10 72h156M68 40h8M86 30h8M118 56h24"/></g>
-   <path class="scan" d="M0 0v96"/>
-   <g class="d s"><path style="--d:3s;--t:.7s" pathLength="1" d="M142 66h24v-30h8"/></g><circle class="tie" cx="142" cy="66" r="3.5"/></svg>""",
 }
 
 def lifecycle():
     btns = ''.join(f'''<button type="button" class="lc-node" role="tab" data-phase="{k}" id="lc-{k}" aria-selected="false" aria-controls="lcPanel">
-          <span class="lc-vig" aria-hidden="true">{VIG[k]}</span><i>{i+1:02d}</i><b>{p["n"]}</b></button>''' for i, (k, p) in enumerate(PHASES.items()))
+          <span class="lc-vig" aria-hidden="true">{VIG[k]}</span><i>{i+1:02d}</i><b>{p["n"]}</b></button>''' for i, (k, p) in enumerate(STAGES_ONLY.items()))
     panels = ''
-    for k, p in PHASES.items():
+    for k, p in STAGES_ONLY.items():
         m = p['module']; m2 = p['module2']
         rows = ''.join(f'<li>{r[0]}</li>' for r in p['rows'])
         out = ''.join(f'<div class="lc-out"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
@@ -237,6 +239,7 @@ def lifecycle():
       <div class="lc-line" role="tablist" aria-label="Project phases">{btns}</div>
       <div id="lcPanel" class="lc-panels" role="tabpanel">{panels}</div>
     </div>
+    <p class="lc-note">Revamping an existing plant? <a href="solutions/brownfield/">See brownfield and revamps &rarr;</a></p>
   </div>
 </section>'''
 
@@ -423,12 +426,12 @@ for k, p in PHASES.items():
     m, m2 = p['module'], p['module2']
     outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
     rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
-    others = ''.join(f'<a href="{{R}}solutions/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in PHASES.items())
+    others = ''.join(f'<a href="{{R}}solutions/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in STAGES_ONLY.items())
     body = f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/{PHOTO_OF[k]}.jpg')"><div class="wrap">
-    <nav class="phase-rail" aria-label="Project phases">{others}</nav>
+    {f'<nav class="phase-rail" aria-label="Project phases">{others}</nav>' if k != 'brownfield' else ''}
     <div class="sub-grid">
       <div>
-        <p class="eyebrow">{p["title"]}</p>
+        <p class="eyebrow">{'Project type' if k == 'brownfield' else p["title"]}</p>
         <h1>{p["h1"]}</h1>
         <p class="lead">{p["lead"]}</p>
         <div class="hq-actions"><a class="btn btn--on-dark" href="#contact">Start a pilot</a><a class="btn btn--line-dark" href="{{R}}{m[1]}">See {m[0]} live</a></div>

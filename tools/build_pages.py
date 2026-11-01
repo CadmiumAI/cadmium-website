@@ -100,7 +100,7 @@ def footer(root):
         <a href="{home}" class="footer-brand" aria-label="Cadmium — home">
           <img src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
         </a>
-        <p>AI for engineering, procurement and construction.</p>
+        <p>AI for engineering.</p>
       </div>
       <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4>{sol}</div>
@@ -399,7 +399,7 @@ home = f'''<section class="hq hq--photo" id="top">
   <div class="hq-photo" aria-hidden="true"></div>
   <div class="wrap hq-copy">
     <div>
-      <p class="eyebrow">AI for EPC</p>
+      <p class="eyebrow">AI for engineering</p>
       <h1>Engineering deliverables, without the rework.</h1>
       <p class="lead">Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs, so your engineers review finished work instead of redrawing it.</p>
       <div class="hq-actions">
@@ -425,7 +425,7 @@ home = f'''<section class="hq hq--photo" id="top">
 {THREAD}
 {INTEG}
 {SEC_BAND}'''
-page('', 'Cadmium — AI for EPC engineering deliverables',
+page('', 'Cadmium — AI for engineering',
      'Cadmium connects P&amp;IDs, 3D models, isometrics and MTOs for EPC contractors, so engineers review finished work instead of redrawing it.', 'home', home,
      '''<script>
   (function () { var h = location.hash.slice(1);
@@ -570,7 +570,7 @@ page('security', 'Security — Cadmium', 'Deployable in your cloud or on-premise
   </div></section>''')
 
 # Company
-page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, procurement and construction, so engineers spend their time on engineering.', 'company',
+page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, so engineers spend their time on engineering.', 'company',
  '''<section class="sub-hero has-photo" style="background-image:url('{R}assets/photos/flange-weld.jpg')"><div class="wrap">
     <p class="eyebrow">Company</p>
     <h1>Engineers should spend their time on engineering.</h1>

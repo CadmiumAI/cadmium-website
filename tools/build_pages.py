@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generates the company pages and keeps the nav and footer the same on every page.
 Run from the repo root: python3 tools/build_pages.py"""
-import os, re
+import json, os, re
 
 SUN = '''<svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.2 8.2 0 1 0 20 14.2Z"/></svg>'''
@@ -57,6 +57,8 @@ PHASES = {
     lost='Redrawing legacy documents before the revamp engineering can even begin.'),
 }
 
+PHOTO_OF = dict(feed='plant-stacks', detailed='welder-mask', procurement='pipeline-joints', construction='insulation-crew', handover='valve-work', brownfield='refinery-dusk')
+
 def drop(label, root, items, key, cur):
     links = ''.join(f'<a href="{root}{h}"{" class=\"is-current\" aria-current=\"page\"" if k == cur else ""}><b>{t}</b><span>{d}</span></a>' for k, h, t, d in items)
     on = ' is-current' if key in (cur or '') or any(k == cur for k, *_ in items) else ''
@@ -109,7 +111,7 @@ def footer(root):
       </div>
       <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4>{sol}</div>
-      <div><h4>Company</h4><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a></div>
+      <div><h4>Company</h4><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
     </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>
@@ -200,7 +202,7 @@ def lifecycle():
         rows = ''.join(f'<li>{r[0]}</li>' for r in p['rows'])
         out = ''.join(f'<div class="lc-out"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
         panels += f'''<div class="lc-panel" data-panel="{k}" hidden>
-          <div class="lc-col"><h3>{p["title"]}</h3><p>{p["lost"]}</p><a class="btn btn--primary btn--sm" href="solutions/{k}/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/{PHOTO_OF[k]}.jpg" alt="" loading="lazy" /><h3>{p["title"]}</h3><p>{p["lost"]}</p><a class="btn btn--primary btn--sm" href="solutions/{k}/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul>{rows}</ul></div>
           <div class="lc-col"><h4>Results</h4>{out}</div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="{m[1]}"><img src="assets/posters/{m[2]}" alt="" loading="lazy" /><span>{m[0]} &rarr;</span></a><a class="lc-more" href="{m2[1]}">{m2[0]} &rarr;</a></div>
@@ -304,6 +306,35 @@ INTEG = '''<section class="band" id="integrations">
   </div>
 </section>'''
 
+RUN = '''<section class="band band--dark" id="run">
+  <div class="wrap">
+    <p class="eyebrow">A real line, start to finish</p>
+    <h2>From 3D model to issued sheet.</h2>
+    <p class="lead lead--wide">One line taken through the pipeline, stage by stage. Drag the model to turn it.</p>
+    <div class="lab iso-lab" id="hero">
+      <div class="lab-view iso-view" data-iso-view><div class="iso-tip" data-iso-tip hidden></div></div>
+      <div class="lab-foot">
+        <div class="iso-steps" data-iso-steps></div>
+        <p class="lab-note" data-iso-note aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>'''
+
+FIELD = '''<section class="band" id="field">
+  <div class="wrap">
+    <p class="eyebrow">At the workface</p>
+    <h2>Every sheet ends up in someone&rsquo;s hands.</h2>
+    <p class="lead lead--wide">Crews cut, fit and weld from what engineering issues. When a drawing is wrong or late, this is where it costs you.</p>
+    <div class="field-grid">
+      <figure class="fg-a"><img src="assets/photos/insulation-crew.jpg" alt="Two workers in hard hats fabricating pipe insulation on a table at a process plant, pipework and steel behind them." loading="lazy" /></figure>
+      <figure class="fg-b"><img src="assets/photos/welder-mask.jpg" alt="A welder in a mask running a TIG weld on a small-bore pipe spool." loading="lazy" /></figure>
+      <figure class="fg-c"><img src="assets/photos/pipeline-trench.jpg" alt="Large-diameter coated pipeline strung along an open trench through woodland." loading="lazy" /></figure>
+      <figure class="fg-d"><img src="assets/photos/flange-weld.jpg" alt="A welder in a mask working on a large flanged nozzle, with sparks at the joint." loading="lazy" /></figure>
+    </div>
+  </div>
+</section>'''
+
 SEC_BAND = '''<section class="band band--dark has-flow" id="trust" data-flow>
   <div class="wrap">
     <p class="eyebrow">Security</p>
@@ -342,14 +373,8 @@ COST = '''<section class="band band--alt" id="cost">
   </div>
 </section>'''
 
-home = f'''<section class="hq" id="top">
-  <div class="hq-view" id="hero">
-    <div data-iso-view style="position:absolute;inset:0"></div>
-    <div class="hq-steps">
-      <div class="iso-steps" data-iso-steps></div>
-      <p class="hq-note" data-iso-note aria-live="polite"></p>
-    </div>
-  </div>
+home = f'''<section class="hq hq--photo" id="top">
+  <div class="hq-photo" aria-hidden="true"></div>
   <div class="wrap hq-copy">
     <div>
       <p class="eyebrow">AI for EPC</p>
@@ -371,7 +396,9 @@ home = f'''<section class="hq" id="top">
 </div></section>
 
 {lifecycle()}
+{RUN}
 {walkthrough()}
+{FIELD}
 {COST}
 {THREAD}
 {INTEG}
@@ -385,7 +412,7 @@ page('', 'Cadmium — AI for EPC engineering deliverables',
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="demos/iso.js"></script>
 <script src="demos/home.js"></script>
-<script>CadIso(document.getElementById('hero'), { hero: true, data: 'demos/data/iso8' });</script>''')
+<script>CadIso(document.getElementById('hero'), { data: 'demos/data/iso8' });</script>''')
 
 MOCK_OF = dict(feed='pid', detailed='iso', procurement='mto', construction='site', handover='review', brownfield='pid')
 # Solutions
@@ -394,7 +421,7 @@ for k, p in PHASES.items():
     outs = ''.join(f'<div class="pf"><b>{a}</b><span>{b}</span></div>' for a, b in p['outcomes'])
     rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in p['rows'])
     others = ''.join(f'<a href="{{R}}solutions/{o}/" class="{"on" if o == k else ""}">{q["n"]}</a>' for o, q in PHASES.items())
-    body = f'''<section class="sub-hero has-flow" data-flow><div class="wrap">
+    body = f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/{PHOTO_OF[k]}.jpg')"><div class="wrap">
     <nav class="phase-rail" aria-label="Project phases">{others}</nav>
     <div class="sub-grid">
       <div>
@@ -417,7 +444,7 @@ for k, p in PHASES.items():
     page(f'solutions/{k}', f'{title} — Cadmium', re.sub('&amp;', '&amp;', p['lead']), k, body)
 
 # Platform
-platform = '''<section class="sub-hero has-flow" data-flow><div class="wrap">
+platform = '''<section class="sub-hero has-photo" style="background-image:url('{R}assets/photos/pipeline-joints.jpg')"><div class="wrap">
     <p class="eyebrow">Platform</p>
     <h1>Every engineering document, as one dataset.</h1>
     <p class="lead lead--wide">Cadmium reads the documents your project already produces, links them through the tags, lines and geometry they share, and writes finished deliverables back out.</p>
@@ -450,12 +477,13 @@ ROLES = [
  ('Digital and IT', 'Something you can actually approve.', ['Deploy in your cloud or on-premises', 'SSO, roles and full audit logs', 'A documented API into your existing systems'], 'security'),
 ]
 cards = ''
+ROLE_PHOTO = {'Piping leads': 'welder-mask', 'Engineering managers': 'pipefitters', 'Project directors': 'pipeline-trench', 'Digital and IT': 'plant-stacks'}
 for t, h, pts, link in ROLES:
     href = 'security/' if link == 'security' else f'solutions/{link}/'
     lis = ''.join(f'<li>{x}</li>' for x in pts)
-    cards += f'<article class="role"><p class="eyebrow">{t}</p><h3>{h}</h3><ul>{lis}</ul><a href="{{R}}{href}">Read more &rarr;</a></article>'
+    cards += f'<article class="role"><img src="{{R}}assets/photos/{ROLE_PHOTO[t]}.jpg" alt="" loading="lazy" /><p class="eyebrow">{t}</p><h3>{h}</h3><ul>{lis}</ul><a href="{{R}}{href}">Read more &rarr;</a></article>'
 page('teams', 'Teams — Cadmium', 'What Cadmium changes for piping leads, engineering managers, project directors and digital teams at EPC contractors.', 'teams',
- f'''<section class="sub-hero has-flow" data-flow><div class="wrap">
+ f'''<section class="sub-hero has-photo" style="background-image:url('{{R}}assets/photos/pipefitters.jpg')"><div class="wrap">
     <p class="eyebrow">Teams</p>
     <h1>The same platform, a different day for each team.</h1>
     <p class="lead lead--wide">Designers, managers, directors and IT each need something different from it.</p>
@@ -520,7 +548,7 @@ page('security', 'Security — Cadmium', 'SOC 2 Type II and ISO 27001 certified,
 
 # Company
 page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, procurement and construction, so engineers spend their time on engineering.', 'company',
- '''<section class="sub-hero has-flow" data-flow><div class="wrap">
+ '''<section class="sub-hero has-photo" style="background-image:url('{R}assets/photos/flange-weld.jpg')"><div class="wrap">
     <p class="eyebrow">Company</p>
     <h1>Engineers should spend their time on engineering.</h1>
     <p class="lead lead--wide">A plant is designed, bought and built from documents that are still redrawn and retyped by hand. We started Cadmium to take that work away, beginning with the piping isometric.</p>
@@ -534,6 +562,17 @@ page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, procu
       <div class="tenet"><h3>The engineer signs off</h3><p>Cadmium does the production work. Responsibility for what is issued stays with a qualified engineer, and our tools are built around that review.</p></div>
     </div>
   </div></section>''')
+
+# Credits
+CREDITS = json.load(open('tools/photo_credits.json'))
+rows = ''.join(f'<tr><td><img src="{{R}}assets/photos/{c["file"]}" alt="" loading="lazy" /></td><td><a href="{c["page"]}" rel="noopener">{c["title"]}</a></td><td>{c["author"]}</td><td>{c["license"]}{", cropped" if c["cropped"] else ""}, resized</td></tr>' for c in CREDITS)
+page('credits', 'Photo credits — Cadmium', 'Sources and licences for the photographs on this site.', 'credits',
+ f'''<section class="band"><div class="wrap">
+    <p class="eyebrow">Photo credits</p>
+    <h2>Photographs on this site.</h2>
+    <p class="lead lead--wide">From Wikimedia Commons. The people and places shown are not customers of Cadmium and do not endorse it.</p>
+    <div class="table-wrap"><table class="ltable credits"><thead><tr><th></th><th>Title and source</th><th>Author</th><th>Licence</th></tr></thead><tbody>{{rows}}</tbody></table></div>
+  </div></section>'''.replace('{rows}', rows))
 
 # Shared chrome on the three product pages.
 for path, cur in (('isometrics', 'iso'), ('3d-from-2d', 'carve'), ('pid', 'pid')):

@@ -52,14 +52,8 @@
   </div>
 </header>
 <main id="main">
-<section class="hq" id="top">
-  <div class="hq-view" id="hero">
-    <div data-iso-view style="position:absolute;inset:0"></div>
-    <div class="hq-steps">
-      <div class="iso-steps" data-iso-steps></div>
-      <p class="hq-note" data-iso-note aria-live="polite"></p>
-    </div>
-  </div>
+<section class="hq hq--photo" id="top">
+  <div class="hq-photo" aria-hidden="true"></div>
   <div class="wrap hq-copy">
     <div>
       <p class="eyebrow">AI for EPC</p>
@@ -94,36 +88,50 @@
           <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><g class="v-ticks"><rect x="44" y="11" width="92" height="7"/><path d="M14 15l5 5 9-10"/><rect x="44" y="33" width="72" height="7"/><path class="t2" d="M14 37l5 5 9-10"/><rect x="44" y="55" width="84" height="7"/><path class="t3" d="M14 59l5 5 9-10"/></g></svg></span><i>05</i><b>Handover</b></button><button type="button" class="lc-node" role="tab" data-phase="brownfield" id="lc-brownfield" aria-selected="false" aria-controls="lcPanel">
           <span class="lc-vig" aria-hidden="true"><svg viewBox="0 0 150 76"><defs><pattern id="scanN" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="1.3" height="1.3" fill="#9CC6F2" opacity=".55"/><rect x="3" y="3" width="1" height="1" fill="#9CC6F2" opacity=".35"/></pattern></defs><rect width="150" height="76" fill="url(#scanN)"/><g class="v-clean"><rect width="150" height="76" fill="#0A2545"/><path d="M12 38h42M78 38h26v-22h34" stroke="#42E08F" stroke-width="2" fill="none"/><path d="M54 30l24 16V30l-24 16z" fill="none" stroke="#CFE6FF" stroke-width="1.5"/></g><path class="v-sweep" d="M0 0v76" stroke="#FFCF5C" stroke-width="1.5"/></svg></span><i>06</i><b>Brownfield</b></button></div>
       <div id="lcPanel" class="lc-panels" role="tabpanel"><div class="lc-panel" data-panel="feed" hidden>
-          <div class="lc-col"><h3>Front-end engineering</h3><p>Retyping licensor packages, and re-checking counts every time a revision lands.</p><a class="btn btn--primary btn--sm" href="solutions/feed/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/plant-stacks.jpg" alt="" loading="lazy" /><h3>Front-end engineering</h3><p>Retyping licensor packages, and re-checking counts every time a revision lands.</p><a class="btn btn--primary btn--sm" href="solutions/feed/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Line list</li><li>Valve and instrument index</li><li>Early MTO</li><li>Plot plan studies</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Days, not weeks</b><span>to a first line list from a licensor P&ID package</span></div><div class="lc-out"><b>98%</b><span>tag accuracy on clean P&IDs, reviewed by your engineers</span></div><div class="lc-out"><b>±10%</b><span>early MTO estimates from reconciled line data</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="pid/"><img src="assets/posters/pid.png" alt="" loading="lazy" /><span>P&amp;ID intelligence &rarr;</span></a><a class="lc-more" href="3d-from-2d/">3D from 2D &rarr;</a></div>
         </div><div class="lc-panel" data-panel="detailed" hidden>
-          <div class="lc-col"><h3>Detailed engineering</h3><p>Cleaning up generated isometrics, and doing it again after every model change.</p><a class="btn btn--primary btn--sm" href="solutions/detailed/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/welder-mask.jpg" alt="" loading="lazy" /><h3>Detailed engineering</h3><p>Cleaning up generated isometrics, and doing it again after every model change.</p><a class="btn btn--primary btn--sm" href="solutions/detailed/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Piping isometrics</li><li>Bill of materials</li><li>Revision control</li><li>Model and P&amp;ID checks</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>95%</b><span>less manual rework per isometric</span></div><div class="lc-out"><b>10 min</b><span>per sheet, including engineer review</span></div><div class="lc-out"><b>Every revision</b><span>compared automatically, sheet by sheet</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
         </div><div class="lc-panel" data-panel="procurement" hidden>
-          <div class="lc-col"><h3>Procurement and fabrication</h3><p>Reconciling take-offs with the latest model, and chasing items that changed after the order went out.</p><a class="btn btn--primary btn--sm" href="solutions/procurement/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/pipeline-joints.jpg" alt="" loading="lazy" /><h3>Procurement and fabrication</h3><p>Reconciling take-offs with the latest model, and chasing items that changed after the order went out.</p><a class="btn btn--primary btn--sm" href="solutions/procurement/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Material take-off</li><li>MTO revisions</li><li>Spool drawings</li><li>Weld maps</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Live</b><span>MTOs that update with every model revision</span></div><div class="lc-out"><b>Line by line</b><span>difference reports between MTO revisions</span></div><div class="lc-out"><b>Fewer</b><span>surplus and short-shipped items at site</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="3d-from-2d/">3D from 2D &rarr;</a></div>
         </div><div class="lc-panel" data-panel="construction" hidden>
-          <div class="lc-col"><h3>Construction</h3><p>Finding the current revision, and marking up test-pack boundaries by hand.</p><a class="btn btn--primary btn--sm" href="solutions/construction/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/insulation-crew.jpg" alt="" loading="lazy" /><h3>Construction</h3><p>Finding the current revision, and marking up test-pack boundaries by hand.</p><a class="btn btn--primary btn--sm" href="solutions/construction/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Erection isometrics</li><li>3D model access</li><li>Test packs</li><li>Site queries</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Any device</b><span>isometric and 3D model, no CAD licence needed</span></div><div class="lc-out"><b>Always current</b><span>superseded sheets clearly flagged</span></div><div class="lc-out"><b>Hours, not days</b><span>to mark up test-pack boundaries</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/#viewer"><img src="assets/posters/isometrics.png" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
         </div><div class="lc-panel" data-panel="handover" hidden>
-          <div class="lc-col"><h3>Commissioning and handover</h3><p>Reconciling tags across thousands of documents in the last, most expensive weeks of the job.</p><a class="btn btn--primary btn--sm" href="solutions/handover/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/valve-work.jpg" alt="" loading="lazy" /><h3>Commissioning and handover</h3><p>Reconciling tags across thousands of documents in the last, most expensive weeks of the job.</p><a class="btn btn--primary btn--sm" href="solutions/handover/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Tag registers</li><li>As-built drawings</li><li>Data handover</li><li>Isolation lists</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Every tag</b><span>traced to the document it came from</span></div><div class="lc-out"><b>CFIHOS-ready</b><span>registers in the structure your client specifies</span></div><div class="lc-out"><b>Weeks</b><span>taken out of final document close-out</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="pid/"><img src="assets/posters/pid.png" alt="" loading="lazy" /><span>P&amp;ID intelligence &rarr;</span></a><a class="lc-more" href="isometrics/">Isometrics &rarr;</a></div>
         </div><div class="lc-panel" data-panel="brownfield" hidden>
-          <div class="lc-col"><h3>Brownfield and revamps</h3><p>Redrawing legacy documents before the revamp engineering can even begin.</p><a class="btn btn--primary btn--sm" href="solutions/brownfield/">See the solution</a></div>
+          <div class="lc-col"><img class="lc-photo" src="assets/photos/refinery-dusk.jpg" alt="" loading="lazy" /><h3>Brownfield and revamps</h3><p>Redrawing legacy documents before the revamp engineering can even begin.</p><a class="btn btn--primary btn--sm" href="solutions/brownfield/">See the solution</a></div>
           <div class="lc-col"><h4>Deliverables</h4><ul><li>Legacy P&amp;IDs</li><li>3D of existing plant</li><li>Tie-in isolation</li><li>Document conflicts</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>Scanned to structured</b><span>P&amp;IDs read from image files</span></div><div class="lc-out"><b>Plan + elevation</b><span>to a 3D piping route</span></div><div class="lc-out"><b>Conflicts flagged</b><span>between drawings before they reach site</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="3d-from-2d/"><img src="assets/posters/3d-from-2d.png" alt="" loading="lazy" /><span>3D from 2D &rarr;</span></a><a class="lc-more" href="pid/">P&amp;ID intelligence &rarr;</a></div>
         </div></div>
+    </div>
+  </div>
+</section>
+<section class="band band--dark" id="run">
+  <div class="wrap">
+    <p class="eyebrow">A real line, start to finish</p>
+    <h2>From 3D model to issued sheet.</h2>
+    <p class="lead lead--wide">One line taken through the pipeline, stage by stage. Drag the model to turn it.</p>
+    <div class="lab iso-lab" id="hero">
+      <div class="lab-view iso-view" data-iso-view><div class="iso-tip" data-iso-tip hidden></div></div>
+      <div class="lab-foot">
+        <div class="iso-steps" data-iso-steps></div>
+        <p class="lab-note" data-iso-note aria-live="polite"></p>
+      </div>
     </div>
   </div>
 </section>
@@ -146,6 +154,19 @@
         <div class="walk-copy"><span class="walk-k">05 &middot; Build</span><h3>The current drawing, at the workface</h3><p>Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.</p><ul><li>Isometric and 3D model on any phone or tablet</li><li>Superseded revisions clearly flagged</li><li>Test-pack boundaries worked out from the P&amp;IDs</li></ul><a href="solutions/construction/">See construction &rarr;</a></div>
         <div data-mock="site" data-root=""></div>
       </article></div>
+</section>
+<section class="band" id="field">
+  <div class="wrap">
+    <p class="eyebrow">At the workface</p>
+    <h2>Every sheet ends up in someone&rsquo;s hands.</h2>
+    <p class="lead lead--wide">Crews cut, fit and weld from what engineering issues. When a drawing is wrong or late, this is where it costs you.</p>
+    <div class="field-grid">
+      <figure class="fg-a"><img src="assets/photos/insulation-crew.jpg" alt="Two workers in hard hats fabricating pipe insulation on a table at a process plant, pipework and steel behind them." loading="lazy" /></figure>
+      <figure class="fg-b"><img src="assets/photos/welder-mask.jpg" alt="A welder in a mask running a TIG weld on a small-bore pipe spool." loading="lazy" /></figure>
+      <figure class="fg-c"><img src="assets/photos/pipeline-trench.jpg" alt="Large-diameter coated pipeline strung along an open trench through woodland." loading="lazy" /></figure>
+      <figure class="fg-d"><img src="assets/photos/flange-weld.jpg" alt="A welder in a mask working on a large flanged nozzle, with sparks at the joint." loading="lazy" /></figure>
+    </div>
+  </div>
 </section>
 <section class="band band--alt" id="cost">
   <div class="wrap">
@@ -285,7 +306,7 @@
       </div>
       <div><h4>Platform</h4><a href="platform/">Overview</a><a href="isometrics/">Isometrics</a><a href="pid/">P&amp;ID intelligence</a><a href="3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4><a href="solutions/feed/">Front-end engineering</a><a href="solutions/detailed/">Detailed engineering</a><a href="solutions/procurement/">Procurement and fabrication</a><a href="solutions/construction/">Construction</a><a href="solutions/handover/">Commissioning and handover</a><a href="solutions/brownfield/">Brownfield and revamps</a></div>
-      <div><h4>Company</h4><a href="teams/">Teams</a><a href="security/">Security</a><a href="company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a></div>
+      <div><h4>Company</h4><a href="teams/">Teams</a><a href="security/">Security</a><a href="company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="credits/">Photo credits</a></div>
     </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>
@@ -300,6 +321,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="demos/iso.js"></script>
 <script src="demos/home.js"></script>
-<script>CadIso(document.getElementById('hero'), { hero: true, data: 'demos/data/iso8' });</script>
+<script>CadIso(document.getElementById('hero'), { data: 'demos/data/iso8' });</script>
 </body>
 </html>

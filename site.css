@@ -674,3 +674,35 @@ h2{font-weight:700;letter-spacing:-.018em}
 @media (max-width:900px){.walk-step,.walk-step.flip{grid-template-columns:1fr}}
 .m-ken > img{object-position:50% 100%;transform:scale(1.5);transform-origin:50% 90%}
 @keyframes m-ken{to{transform:scale(1.9) translate(-4%,2%)}}
+
+/* ═══ photography ═══ */
+.hq--photo{display:flex;min-height:min(calc(100vh - 66px),760px);padding:0}
+.hq--photo::before{display:none}
+.hq-photo{position:absolute;inset:0;background:url(assets/photos/welder-in-pipe.jpg) center/cover;transform:scaleX(-1);overflow:hidden}
+.hq--photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,26,51,.94) 0%,rgba(6,26,51,.78) 38%,rgba(6,26,51,.08) 72%),linear-gradient(0deg,rgba(6,26,51,.55),transparent 30%);pointer-events:none}
+.motion .hq-photo{animation:hq-ken 26s ease-in-out infinite alternate}
+@keyframes hq-ken{from{transform:scaleX(-1) scale(1)}to{transform:scaleX(-1) scale(1.07)}}
+.hq--photo .hq-copy{z-index:2}
+@media (max-width:980px){
+  .hq--photo{display:flex;min-height:560px;padding:0;align-items:flex-end}
+  .hq--photo::after{background:linear-gradient(0deg,rgba(6,26,51,.96) 0%,rgba(6,26,51,.82) 52%,rgba(6,26,51,.1) 100%)}
+  .hq--photo .hq-copy{padding-block:150px 34px}
+}
+.sub-hero.has-photo{position:relative;background-size:cover;background-position:center;background-color:var(--d-bg)}
+.sub-hero.has-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,26,51,.95),rgba(6,26,51,.78) 55%,rgba(6,26,51,.5));pointer-events:none}
+.sub-hero.has-photo > .wrap{position:relative;z-index:1}
+.lc-photo{width:100%;height:120px;object-fit:cover;border-radius:7px;margin-bottom:12px;display:block}
+.field-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:clamp(150px,17vw,230px);gap:10px;margin-top:24px}
+.field-grid figure{margin:0;overflow:hidden;border-radius:8px;background:var(--d-bg)}
+.field-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.field-grid figure:hover img{transform:scale(1.04)}
+.fg-a{grid-column:span 7;grid-row:span 2}
+.fg-b{grid-column:span 5}
+.fg-c{grid-column:span 5}
+.fg-d{grid-column:span 12;display:none}
+@media (max-width:640px){.fg-a,.fg-b,.fg-c{grid-column:span 12;grid-row:span 1}}
+.role > img{width:calc(100% + 2*clamp(18px,2.4vw,28px));max-width:none;height:180px;object-fit:cover;margin:calc(-1*clamp(18px,2.4vw,28px)) calc(-1*clamp(18px,2.4vw,28px)) 16px;border-radius:10px 10px 0 0;display:block}
+.role{overflow:hidden}
+.credits img{width:96px;height:60px;object-fit:cover;border-radius:4px;display:block}
+.credits td:last-child{color:var(--ink-2);font-weight:400}
+.credits a{word-break:break-word}

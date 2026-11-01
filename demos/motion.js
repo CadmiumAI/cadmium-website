@@ -6,7 +6,7 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
   /* ---- reveal ---- */
-  var TARGETS = '.band h2,.band .eyebrow,.band .lead,.step,.tenet,.role,.cap,.prod,.pf,.trust-grid>div,.ltable tbody tr,.faq,.pilot-steps li,.integ-col,.walk-step,.cost-calc,.boundary,.flow-mid,.thread-grid figure,.sub-hero h1,.sub-hero .lead,.sub-hero .eyebrow,.sub-hero .hq-actions,.sub-grid>.mock-wrap';
+  var TARGETS = '.band h2,.band .eyebrow,.band .lead,.step,.tenet,.role,.cap,.prod,.pf,.trust-grid>div,.ltable tbody tr,.faq,.pilot-steps li,.integ-col,.walk-step,.cost-calc,.boundary,.flow-mid,.thread-grid figure,.sub-hero h1,.sub-hero .lead,.sub-hero .eyebrow,.sub-hero .hq-actions,.sub-grid>.mock-wrap,.field-grid figure';
   if (!RM && 'IntersectionObserver' in window) {
     document.documentElement.classList.add('motion');
     var items = $$(TARGETS).filter(function (el) { return !el.closest('.lab,.hq,.calcpad,.browser,.cta-form'); });

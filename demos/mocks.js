@@ -64,17 +64,29 @@
           tools: tool('export', 'Export DWG'),
           tree: [[0, 'folder', 'Area 200'], [1, 'folder', 'Models'], [2, 'cube', 'Unit 210.dwg', { leaf: 1 }], [1, 'folder', 'Isometrics'], [2, 'sheet', 'ISO-005', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'ISO-006', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'ISO-007', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'ISO-008', { leaf: 1, on: 1, b: 'B', bc: 'wip' }], [2, 'sheet', 'ISO-009', { leaf: 1, b: 'A' }], [2, 'sheet', 'ISO-010', { leaf: 1, b: 'A' }], [1, 'folder', 'P&amp;IDs', { shut: 1 }], [1, 'folder', 'Material Take-off', { shut: 1 }], [1, 'folder', 'Templates'], [2, 'sheet', 'A2 Client Title Block', { leaf: 1 }], [1, 'folder', 'Reviews', { shut: 1 }]],
           tabs: [['Unit 210.dwg', 1, 'model', 'cube'], ['ISO-008.dwg', 0, 'sheet', 'sheet']],
-          center: '<div class="pane on" data-pane="model">' + model(R) + '</div><div class="pane sheet" data-pane="sheet">' + ruler() + '<img class="fill cad wipe" src="' + R + 'assets/screens/sheet.svg" alt=""></div>',
+          center: '<div class="pane on" data-pane="model">' + model(R) + '</div><div class="pane sheet" data-pane="sheet">' + ruler() + '<div class="slot layers" data-svg="sheet.svg"></div></div>',
           bottomTabs: ['Output', 'Issues (0)', 'Bill of Materials', 'Find Results'], bottom: mono(),
-          props: [['Sheet', [['Number', 'ISO-008'], ['Revision', 'B'], ['Template', 'A2 Client Title Block'], ['View', 'Top south-west'], ['Status', 'Draft', 'data-st']]], ['Line', [['Line no.', '28-CW-008'], ['Size', '700 NB'], ['Spec', '150# CS'], ['Parts', '71']]], ['Annotation', [['Dimensions', '<i data-num="24">0</i>'], ['Elevations', '<i data-num="4">0</i>'], ['Balloons', '<i data-num="15">0</i>'], ['Collisions', '0']]]]
+          props: [['Sheet', [['Number', 'ISO-008'], ['Revision', 'B'], ['Template', 'A2 Client Title Block'], ['View', 'Top south-west'], ['Status', 'Draft', 'data-st']]], ['Line', [['Line no.', '28-CW-008'], ['Size', '700 NB'], ['Spec', '150# CS'], ['Parts', '71']]], ['Annotation', [['Dimensions', '<i data-k="dim">&ndash;</i>'], ['Elevations', '<i data-k="elev">&ndash;</i>'], ['Balloons', '<i data-k="bal">&ndash;</i>'], ['Collisions', '<i data-k="col">&ndash;</i>']]]]
         };
       },
       steps: function (m) {
-        return [[500, function () { m.point('[data-menu]'); }], [800, function () { m.click('[data-menu]'); m.add('[data-menu]', 'on'); m.add('[data-drop]', 'on'); }],
-          [650, function () { m.point('[data-mi]'); m.add('[data-mi]', 'hover'); }], [750, function () {
-            m.click('[data-mi]'); m.rm('[data-drop]', 'on'); m.rm('[data-menu]', 'on'); m.status('Generating isometric...'); m.prog(4000); m.point('.canvas');
-            m.log(['&gt; cadmium iso "Unit 210.dwg" --line 28-CW-008 --sheet ISO-008', 'Loaded 351 entities (71 solids, 280 metadata)', 'Skeleton built; 62 nodes, 61 edges', 'Compacting runs...', 'Expanding for symbols...', 'Solving annotation layout; 24 dimensions, 4 elevations', 'BOM: 15 items', 'Writing ISO-008.dwg', '<g>Done in 6.6 s. 0 errors, 0 warnings.</g>'], 460);
-          }], [1900, function () { m.tab('sheet'); m.add('.wipe', 'run'); m.nums(2200); }], [2400, function () { m.status('Ready'); m.text('[data-st]', 'Ready for review'); m.point('.t-btn.wide'); }], [1000, function () { m.click('.t-btn.wide'); }]];
+        return [[600, function () { m.point('[data-menu]'); }], [150, function () { m.click('[data-menu]'); m.add('[data-menu]', 'on'); m.add('[data-drop]', 'on'); }],
+          [280, function () { m.point('[data-mi]'); m.add('[data-mi]', 'hover'); }],
+          [120, function () { m.click('[data-mi]'); m.rm('[data-drop]', 'on'); m.rm('[data-menu]', 'on'); m.status('Generating isometric...'); m.busy(true); m.prog(6); m.log('&gt; cadmium iso "Unit 210.dwg" --line 28-CW-008 --sheet ISO-008'); m.point('.d-r'); }],
+          [650, function () { m.log('Loaded 351 entities (71 solids, 280 metadata)'); m.prog(24); }],
+          [380, function () { m.log('Skeleton built; 62 nodes, 61 edges'); m.prog(33); }],
+          [170, function () { m.log('Compacting runs...'); m.prog(38); }],
+          [240, function () { m.log('Expanding for symbols...'); m.prog(45); m.tab('sheet'); m.reveal('frame', 120); }],
+          [200, function () { m.reveal('pipe', 520); m.status('Drawing centrelines...'); }],
+          [620, function () { m.reveal('fit', 760); m.prog(58); m.status('Placing fittings...'); m.log('Solving annotation layout...'); }],
+          [880, function () { m.reveal('dim', 1250); m.prog(71); m.status('Placing dimensions...'); m.point('.canvas'); }],
+          [1320, function () { m.val('dim', '24'); m.reveal('elev', 160); m.prog(79); m.log('Placed 24 dimensions, 4 elevations'); }],
+          [200, function () { m.val('elev', '4'); m.reveal('text', 340); m.prog(85); }],
+          [420, function () { m.val('bal', '15'); m.val('col', '0'); m.reveal('bom', 200); m.prog(92); m.log('BOM: 15 items'); m.status('Writing BOM...'); }],
+          [240, function () { m.reveal('bomtext', 300); }],
+          [420, function () { m.log('Writing ISO-008.dwg'); m.prog(98); m.status('Writing ISO-008.dwg...'); }],
+          [460, function () { m.prog(100); m.busy(false); m.log('<g>Done in 6.6 s. 0 errors, 0 warnings.</g>'); m.status('Ready'); m.text('[data-st]', 'Ready for review'); m.idle('.canvas'); }],
+          [1300, function () { m.point('.t-btn.wide'); }], [120, function () { m.click('.t-btn.wide'); }]];
       }
     },
     gad: {
@@ -85,16 +97,22 @@
           tools: tool('play', 'Clean Up', 'data-go') + tool('export', 'Export DGN') + tool('sheet', 'Print PDF'),
           tree: [[0, 'folder', 'Area 400'], [1, 'folder', 'General Arrangements'], [2, 'sheet', 'GA-410-2106', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2107', { leaf: 1, b: 'IFC', bc: 'ok' }], [2, 'sheet', 'GA-410-2108', { leaf: 1, on: 1, b: 'P2', bc: 'wip' }], [2, 'sheet', 'GA-410-2109', { leaf: 1, b: 'P1' }], [2, 'sheet', 'GA-410-2110', { leaf: 1, b: 'P1' }], [1, 'folder', 'Levels'], [2, 'layers', 'PIPE', { leaf: 1 }], [2, 'layers', 'EQUIP', { leaf: 1 }], [2, 'layers', 'STEEL', { leaf: 1 }], [2, 'layers', 'SUPPORT', { leaf: 1 }], [2, 'layers', 'INSTRUMENT', { leaf: 1 }], [2, 'layers', '_Auto', { leaf: 1, b: 'notes' }], [1, 'folder', 'Rules', { shut: 1 }]],
           tabs: [['GA-410-2108.dgn', 1, 'sheet']],
-          center: '<div class="pane on sheet">' + ruler() + '<img class="fill cad" src="' + R + 'assets/screens/gad-before.svg" alt=""><img class="fill cad wipe over" src="' + R + 'assets/screens/gad-after.svg" alt=""><i class="sweep"></i></div>',
+          center: '<div class="pane on sheet">' + ruler() + '<div class="slot layers show-base" data-svg="gad.svg"></div></div>',
           bottomTabs: ['Output', 'Issues', 'Label Report'], bottom: mono(),
-          props: [['Drawing', [['Format', 'DGN V8'], ['Model', 'Default, 2D'], ['Sheet', 'A0']]], ['Annotation', [['Overlaps', '<i data-from="64" data-to="0">64</i>'], ['On piping', '<i data-from="38" data-to="0">38</i>'], ['Duplicates', '<i data-from="21" data-to="0">21</i>'], ['Margin notes', '<i data-from="0" data-to="22">0</i>'], ['Chain dims', '<i data-from="0" data-to="11">0</i>']]], ['Output', [['Native DGN', 'Yes'], ['PDF, 1:1', 'Yes']]]]
+          props: [['Drawing', [['Format', 'DGN V8'], ['Model', 'Default, 2D'], ['Sheet', 'A0']]], ['Annotation', [['Overlaps', '<i data-k="over">64</i>'], ['On piping', '<i data-k="onp">38</i>'], ['Duplicates', '<i data-k="dup">21</i>'], ['Margin notes', '<i data-k="mar">0</i>'], ['Chain dims', '<i data-k="chn">0</i>']]], ['Output', [['Native DGN', 'Yes'], ['PDF, 1:1', 'Yes']]]]
         };
       },
       steps: function (m) {
-        return [[700, function () { m.point('[data-go]'); }], [900, function () {
-            m.click('[data-go]'); m.status('Cleaning up annotation...'); m.prog(3400); m.point('.canvas');
-            m.log(['&gt; cadmium gad "GA-410-2108.dgn"', 'Read DGN V8, 2D, level _Auto holds annotation', 'Removed 21 duplicate notes', 'Enumerating label slots...', 'Solving placement; labels clear of piping and dimensions', 'Chained 11 dimensions at the matchline', 'Moved 22 entries to the margin', 'Patched GA-410-2108.dgn in place', '<g>Done in 9.8 s. DGN and PDF written.</g>'], 380);
-          }], [500, function () { m.add('.wipe', 'run'); m.add('.sweep', 'run'); m.morph(2600); }], [3200, function () { m.status('Ready'); m.point('.canvas'); }]];
+        return [[700, function () { m.point('[data-go]'); }], [130, function () {
+            m.click('[data-go]'); m.status('Reading DGN...'); m.busy(true); m.prog(8); m.log('&gt; cadmium gad "GA-410-2108.dgn"'); m.point('.d-r'); }],
+          [520, function () { m.log('Read DGN V8, 2D; level _Auto holds annotation'); m.prog(19); }],
+          [340, function () { m.unreveal('dupe', 420); m.status('Removing duplicates...'); m.log('Removed 21 duplicate notes'); m.val('dup', '0'); m.prog(30); }],
+          [520, function () { m.log('Enumerating label slots...'); m.prog(38); m.status('Solving label placement...'); m.unreveal('raw', 500); }],
+          [560, function () { m.log('Solving placement; labels clear of piping and dimensions'); m.prog(52); m.reveal('label', 980); m.point('.canvas'); }],
+          [1060, function () { m.val('over', '0'); m.val('onp', '0'); m.prog(71); m.reveal('chain', 460); m.status('Chaining dimensions...'); m.log('Chained 11 dimensions at the matchline'); }],
+          [520, function () { m.val('chn', '11'); m.prog(84); m.reveal('margin', 460); m.status('Writing margin entries...'); m.log('Moved 22 entries to the margin'); }],
+          [540, function () { m.val('mar', '22'); m.prog(95); m.log('Patched GA-410-2108.dgn in place'); m.status('Saving...'); }],
+          [420, function () { m.prog(100); m.busy(false); m.log('<g>Done in 9.8 s. DGN and PDF written.</g>'); m.status('Ready'); m.idle('.canvas'); }]];
       }
     },
     pid: {
@@ -106,15 +124,20 @@
           tools: tool('play', 'Read Sheet', 'data-go') + tool('export', 'Export Lists'),
           tree: [[0, 'folder', 'Area 200'], [1, 'folder', 'P&amp;IDs'], [2, 'sheet', 'PID-200-001', { leaf: 1, on: 1, b: 'read', bc: 'wip' }], [2, 'sheet', 'PID-200-002', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'sheet', 'PID-200-003', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'sheet', 'PID-200-004', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'sheet', 'PID-200-005', { leaf: 1, b: '2', bc: 'warn' }], [2, 'sheet', 'PID-200-006', { leaf: 1, b: '&#10003;', bc: 'ok' }], [1, 'folder', 'Registers'], [2, 'list', 'Line List', { leaf: 1 }], [2, 'list', 'Valve List', { leaf: 1 }], [2, 'list', 'Instrument Index', { leaf: 1 }], [2, 'list', 'Equipment List', { leaf: 1 }], [1, 'folder', 'Symbol Legend', { shut: 1 }]],
           tabs: [['PID-200-001.pdf', 1, 'sheet']],
-          center: '<div class="pane on sheet">' + ruler() + '<img class="fill cad" src="' + R + 'assets/screens/pid-clean.png" alt=""><img class="fill cad wipe over" src="' + R + 'assets/screens/pid-graph.png" alt=""><i class="sweep"></i></div>',
+          center: '<div class="pane on sheet">' + ruler() + '<img class="fill cad" src="' + R + 'assets/screens/pid-clean.png" alt=""><div class="slot layers" data-svg="pid-read.svg"></div></div>',
           bottomTabs: ['Line List', 'Valve List', 'Instrument Index', 'Output', 'Issues (0)'],
           bottom: grid(['Line No.', 'NB', 'From', 'Through / To'], LINES.map(function (l) { return { v: l }; })),
-          props: [['Sheet', [['Number', 'PID-200-001'], ['Title', 'Feed pump skid'], ['Source', 'Scanned PDF'], ['Read', '<i data-num="100">0</i>%']]], ['Found', [['Tags', '<i data-num="28">0</i>'], ['Connections', '<i data-num="26">0</i>'], ['Lines', '<i data-num="7">0</i>'], ['Dangling ends', '0']]], ['Selected', [['Tag', 'HV-103'], ['Type', 'Isolation valve'], ['Line', '4-PW-103'], ['Upstream', 'CK-101'], ['Downstream', 'FV-101, HV-104']]]]
+          props: [['Sheet', [['Number', 'PID-200-001'], ['Title', 'Feed pump skid'], ['Source', 'Scanned PDF'], ['Read', '<i data-k="st">Not read</i>']]], ['Found', [['Lines', '<i data-k="lines">&ndash;</i>'], ['Symbols', '<i data-k="sym">&ndash;</i>'], ['Tags', '<i data-k="tags">&ndash;</i>'], ['Connections', '<i data-k="con">&ndash;</i>'], ['Dangling ends', '<i data-k="dang">&ndash;</i>']]], ['Selected', [['Line', '<i data-k="s1">&ndash;</i>'], ['Size', '<i data-k="s2">&ndash;</i>'], ['From', '<i data-k="s3">&ndash;</i>'], ['Through', '<i data-k="s4">&ndash;</i>'], ['To', '<i data-k="s5">&ndash;</i>']]]]
         };
       },
       steps: function (m) {
-        return [[500, function () { m.point('[data-go]'); }], [850, function () { m.click('[data-go]'); m.status('Reading sheet...'); m.prog(2700); m.nums(2700); m.add('.wipe', 'run'); m.add('.sweep', 'run'); m.point('.canvas'); }],
-          [1900, function () { m.seq('.row', 210); }], [1500, function () { m.status('Ready. Sheet read; 0 items for review.'); m.point('.row:nth-child(3)'); m.add('.row:nth-child(3)', 'sel'); }]];
+        return [[600, function () { m.point('[data-go]'); }], [130, function () { m.click('[data-go]'); m.status('Deskewing and thresholding...'); m.busy(true); m.prog(12); m.val('st', 'Reading'); m.point('.d-r'); }],
+          [620, function () { m.status('Tracing lines...'); m.prog(30); m.reveal('pipe', 720); m.point('.canvas'); }],
+          [780, function () { m.val('lines', '7'); m.prog(52); m.status('Finding equipment...'); m.reveal('equip', 240); }],
+          [300, function () { m.status('Matching symbols...'); m.prog(64); m.reveal('sym', 520); }],
+          [580, function () { m.val('sym', '21'); m.status('Reading tags...'); m.prog(78); m.reveal('tag', 860); m.seq('.row', 115); }],
+          [920, function () { m.val('tags', '28'); m.val('con', '26'); m.val('dang', '0'); m.prog(100); m.busy(false); m.val('st', 'Read'); m.status('Ready. Sheet read; 0 items for review.'); }],
+          [800, function () { m.point('.row:nth-child(3)'); }], [160, function () { m.click('.row:nth-child(3)'); m.add('.row:nth-child(3)', 'sel'); m.val('s1', '4-PW-103'); m.val('s2', '4 NB'); m.val('s3', 'P-101A/B'); m.val('s4', 'CK-101, HV-103'); m.val('s5', 'FV-101'); }]];
       }
     },
     mto: {
@@ -122,18 +145,21 @@
       build: function () {
         var R = [['101', 'Pipe, 8 in, Sch 40, A106 Gr.B', 'm', '124.0', '131.5', '+7.5', 'up'], ['102', 'Pipe, 6 in, Sch 40, A106 Gr.B', 'm', '86.0', '86.0', '0', ''], ['118', 'Elbow 90 LR, 8 in, BW', 'ea', '18', '21', '+3', 'up'], ['119', 'Elbow 90 LR, 6 in, BW', 'ea', '12', '12', '0', ''], ['124', 'Tee, 8 &times; 6 in, BW', 'ea', '4', '4', '0', ''], ['131', 'Gate valve, 8 in, 300#, RF', 'ea', '6', '6', '0', ''], ['132', 'Check valve, 8 in, 300#, RF', 'ea', '2', '3', '+1', 'up'], ['140', 'Flange WN, 8 in, 300#, RF', 'ea', '24', '22', '-2', 'dn'], ['141', 'Flange WN, 6 in, 300#, RF', 'ea', '10', '10', '0', ''], ['152', 'Reducer conc, 8 &times; 6 in', 'ea', '4', '5', '+1', 'up'], ['160', 'Gasket SWG, 8 in, 300#', 'ea', '24', '22', '-2', 'dn'], ['170', 'Stud bolt set, 8 in, 300#', 'set', '24', '22', '-2', 'dn'], ['181', 'Pipe support, shoe, 8 in', 'ea', '32', '34', '+2', 'up']];
         return {
-          file: 'MTO-200 Rev B', rev: 'B', coord: '642 items&ensp;37 changed',
+          file: 'MTO-200 Rev B', rev: 'B', coord: 'MTO-200&ensp;Rev A / Rev B',
           tools: tool('filter', 'Changed Only') + tool('send', 'Send to Procurement', 'data-go'),
           tree: [[0, 'folder', 'Area 200'], [1, 'folder', 'Material Take-off'], [2, 'list', 'MTO-200 Rev A', { leaf: 1, b: 'issued', bc: 'ok' }], [2, 'list', 'MTO-200 Rev B', { leaf: 1, on: 1, b: 'new', bc: 'wip' }], [1, 'folder', 'By Line'], [2, 'pipe', '4-PW-103', { leaf: 1, b: '+6' }], [2, 'pipe', '4-PW-104', { leaf: 1, b: '-4' }], [2, 'pipe', '6-PW-101', { leaf: 1 }], [2, 'pipe', '8-CW-202', { leaf: 1, b: '+11' }], [2, 'pipe', '8-CW-204', { leaf: 1, b: '+2' }], [1, 'folder', 'By Commodity', { shut: 1 }], [1, 'folder', 'Purchase Requisitions', { shut: 1 }]],
           tabs: [['MTO-200: Rev A vs Rev B', 1, 'x', 'list']],
-          center: '<div class="pane on tablepane">' + grid(['Item', 'Description', 'Unit', 'Rev A', 'Rev B', 'Change'], R.map(function (r) { return { v: r.slice(0, 6), c: r[6] }; }), 'wide') + '</div>',
+          center: '<div class="pane on tablepane">' + grid(['Item', 'Description', 'Unit', 'Rev A', 'Rev B', 'Change'], R.map(function (r) { return { v: r.slice(0, 6), c: r[6] }; }), 'wide pend') + '</div>',
           bottomTabs: ['Output', 'Requisitions', 'History'], bottom: mono(),
-          props: [['Comparison', [['From', 'Rev A, 12 Oct'], ['To', 'Rev B, 26 Oct'], ['Items', '<i data-num="642">0</i>'], ['Changed', '<i data-num="37">0</i>'], ['Lines touched', '<i data-num="9">0</i>']]], ['Impact', [['Added', '<i data-num="24">0</i>'], ['Reduced', '<i data-num="13">0</i>'], ['Open POs affected', '<i data-num="3">0</i>']]], ['Selected', [['Item', '118'], ['Commodity', 'Elbow 90 LR'], ['Lines', '4-PW-103, 8-CW-202']]]]
+          props: [['Comparison', [['From', 'Rev A, 12 Oct'], ['To', 'Rev B, 26 Oct'], ['Items', '<i data-k="items">&ndash;</i>'], ['Changed', '<i data-k="chg">&ndash;</i>'], ['Lines touched', '<i data-k="ltc">&ndash;</i>']]], ['Impact', [['Added', '<i data-k="add">&ndash;</i>'], ['Reduced', '<i data-k="red">&ndash;</i>'], ['Open POs affected', '<i data-k="po">&ndash;</i>']]], ['Selected', [['Item', '<i data-k="s1">&ndash;</i>'], ['Commodity', '<i data-k="s2">&ndash;</i>'], ['Lines', '<i data-k="s3">&ndash;</i>']]]]
         };
       },
       steps: function (m) {
-        return [[400, function () { m.nums(); m.seq('.row', 170); m.point('.dg.wide'); m.log(['Comparing MTO-200 Rev A with Rev B...', 'Matched 642 items by commodity code and line', '<g>37 items changed across 9 lines.</g>'], 600); }],
-          [2500, function () { m.point('.row:nth-child(3)'); m.add('.row:nth-child(3)', 'sel'); }], [1100, function () { m.point('[data-go]'); }], [850, function () { m.click('[data-go]'); m.status('Requisition PR-2204 created.'); m.log(['Created requisition PR-2204 with 37 changed items', '<g>Sent to procurement.</g>'], 300); }]];
+        return [[500, function () { m.log('Comparing MTO-200 Rev A with Rev B...'); m.busy(true); m.status('Comparing revisions...'); m.prog(20); m.add('.dg.wide .row', 'on'); m.val('items', '642'); m.point('.dg.wide'); }],
+          [700, function () { m.log('Matched 642 items by commodity code and line'); m.prog(58); m.add('.dg.wide', 'b'); }],
+          [620, function () { m.add('.dg.wide', 'c'); m.prog(100); m.busy(false); m.val('chg', '37'); m.val('ltc', '9'); m.val('add', '24'); m.val('red', '13'); m.val('po', '3'); m.log('<g>37 items changed across 9 lines.</g>'); m.status('Ready'); }],
+          [800, function () { m.point('.row:nth-child(3)'); }], [150, function () { m.click('.row:nth-child(3)'); m.add('.row:nth-child(3)', 'sel'); m.val('s1', '118'); m.val('s2', 'Elbow 90 LR'); m.val('s3', '4-PW-103, 8-CW-202'); }], [850, function () { m.point('[data-go]'); }],
+          [140, function () { m.click('[data-go]'); m.status('Requisition PR-2204 created.'); m.log('Created requisition PR-2204 with 37 changed items'); }], [280, function () { m.log('<g>Sent to procurement.</g>'); m.idle('.dg.wide'); }]];
       }
     },
     review: {
@@ -152,8 +178,9 @@
         };
       },
       steps: function (m) {
-        return [[400, function () { m.add('.revs', 'run'); m.point('.revs'); }], [900, function () { m.seq('.row', 330); }], [1600, function () { m.point('[data-go]'); }], [800, function () { m.click('[data-go]'); m.add('[data-dlg]', 'on'); }],
-          [750, function () { m.point('[data-ok]'); }], [800, function () { m.click('[data-ok]'); m.rm('[data-dlg]', 'on'); m.text('[data-st]', 'Issued, IFC'); m.text('[data-ap]', 'R. Engineer'); m.status('ISO-008 Rev B issued.'); }]];
+        return [[500, function () { m.status('Comparing revisions...'); m.busy(true); m.point('.revs'); }], [620, function () { m.add('.revs', 'run'); m.busy(false); m.status('2 changes found.'); m.seq('.row', 150); }], [1500, function () { m.point('[data-go]'); }],
+          [140, function () { m.click('[data-go]'); m.add('[data-dlg]', 'on'); }], [420, function () { m.point('[data-ok]'); }],
+          [150, function () { m.click('[data-ok]'); m.rm('[data-dlg]', 'on'); m.text('[data-st]', 'Issued, IFC'); m.text('[data-ap]', 'R. Engineer'); m.status('ISO-008 Rev B issued.'); m.idle('.canvas'); }]];
       }
     },
     site: {
@@ -164,17 +191,64 @@
           tools: tool('cube', 'Isolate Line') + tool('sheet', 'Open Sheet'),
           tree: [[0, 'cube', 'Unit 210'], [1, 'folder', 'Piping'], [2, 'pipe', '28-CW-008', { leaf: 1, on: 1 }], [2, 'pipe', '28-CW-009', { leaf: 1 }], [2, 'pipe', '32-CW-001', { leaf: 1 }], [1, 'folder', 'Equipment', { shut: 1 }], [1, 'folder', 'Steel', { shut: 1 }], [1, 'folder', 'Supports', { shut: 1 }], [1, 'folder', 'Instruments', { shut: 1 }], [0, 'folder', 'Test Packs'], [1, 'list', 'TP-210-04', { leaf: 1, b: 'open', bc: 'wip' }], [1, 'list', 'TP-210-05', { leaf: 1, b: 'open', bc: 'wip' }]],
           tabs: [['Unit 210.dwg', 1, 'model', 'cube']],
-          center: '<div class="pane on ken">' + model(R) + '</div>',
+          center: '<div class="pane on ken"><div class="v-load" data-load><span>Loading Unit 210...</span><i><u data-loadbar></u></i></div><img class="fill stage-a" src="' + R + 'assets/screens/model-skel.jpg" alt=""><img class="fill stage-b" src="' + R + 'assets/screens/model.jpg" alt=""><div class="vcube"><b>TOP</b></div><div class="vaxis"><i>X</i><i>Y</i><i>Z</i></div></div>',
           bottomTabs: ['Sheet Register', 'Test Packs', 'Site Queries (3)'],
           bottom: grid(['Sheet', 'Rev', 'Status', 'Line', 'Issued'], [{ v: ['ISO-008', 'C', 'Current', '28-CW-008', '26 Oct'], c: 'g' }, { v: ['ISO-008', 'B', 'Superseded', '28-CW-008', '12 Oct'], c: 'old' }, { v: ['ISO-009', 'B', 'Current', '28-CW-009', '26 Oct'], c: 'g' }, { v: ['ISO-010', 'A', 'Current', '32-CW-001', '12 Oct'], c: 'g' }]),
-          props: [['Selected', [['Type', 'Butterfly valve'], ['Size', '28 in ND'], ['Rating', '150 LB, lug, RF'], ['Standard', 'ASME B16.10'], ['Line', '28-CW-008']]], ['Sheet', [['Current', 'ISO-008 Rev C'], ['Issued', '26 Oct'], ['Test pack', 'TP-210-04']]], ['Access', [['Crew devices', '<i data-num="38">0</i>'], ['CAD licences', '0']]]]
+          props: [['Selected', [['Type', 'Butterfly valve'], ['Size', '28 in ND'], ['Rating', '150 LB, lug, RF'], ['Standard', 'ASME B16.10'], ['Line', '28-CW-008']]], ['Sheet', [['Current', 'ISO-008 Rev C'], ['Issued', '26 Oct'], ['Test pack', 'TP-210-04']]], ['Access', [['Crew devices', '38'], ['CAD licences', '0']]]]
         };
       },
       steps: function (m) {
-        return [[400, function () { m.add('.ken', 'run'); m.nums(); m.seq('.row', 320); m.point('.canvas'); }], [1900, function () { m.point('.row.old'); m.add('.row.old', 'sel'); m.status('ISO-008 Rev B is superseded. Open Rev C.'); }], [1600, function () { m.point('.row:nth-child(1)'); }]];
+        return [[300, function () { m.add('.row', 'on'); m.busy(true); m.bar('[data-loadbar]', 35); m.point('.canvas'); }], [520, function () { m.bar('[data-loadbar]', 70); m.add('.stage-a', 'on'); m.add('[data-load]', 'small'); m.status('Loading geometry...'); }],
+          [700, function () { m.bar('[data-loadbar]', 100); }], [420, function () { m.add('.stage-b', 'on'); m.add('[data-load]', 'gone'); m.busy(false); m.status('Ready'); }],
+          [1200, function () { m.add('.ken', 'run'); m.idle('.canvas'); }], [900, function () { m.point('.row.old'); }], [180, function () { m.add('.row.old', 'sel'); m.status('ISO-008 Rev B is superseded. Open Rev C.'); }], [1300, function () { m.point('.row:nth-child(1)'); }]];
       }
     }
   };
+
+  var SVG = {};
+  function loadSvg(url) {
+    if (!SVG[url]) SVG[url] = fetch(url).then(function (r) { return r.text(); });
+    return SVG[url];
+  }
+
+  /* A hand on a mouse: curved paths, fast in the middle and slow on arrival, sometimes
+     overshooting and correcting; never quite the same spot twice, and never perfectly still. */
+  function Hand(el) {
+    var x = 1290, y = 815, raf = 0, moving = false, drift = 0, waiters = [];
+    function put() { el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; }
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function settle() { moving = false; waiters.splice(0).forEach(function (f) { f(); }); }
+    function ease(t) { var s = Math.pow(t, .86); return s * s * s * (s * (6 * s - 15) + 10); }
+    function leg(tx, ty, dur, bow, then) {
+      var x0 = x, y0 = y, dx = tx - x0, dy = ty - y0, cx = x0 + dx * .5 - dy * bow, cy = y0 + dy * .5 + dx * bow, t0 = performance.now(), ph = rnd(0, 6);
+      cancelAnimationFrame(raf);
+      (function f(now) {
+        var t = Math.min(1, (now - t0) / dur), e = ease(t), u = 1 - e, wob = Math.sin(t * Math.PI);
+        x = u * u * x0 + 2 * u * e * cx + e * e * tx + Math.sin(ph + t * 19) * .9 * wob;
+        y = u * u * y0 + 2 * u * e * cy + e * e * ty + Math.cos(ph + t * 23) * .9 * wob;
+        put();
+        if (t < 1) raf = requestAnimationFrame(f); else { x = tx; y = ty; put(); then(); }
+      })(t0);
+    }
+    this.to = function (tx, ty) {
+      moving = true; clearTimeout(drift);
+      var d = Math.hypot(tx - x, ty - y), dur = Math.min(980, 230 + 135 * Math.log2(d / 22 + 1)) * rnd(.86, 1.16), bow = rnd(.05, .17) * (Math.random() < .5 ? -1 : 1);
+      if (d > 170 && Math.random() < .55) {
+        var over = rnd(5, 13), ox = tx + (tx - x) / d * over + rnd(-3, 3), oy = ty + (ty - y) / d * over + rnd(-3, 3);
+        leg(ox, oy, dur, bow, function () { setTimeout(function () { leg(tx, ty, rnd(110, 190), 0, settle); }, rnd(25, 70)); });
+      } else leg(tx, ty, dur, bow, settle);
+    };
+    this.arrived = function (f) { if (moving) waiters.push(f); else f(); };
+    /* Resting: the hand keeps shifting slightly. */
+    this.rest = function () {
+      clearTimeout(drift);
+      (function next() {
+        drift = setTimeout(function () { if (moving) return; leg(x + rnd(-7, 7), y + rnd(-5, 5), rnd(240, 520), rnd(-.1, .1), next); }, rnd(650, 1900));
+      })();
+    };
+    this.stop = function () { cancelAnimationFrame(raf); clearTimeout(drift); moving = false; waiters.length = 0; };
+    put();
+  }
 
   function Mock(host) {
     var clip = CLIPS[host.dataset.mock], R = host.dataset.root || '';
@@ -187,53 +261,86 @@
     inner.setAttribute('aria-hidden', 'true');
     host.innerHTML = '';
     host.appendChild(inner);
-    var timers = [], onScreen = false, running = false, instant = false;
+    var timers = [], onScreen = false, running = false, instant = false, hand = null, run = 0;
     function $(s) { return inner.querySelector(s); }
     function all(s) { return Array.prototype.slice.call(inner.querySelectorAll(s)); }
     function later(ms, fn) { if (instant) fn(); else timers.push(setTimeout(fn, ms)); }
+    /* Draw a pass entity by entity, in uneven batches, as a regen does. */
+    function batch(items, ms, fn) {
+      if (instant || !items.length) { items.forEach(fn); return; }
+      var i = 0, step = 28, per = Math.max(1, items.length / (ms / step));
+      (function tick() {
+        var n = Math.ceil(per * (.45 + Math.random() * 1.1));
+        for (var k = 0; k < n && i < items.length; k++, i++) fn(items[i]);
+        if (i < items.length) later(step, tick);
+      })();
+    }
     var api = {
       add: function (s, c) { all(s).forEach(function (e) { e.classList.add(c); }); },
       rm: function (s, c) { all(s).forEach(function (e) { e.classList.remove(c); }); },
       seq: function (s, gap) { all(s).forEach(function (e, i) { later(i * gap, function () { e.classList.add('on'); }); }); },
       text: function (s, t) { var e = $(s); if (e) e.textContent = t; },
+      val: function (k, v) { var e = $('[data-k="' + k + '"]'); if (e) e.textContent = v; },
       status: function (t) { var e = $('[data-status]'); if (e) e.textContent = t; },
-      prog: function (ms) { var e = $('[data-prog]'); if (!e) return; e.parentNode.classList.add('on'); e.style.transition = 'width ' + ms + 'ms linear'; e.style.width = '100%'; later(ms + 200, function () { e.parentNode.classList.remove('on'); }); },
-      log: function (lines, gap) { var e = $('[data-log]'); lines.forEach(function (l, i) { later(i * gap, function () { e.innerHTML += l.replace(/<g>(.*)<\/g>/, '<span class="g">$1</span>') + '\n'; e.scrollTop = e.scrollHeight; }); }); },
+      prog: function (pct) { var e = $('[data-prog]'); if (!e) return; e.parentNode.classList.add('on'); e.style.width = pct + '%'; if (pct >= 100) later(350, function () { e.parentNode.classList.remove('on'); }); },
+      bar: function (s, pct) { var e = $(s); if (e) e.style.width = pct + '%'; },
+      busy: function (on) { var c = $('.m-cursor'); if (c) c.classList.toggle('busy', on); },
+      log: function (l) { var e = $('[data-log]'); if (!e) return; e.innerHTML += l.replace(/<g>(.*)<\/g>/, '<span class="g">$1</span>') + '\n'; e.scrollTop = e.scrollHeight; },
       tab: function (id) { all('[data-tab]').forEach(function (t) { t.classList.toggle('on', t.dataset.tab === id); }); all('[data-pane]').forEach(function (p) { p.classList.toggle('on', p.dataset.pane === id); }); },
-      nums: function (dur) { all('[data-num]').forEach(function (b) { if (window.CadCount) CadCount(b, +b.dataset.num, { dur: instant ? 1 : dur || 1500 }); else b.textContent = b.dataset.num; }); },
-      morph: function (dur) { all('[data-from]').forEach(function (b) { if (window.CadCount) CadCount(b, +b.dataset.to, { from: +b.dataset.from, dur: instant ? 1 : dur }); else b.textContent = b.dataset.to; }); },
-      /* Glide the recorded cursor to an element, measured in the frame's own coordinates. */
+      reveal: function (layer, ms) { batch(all('.slot [data-l="' + layer + '"]'), ms, function (e) { e.classList.add('v'); }); },
+      unreveal: function (layer, ms) { batch(all('.slot [data-l="' + layer + '"]'), ms, function (e) { e.classList.add('x'); }); },
+      /* Aim somewhere inside the target, as a person does; never dead centre. */
       point: function (s) {
-        var el = $(s), cur = $('.m-cursor');
-        if (!el || !cur) return;
-        var f = inner.getBoundingClientRect(), r = el.getBoundingClientRect(), k = f.width / W;
-        cur.style.transform = 'translate(' + (r.left - f.left + Math.min(r.width * .5, 60)) / k + 'px,' + (r.top - f.top + r.height * .55) / k + 'px)';
+        var el = $(s), f, r, k;
+        if (!el || !hand) return;
+        f = inner.getBoundingClientRect(); r = el.getBoundingClientRect(); k = f.width / W;
+        var big = r.width > 300, ax = big ? .25 + Math.random() * .5 : .32 + Math.random() * .36, ay = big ? .25 + Math.random() * .5 : .3 + Math.random() * .42;
+        hand.to((r.left - f.left + Math.min(r.width * ax, big ? r.width : 90)) / k, (r.top - f.top + r.height * ay) / k);
       },
+      idle: function (s) { if (hand) { api.point(s); hand.arrived(function () { if (hand) hand.rest(); }); } },
       click: function (s) {
         var cur = $('.m-cursor'), el = $(s);
-        if (cur) { cur.classList.remove('click'); void cur.offsetWidth; cur.classList.add('click'); }
-        if (el) { el.classList.add('down'); later(170, function () { el.classList.remove('down'); }); }
+        if (cur) { cur.classList.add('press'); later(95, function () { cur.classList.remove('press'); }); }
+        if (el) { el.classList.add('down'); later(120, function () { el.classList.remove('down'); }); }
       }
     };
+    function finishLayers(s) { Array.prototype.forEach.call(s.querySelectorAll('[data-l]'), function (e) { e.classList.add(e.dataset.l === 'raw' || e.dataset.l === 'dupe' ? 'x' : 'v'); }); }
+    function fill() {
+      var id = ++run;
+      all('.slot').forEach(function (s) {
+        loadSvg(R + 'assets/screens/' + s.dataset.svg).then(function (t) { if (id === run) { s.innerHTML = t; if (instant) finishLayers(s); } });
+      });
+    }
     function draw() {
       inner.className = 'mock';
-      inner.innerHTML = shell(clip.build(R), R) + '<i class="m-cursor"><svg viewBox="0 0 20 22"><path d="M1 1v16.2l4.4-4 2.9 6.8 3.1-1.4L8.6 12l6-.6Z" fill="#fff" stroke="#111" stroke-width="1.3"/></svg></i>';
+      inner.innerHTML = shell(clip.build(R), R) + '<i class="m-cursor"><svg viewBox="0 0 20 22"><path d="M1 1v16.2l4.4-4 2.9 6.8 3.1-1.4L8.6 12l6-.6Z" fill="#fff" stroke="#111" stroke-width="1.3"/></svg><b></b></i>';
       fit();
+      fill();
+      if (hand) hand.stop();
+      hand = instant ? null : new Hand($('.m-cursor'));
     }
     function fit() { var w = host.clientWidth; if (w) inner.style.setProperty('--s', (w / W).toFixed(5)); }
     function play() {
       if (running || !onScreen) return;
       running = true;
       draw();
-      var at = 0;
-      clip.steps(api).forEach(function (s) { at += s[0]; later(at, s[1]); });
-      later(at + 3600, function () { inner.classList.add('out'); });
-      later(at + 4000, function () { running = false; timers = []; if (onScreen) play(); });
+      var steps = clip.steps(api), i = 0;
+      /* Each step waits its turn, and for the hand to arrive: nothing is clicked from a distance. */
+      (function next() {
+        if (i >= steps.length) {
+          later(3400, function () { inner.classList.add('out'); });
+          later(3800, function () { running = false; timers = []; if (onScreen) play(); });
+          return;
+        }
+        var s = steps[i++];
+        later(s[0], function () { hand.arrived(function () { s[1](); next(); }); });
+      })();
     }
-    function stop() { timers.forEach(clearTimeout); timers = []; running = false; }
+    function stop() { timers.forEach(clearTimeout); timers = []; running = false; if (hand) hand.stop(); }
+    if (RM) instant = true;
     draw();
     if (window.ResizeObserver) new ResizeObserver(fit).observe(host);
-    if (RM) { instant = true; clip.steps(api).forEach(function (s) { s[1](); }); api.add('.m-cursor', 'off'); inner.classList.add('done'); return; }
+    if (RM) { api.add('.m-cursor', 'off'); clip.steps(api).forEach(function (s) { s[1](); }); inner.classList.add('done'); return; }
     new IntersectionObserver(function (e) {
       onScreen = e[0].isIntersecting;
       if (onScreen) play(); else stop();

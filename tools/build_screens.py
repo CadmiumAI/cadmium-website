@@ -15,6 +15,34 @@ vb = (-500, 100, W + 1000, 13300)
 s = re.sub(r'<svg [^>]*>', f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]} {vb[1]} {vb[2]} {vb[3]}" font-family="ui-monospace,Consolas,monospace">'
            f'<rect x="{vb[0]+120}" y="{vb[1]+120}" width="{vb[2]-240}" height="{vb[3]-240}" fill="none" stroke="#5b6675" stroke-width="28"/>'
            f'<rect x="{vb[0]+240}" y="{vb[1]+240}" width="{vb[2]-480}" height="{vb[3]-480}" fill="none" stroke="#5b6675" stroke-width="10"/>', s, count=1)
+# Tag each entity with the pass a CAD regen would draw it in: frame, centrelines, then detail, text last.
+import xml.etree.ElementTree as ET
+ET.register_namespace('', 'http://www.w3.org/2000/svg')
+root = ET.fromstring(s)
+PASS = {'#42e08f': 'pipe', '#9fb4d0': 'fit', '#ff7b6b': 'dim', '#d6a2f5': 'elev', '#e2e8f0': 'bal', '#5b6675': 'frame', '#8a97ad': 'fit'}
+def first_x(el):
+    t = el.get('transform') or ''
+    m = re.search(r'translate\(([-\d.]+)', t)
+    if m: return float(m.group(1))
+    for k in ('x', 'x1', 'cx'):
+        if el.get(k): return float(el.get(k))
+    for c in el:
+        v = first_x(c)
+        if v is not None: return v
+    return None
+counts = {}
+for el in root:
+    blob = ET.tostring(el, encoding='unicode')
+    x = first_x(el)
+    col = next((v for k, v in PASS.items() if f'"{k}"' in blob), 'fit')
+    tag = el.tag.split('}')[1]
+    if col == 'frame': kind = 'frame'
+    elif x is not None and x > 19400: kind = 'bomtext' if tag == 'text' else 'bom'
+    elif tag == 'text': kind = 'text' if col != 'bal' else 'baltext'
+    else: kind = col
+    el.set('data-l', kind); counts[kind] = counts.get(kind, 0) + 1
+s = ET.tostring(root, encoding='unicode')
+print(counts)
 open('assets/screens/sheet.svg', 'w').write(s)
 
 # ── a synthetic piping GA ──
@@ -39,44 +67,40 @@ for x, y0, y1 in ((300, 210, 472), (560, 254, 582), (820, 232, 700), (250, 330, 
 G.append('<rect x="480" y="84" width="170" height="74" rx="36" fill="#14181f" stroke="#e2e8f0" stroke-width="2.4"/><circle cx="175" cy="620" r="44" fill="#14181f" stroke="#e2e8f0" stroke-width="2.4"/><rect x="760" y="600" width="130" height="84" fill="#14181f" stroke="#e2e8f0" stroke-width="2.4"/>')
 for x, y in ((360, 232), (640, 276), (470, 352), (760, 472), (330, 582), (610, 700), (880, 210)):
     G.append(f'<path d="M{x-9} {y-6}l18 12v-12l-18 12z" fill="#14181f" stroke="#e2e8f0" stroke-width="1.6"/>')
-base = '\n'.join(G)
+base = '\n'.join(f'<g data-l="base">{x}</g>' for x in G)
 SVC = ['CW', 'PA', 'RP', 'BD', 'UW', 'OWS']
-labels = [(random.randint(170, 900), y, f'{random.randint(1,8)}"-{random.choice(SVC)}-{random.randint(20000,26000)}') for (_, _, y) in RUNS for _ in range(2)]
-def pill(x, y, t, c='#ff7b6b'):
+def tag_(): return f'{random.randint(1,8)}"-{random.choice(SVC)}-{random.randint(20000,26000)}'
+def pill(x, y, t, l, c='#ff7b6b'):
     w = len(t) * 6.4 + 12
-    return f'<rect x="{x-w/2:.0f}" y="{y-8}" width="{w:.0f}" height="16" rx="8" fill="#14181f" stroke="{c}"/><text x="{x}" y="{y+3.5}" font-size="10.5" text-anchor="middle" fill="{c}">{t}</text>'
-head = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" font-family="ui-monospace,Consolas,monospace"><rect x="8" y="8" width="{W-16}" height="{H-16}" fill="none" stroke="#5b6675" stroke-width="2"/>'
-# As extracted from the model: every note piled on its own pipe, some twice.
-before = [head, base]
+    return f'<g data-l="{l}"><rect x="{x-w/2:.0f}" y="{y-8}" width="{w:.0f}" height="16" rx="8" fill="#14181f" stroke="{c}"/><text x="{x}" y="{y+3.5}" font-size="10.5" text-anchor="middle" fill="{c}">{t}</text></g>'
+out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" font-family="ui-monospace,Consolas,monospace"><rect data-l="base" x="8" y="8" width="{W-16}" height="{H-16}" fill="none" stroke="#5b6675" stroke-width="2"/>', base]
+# As extracted from the model: every note piled on its pipe, many twice.
+labels = [(random.randint(170, 900), y, tag_()) for (_, _, y) in RUNS for _ in range(2)]
+dupes = []
 for x, y, t in labels:
-    before.append(pill(x + random.randint(-14, 14), y + random.randint(-7, 7), t))
+    out.append(pill(x + random.randint(-14, 14), y + random.randint(-7, 7), t, 'raw'))
     if random.random() < .55:
-        before.append(pill(x + random.randint(10, 46), y + random.randint(-9, 9), t))
+        dupes.append(pill(x + random.randint(10, 46), y + random.randint(-9, 9), t, 'dupe'))
+out += dupes
 for i in range(9):
     x = random.randint(1000, 1120); y = random.randint(60, 700)
-    before.append(f'<text x="{x}" y="{y}" font-size="11" fill="#ff7b6b" text-anchor="middle">BOP EL.{random.randint(100,104)}.{random.randint(100,999)}</text>')
-before.append('</svg>')
-open('assets/screens/gad-before.svg', 'w').write('\n'.join(before))
-# Finished: labels in clear slots with leaders, chain dimensions at the matchline, margin entries.
-after = [head, base]
+    out.append(f'<text data-l="raw" x="{x}" y="{y}" font-size="11" fill="#ff7b6b" text-anchor="middle">BOP EL.{random.randint(100,104)}.{random.randint(100,999)}</text>')
+# Finished: labels in clear slots, chain dimensions at the matchline, margin entries.
 used = []
 for x0, x1, y in RUNS:
-    x = random.randint(x0 + 90, x1 - 110)
-    t = f'{random.randint(1,8)}"-{random.choice(SVC)}-{random.randint(20000,26000)}'
-    lane = y - 11
-    tries = 0
+    x = random.randint(x0 + 90, x1 - 110); lane = y - 11; tries = 0
     while any(abs(x - a) < 112 and abs(lane - b) < 18 for a, b in used) and tries < 40:
         x = random.randint(x0 + 70, x1 - 90); tries += 1
     used.append((x, lane))
-    after.append(pill(x, lane, t))
+    out.append(pill(x, lane, tag_(), 'label'))
 ys = sorted(r[2] for r in RUNS)
-after.append(f'<path d="M1012 {ys[0]}V{ys[-1]}" stroke="#ff7b6b"/>')
-for a, b in zip(ys, ys[1:]):
-    after.append(f'<path d="M1006 {a}h12" stroke="#ff7b6b"/><text x="1024" y="{(a+b)/2+3.5:.0f}" font-size="10" fill="#ff7b6b">{(b-a)*5}</text>')
-after.append(f'<path d="M1006 {ys[-1]}h12" stroke="#ff7b6b"/>')
+out.append(f'<path data-l="chain" d="M1012 {ys[0]}V{ys[-1]}" stroke="#ff7b6b"/>')
+for a_, b_ in zip(ys, ys[1:]):
+    out.append(f'<g data-l="chain"><path d="M1006 {a_}h12" stroke="#ff7b6b"/><text x="1024" y="{(a_+b_)/2+3.5:.0f}" font-size="10" fill="#ff7b6b">{(b_-a_)*5}</text></g>')
+out.append(f'<path data-l="chain" d="M1006 {ys[-1]}h12" stroke="#ff7b6b"/>')
 for i in range(11):
     y = 70 + i * 62
-    after.append(f'<text x="1066" y="{y}" font-size="10" fill="#ff7b6b">{random.randint(1,8)}"-{random.choice(SVC)}-{random.randint(20000,26000)}</text><text x="1066" y="{y+13}" font-size="10" fill="#ff7b6b">BOP EL.{random.randint(100,104)}.{random.randint(100,999)}</text>')
-after.append('</svg>')
-open('assets/screens/gad-after.svg', 'w').write('\n'.join(after))
+    out.append(f'<g data-l="margin"><text x="1066" y="{y}" font-size="10" fill="#ff7b6b">{tag_()}</text><text x="1066" y="{y+13}" font-size="10" fill="#ff7b6b">BOP EL.{random.randint(100,104)}.{random.randint(100,999)}</text></g>')
+out.append('</svg>')
+open('assets/screens/gad.svg', 'w').write('\n'.join(out))
 print('ok')

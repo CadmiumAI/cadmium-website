@@ -191,11 +191,12 @@ VIG = {
    <g class="d r"><path style="--d:1.8s" pathLength="1" d="M14 64 50 44M50 40l4 3M12 61l4 3"/><path style="--d:2.2s" pathLength="1" d="M62 18l30 17M60 21l3-5M90 38l3-5"/></g>
    <g class="p"><circle style="--d:2.7s" cx="30" cy="48" r="5"/><circle style="--d:2.9s" cx="44" cy="30" r="5"/><circle style="--d:3.1s" cx="106" cy="52" r="5"/></g></svg>""",
  # A purchase order is ticked off, and the truck leaves with the pipe.
- 'procurement': """<svg viewBox="0 0 180 96"><g class="l solid"><rect x="8" y="8" width="44" height="66" rx="2"/></g>
+ 'procurement': """<svg viewBox="0 0 180 96"><path class="road" d="M0 88H180"/>
+   <g class="truck"><rect class="bed" x="62" y="56" width="66" height="8"/><rect class="pipe" x="64" y="48" width="62" height="7" rx="3.5"/><rect class="pipe" x="66" y="41" width="58" height="7" rx="3.5"/><path class="cab" d="M130 64V44h16l10 11v9z"/><path class="glass" d="M135 48h9l6 7h-15z"/><circle class="wh" cx="76" cy="72" r="7"/><circle class="wh" cx="116" cy="72" r="7"/><circle class="wh" cx="146" cy="72" r="7"/></g>
+   <g class="l solid"><rect x="8" y="8" width="44" height="66" rx="2"/></g>
    <g class="rows"><rect style="--d:.2s" x="14" y="17" width="32" height="4"/><rect style="--d:.6s" x="14" y="28" width="32" height="4"/><rect style="--d:1s" x="14" y="39" width="32" height="4"/><rect style="--d:1.4s" x="14" y="50" width="32" height="4"/></g>
    <text class="po" x="30" y="68" text-anchor="middle">PO</text>
-   <path class="road" d="M0 88H180"/>
-   <g class="truck"><rect class="bed" x="62" y="56" width="66" height="8"/><rect class="pipe" x="64" y="48" width="62" height="7" rx="3.5"/><rect class="pipe" x="66" y="41" width="58" height="7" rx="3.5"/><path class="cab" d="M130 64V44h16l10 11v9z"/><path class="glass" d="M135 48h9l6 7h-15z"/><circle class="wh" cx="76" cy="72" r="7"/><circle class="wh" cx="116" cy="72" r="7"/><circle class="wh" cx="146" cy="72" r="7"/></g></svg>""",
+</svg>""",
  # A tower crane sets a pipe spool on the rack.
  'construction': """<svg viewBox="0 0 180 96"><g class="rack"><path d="M104 92V62M172 92V62M100 62h76M100 74h76M126 92V62M150 92V62"/></g>
    <g class="crane"><path d="M34 92V10M26 92h16M12 14h156M12 14v6M34 6l-20 8M34 6l60 8"/><rect x="8" y="20" width="12" height="9"/></g>

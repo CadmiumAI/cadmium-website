@@ -89,6 +89,34 @@
           [1300, function () { m.point('.t-btn.wide'); }], [120, function () { m.click('.t-btn.wide'); }]];
       }
     },
+    equip: {
+      label: 'Screen recording of Cadmium Studio reading a vendor equipment drawing and building a 3D model of the vessel with its nozzles and supports.',
+      build: function (R) {
+        var S = R + 'assets/screens/equip-';
+        return {
+          file: 'V-3104 Knock-out Drum', area: 'Area 300 &middot; Unit 310', std: 'Vendor data', rev: '2', coord: 'V-3104&ensp;Horizontal drum',
+          tools: tool('play', 'Build Model', 'data-go') + tool('export', 'Export to Plant 3D', 'data-exp'),
+          tree: [[0, 'folder', 'Area 300'], [1, 'folder', 'Equipment'], [2, 'cube', 'P-3101A', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'cube', 'P-3101B', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'cube', 'E-3102', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'cube', 'T-3103', { leaf: 1, b: '&#10003;', bc: 'ok' }], [2, 'cube', 'V-3104', { leaf: 1, on: 1, b: 'new', bc: 'wip' }], [2, 'cube', 'V-3105', { leaf: 1, b: 'to do' }], [1, 'folder', 'Vendor Drawings'], [2, 'sheet', 'V-3104 GA Rev 2', { leaf: 1 }], [2, 'sheet', 'V-3105 GA Rev 1', { leaf: 1 }], [1, 'folder', 'Datasheets', { shut: 1 }]],
+          tabs: [['V-3104 GA Rev 2.pdf', 1, 'x', 'sheet'], ['V-3104 Model', 1, 'y', 'cube']],
+          center: '<div class="pane on eq"><div class="eq-a sheet">' + ruler() + '<div class="slot layers show-base" data-svg="equip-drawing.svg"></div></div><div class="eq-b"><img class="eqi e-wire" src="' + S + 'wire.webp" alt=""><img class="eqi e-shell" src="' + S + 'shell.webp" alt=""><img class="eqi e-noz" src="' + S + 'noz.webp" alt=""><img class="eqi e-full" src="' + S + 'full.webp" alt=""><div class="vcube"><b>ISO</b></div><div class="vaxis"><i>X</i><i>Y</i><i>Z</i></div></div></div>',
+          bottomTabs: ['Nozzle Schedule', 'Checks', 'Output'],
+          bottom: grid(['Mark', 'Size', 'Rating', 'Service', 'Orientation', 'Projection'], [['N1', '8 in', '150#', 'Inlet', 'Top', '750'], ['N2', '4 in', '150#', 'Vent', 'Top', '750'], ['N3', '6 in', '150#', 'Outlet', 'Top', '750'], ['N4', '3 in', '150#', 'Drain', 'Bottom', '600'], ['N5', '2 in', '150#', 'Level', 'Bottom', '600']].map(function (r) { return { v: r }; })),
+          props: [['Equipment', [['Tag', 'V-3104'], ['Type', 'Horizontal drum'], ['Source', 'Vendor GA, Rev 2'], ['Status', '<i data-k="st">Not built</i>']]], ['Geometry', [['Shell ID', '<i data-k="id">&ndash;</i>'], ['Length T/T', '<i data-k="len">&ndash;</i>'], ['Heads', '<i data-k="hd">&ndash;</i>'], ['Nozzles', '<i data-k="nz">&ndash;</i>'], ['Supports', '<i data-k="sp">&ndash;</i>']]], ['Checks', [['Drawing check', '<i data-k="ck">&ndash;</i>'], ['Tie points', '<i data-k="cp">&ndash;</i>']]]]
+        };
+      },
+      steps: function (m) {
+        return [[650, function () { m.point('[data-go]'); }], [130, function () { m.click('[data-go]'); m.status('Reading vendor drawing...'); m.busy(true); m.prog(10); m.val('st', 'Building'); m.point('.d-r'); }],
+          [480, function () { m.reveal('dims', 240); m.prog(22); m.status('Reading main dimensions...'); }],
+          [380, function () { m.val('id', '2400 mm'); m.val('len', '7200 mm'); m.val('hd', '2:1 elliptical'); m.reveal('noz', 460); m.seq('.row', 90); m.status('Reading nozzle schedule...'); m.prog(36); }],
+          [560, function () { m.val('nz', '5 + manway'); m.reveal('sad', 140); m.prog(45); m.status('Reading supports...'); }],
+          [300, function () { m.val('sp', '2 saddles'); m.add('.e-wire', 'on'); m.status('Building wireframe...'); m.prog(56); m.point('.eq-b'); }],
+          [800, function () { m.add('.e-shell', 'on'); m.status('Modelling shell and heads...'); m.prog(68); }],
+          [620, function () { m.add('.e-noz', 'on'); m.status('Placing nozzles...'); m.prog(82); }],
+          [620, function () { m.add('.e-full', 'on'); m.status('Adding supports...'); m.prog(92); }],
+          [480, function () { m.val('ck', 'Matches'); m.val('cp', '6 of 6'); m.val('st', 'Ready'); m.prog(100); m.busy(false); m.status('Ready. V-3104 model matches the drawing.'); m.idle('.eq-b'); }],
+          [1200, function () { m.point('[data-exp]'); }], [140, function () { m.click('[data-exp]'); m.status('Exported V-3104 to Plant 3D.'); }]];
+      }
+    },
     gad: {
       label: 'Screen recording of Cadmium Studio cleaning up a general arrangement drawing: overlapping labels are placed clear of the piping and dimensions are chained.',
       build: function (R) {

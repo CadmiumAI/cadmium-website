@@ -17,7 +17,7 @@ PHASES = {
     h1='Issue-ready isometrics and GADs, in minutes.',
     lead='Isometrics and general arrangements are the most redrawn documents on a project. Cadmium takes your 3D model to a finished, annotated isometric, and cleans up extracted GADs into drawings you can issue.',
     outcomes=[('95%', 'less manual rework per isometric'), ('10 min', 'per sheet, including engineer review'), ('Every revision', 'compared automatically, sheet by sheet')],
-    rows=[('Piping isometrics', 'Hours of clean-up per sheet', 'Finished sheet, native DWG and DXF'), ('General arrangement drawings', 'Labels and dimensions moved by hand', 'Issue-ready DGN and PDF in seconds'), ('Bill of materials', 'Rebuilt after each change', 'Generated from the model with every run'), ('Revision control', 'Manual clouding and comparison', 'Changes detected and clouded automatically'), ('Model and P&amp;ID checks', 'Sampled at review', 'Every line reconciled before issue')],
+    rows=[('Equipment models', 'Modelled by hand from vendor PDFs', 'Built from the vendor drawing, nozzles included'), ('Piping isometrics', 'Hours of clean-up per sheet', 'Finished sheet, native DWG and DXF'), ('General arrangement drawings', 'Labels and dimensions moved by hand', 'Issue-ready DGN and PDF in seconds'), ('Bill of materials', 'Rebuilt after each change', 'Generated from the model with every run'), ('Revision control', 'Manual clouding and comparison', 'Changes detected and clouded automatically'), ('Model and P&amp;ID checks', 'Sampled at review', 'Every line reconciled before issue')],
     module=('Isometrics', 'isometrics/', '../screens/sheet.svg'), module2=('GAD annotation', 'gad/'),
     lost='Cleaning up generated isometrics, and doing it again after every model change.'),
   'procurement': dict(
@@ -69,7 +69,7 @@ def drop(label, root, items, key, cur):
 
 def nav(root, cur):
     home = root or './'
-    plat = [('platform', 'platform/', 'Platform overview', 'How the modules share one dataset'), ('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'General arrangements, issue-ready'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
+    plat = [('platform', 'platform/', 'Platform overview', 'How the modules share one dataset'), ('iso', 'isometrics/', 'Isometrics', 'Model to finished sheet'), ('gad', 'gad/', 'GAD annotation', 'General arrangements, issue-ready'), ('pid', 'pid/', 'P&amp;ID intelligence', 'Drawings into connected data'), ('equip', 'equipment/', 'Equipment 3D modelling', 'Vendor drawings to plant-ready models'), ('carve', '3d-from-2d/', '3D from 2D', 'Models from drawings')]
     sol = [(k, f'solutions/{k}/', p['title'], p['short']) for k, p in STAGES_ONLY.items()]
     sol += [(None, '', 'Project type', ''), ('brownfield', 'solutions/brownfield/', PHASES['brownfield']['title'], PHASES['brownfield']['short'])]
     def link(h, t, k):
@@ -109,7 +109,7 @@ def footer(root):
         </a>
         <p>AI for engineering.</p>
       </div>
-      <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Platform</h4><a href="{root}platform/">Overview</a><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}equipment/">Equipment 3D modelling</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4>{sol}</div>
       <div><h4>Company</h4><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
     </div>
@@ -165,7 +165,7 @@ def pilot(h2='Start with one line, one sheet or one area.', lead='Bring real pro
         <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
         <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
         <div class="field"><label for="fTrack">Where would you start?</label>
-          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>Equipment models from vendor drawings</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
         <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
         <button class="btn btn--primary" type="submit">Request a pilot</button>
         <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
@@ -245,6 +245,7 @@ def lifecycle():
 
 WALK_STEPS = [
  ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
+ ('equip', 'Model', 'Equipment models from vendor drawings', 'Vendor drawings arrive as PDFs, and someone has to model every vessel and exchanger by hand. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them, ready to place in your plant model.', ['Vessels, exchangers, pumps and more', 'Nozzles with size, rating and orientation', 'Checked against the vendor drawing'], 'equipment/', 'See equipment modelling'),
  ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
  ('gad', 'Annotate', 'General arrangements, ready to issue', 'Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
  ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'solutions/procurement/', 'See procurement'),
@@ -321,11 +322,11 @@ INTEG = '''<section class="band" id="integrations">
     <h2>Keep the tools you already use.</h2>
     <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and writes native files.</p>
     <div class="flowmap" data-inview>
-      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
+      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Vendor drawings and datasheets</p><p>Scanned PDFs and images</p></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
       <div class="flow-mid"><img src="{R}cadmium-brand/icon/cadmium-icon.svg" alt="" width="64" height="64" /><b>One dataset</b><span>Tags, lines and geometry, linked across documents and revisions</span></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50H50V10H100"/><path d="M0 50H60V30H100"/><path d="M0 50H100"/><path d="M0 50H60V70H100"/><path d="M0 50H50V90H100"/></svg>
-      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
+      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Plant 3D, E3D and S3D equipment; STEP and IGES</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
     </div>
     <p class="connects"><b>Connects to</b> SharePoint &middot; Aconex &middot; ProjectWise &middot; SAP &middot; Oracle &middot; REST API</p>
   </div>
@@ -470,6 +471,7 @@ platform = '''<section class="sub-hero has-photo" style="background-image:url('{
     <h2>Start with one. They share the same data.</h2>
     <article class="prod"><div><h3>Isometrics</h3><p>A 3D model to a finished, annotated isometric on your template, with bill of materials, spool data and automatic revision comparison.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}isometrics/">Watch the pipeline run</a></div></div><div data-mock="iso" data-root="{R}"></div></article>
     <article class="prod"><div><h3>GAD annotation</h3><p>General arrangement plans extracted from the model become issue-ready drawings: labels clear of piping, chained dimensions, margin entries, in your native DGN with a 1:1 PDF.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}gad/">See GAD annotation</a></div></div><div data-mock="gad" data-root="{R}"></div></article>
+    <article class="prod"><div><h3>Equipment 3D modelling</h3><p>Vendor drawings and datasheets become accurate 3D equipment with nozzles, ready to place in Plant 3D, E3D or S3D, or as neutral STEP and IGES.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}equipment/">See equipment modelling</a></div></div><div data-mock="equip" data-root="{R}"></div></article>
     <article class="prod"><div><h3>P&amp;ID intelligence</h3><p>Scanned or native P&amp;IDs into symbols, tags and connectivity, with line lists, valve lists and isolation answers on tap.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}pid/">Try the live demo</a></div></div><div data-mock="pid" data-root="{R}"></div></article>
     <article class="prod"><div><h3>3D from 2D</h3><p>General arrangements and legacy drawings into 3D models and pipe routes, with conflicts between drawings marked before they reach site.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="{R}3d-from-2d/">Try the live demo</a></div></div><a class="prod-shot" href="{R}3d-from-2d/" aria-label="3D from 2D"><img src="{R}assets/posters/3d-from-2d.png" alt="" loading="lazy" /></a></article>
   </div></section>
@@ -568,6 +570,32 @@ page('company', 'Company — Cadmium', 'Cadmium builds AI for engineering, so en
       <div class="tenet"><h3>Answers you can check</h3><p>Everything links back to its source, so an engineer can see where each tag, dimension and quantity came from.</p></div>
       <div class="tenet"><h3>The engineer signs off</h3><p>Cadmium does the production work. Responsibility for what is issued stays with a qualified engineer, and our tools are built around that review.</p></div>
     </div>
+  </div></section>''')
+
+# Equipment 3D modelling
+eq_rows = ''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in [
+ ('Vessels and drums', 'Modelled by hand from vendor PDFs', 'Built from the vendor GA'),
+ ('Exchangers, pumps and packages', 'Placeholder blocks until late in the job', 'Accurate envelopes from the first vendor issue'),
+ ('Nozzles', 'Typed in from the schedule, then checked', 'Size, rating and orientation read from the drawing'),
+ ('Vendor revisions', 'Compared and remodelled by hand', 'Differences found, model updated'),
+ ('Delivery', 'Rebuilt for each design tool', 'Plant 3D, E3D, S3D, STEP or IGES')])
+page('equipment', 'Equipment 3D modelling — Cadmium', 'Cadmium turns vendor drawings and datasheets into accurate 3D equipment models with nozzles, for AutoCAD Plant 3D, AVEVA E3D, Hexagon S3D, STEP and IGES.', 'equip',
+ '''<section class="sub-hero has-photo" style="background-image:url('{R}assets/photos/plant-stacks.jpg')"><div class="wrap">
+    <div class="sub-grid">
+      <div>
+        <p class="eyebrow">Equipment 3D modelling</p>
+        <h1>From vendor drawing to plant-ready model.</h1>
+        <p class="lead">Every vessel, exchanger and pump arrives as a vendor PDF, and someone has to model it. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them.</p>
+        <div class="hq-actions"><a class="btn btn--on-dark" href="#contact">Start a pilot</a></div>
+      </div>
+      <div data-mock="equip" data-root="{R}"></div>
+    </div>
+  </div></section>
+  <section class="proof proof--light"><div class="wrap proof-row proof-row--3"><div class="pf"><b>Vendor GA in</b><span>drawings and datasheets, native or scanned</span></div><div class="pf"><b>Connectable nozzles</b><span>with size, rating and orientation, ready for piping</span></div><div class="pf"><b>Your design tool</b><span>Plant 3D, E3D, S3D, or neutral STEP and IGES</span></div></div></section>
+  <section class="band"><div class="wrap">
+    <p class="eyebrow">Deliverables</p>
+    <h2>What changes on the job.</h2>
+    <div class="table-wrap"><table class="ltable"><thead><tr><th>Task</th><th>Today</th><th>With Cadmium</th></tr></thead><tbody>'''+eq_rows+'''</tbody></table></div>
   </div></section>''')
 
 # GAD annotation

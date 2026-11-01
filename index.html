@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css?v=e4997f18" />
-<link rel="stylesheet" href="site.css?v=f60ea787" />
+<link rel="stylesheet" href="site.css?v=bf84dda1" />
 <link rel="icon" href="cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="cadmium-brand/favicon/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
@@ -31,7 +31,7 @@
       <b>Cadmium</b>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="isometrics/"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="gad/"><b>GAD annotation</b><span>General arrangements, issue-ready</span></a><a href="pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
+      <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="platform/"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="isometrics/"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="gad/"><b>GAD annotation</b><span>General arrangements, issue-ready</span></a><a href="pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="equipment/"><b>Equipment 3D modelling</b><span>Vendor drawings to plant-ready models</span></a><a href="3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
       <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Solutions</button><div class="nav-panel"><a href="solutions/feed/"><b>Front-end engineering</b><span>Turn licensor packages into live data</span></a><a href="solutions/detailed/"><b>Detailed engineering</b><span>Issue isometrics and MTOs in minutes</span></a><a href="solutions/procurement/"><b>Procurement and fabrication</b><span>MTOs and spools your shop can trust</span></a><a href="solutions/construction/"><b>Construction</b><span>The current drawing and model, at the workface</span></a><a href="solutions/handover/"><b>Commissioning and handover</b><span>As-builts and data your client will accept</span></a><em class="nav-sub">Project type</em><a href="solutions/brownfield/"><b>Brownfield and revamps</b><span>Bring legacy plants back into data</span></a></div></div>
       <a href="teams/">Teams</a>
       <a href="security/">Security</a>
@@ -108,7 +108,7 @@
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="pid/"><img src="assets/posters/pid.png" alt="" loading="lazy" /><span>P&amp;ID intelligence &rarr;</span></a><a class="lc-more" href="3d-from-2d/">3D from 2D &rarr;</a></div>
         </div><div class="lc-panel" data-panel="detailed" hidden>
           <div class="lc-col"><img class="lc-photo" src="assets/photos/welder-mask.jpg" alt="" loading="lazy" /><h3>Detailed engineering</h3><p>Cleaning up generated isometrics, and doing it again after every model change.</p><a class="btn btn--primary btn--sm" href="solutions/detailed/">See the solution</a></div>
-          <div class="lc-col"><h4>Deliverables</h4><ul><li>Piping isometrics</li><li>General arrangement drawings</li><li>Bill of materials</li><li>Revision control</li><li>Model and P&amp;ID checks</li></ul></div>
+          <div class="lc-col"><h4>Deliverables</h4><ul><li>Equipment models</li><li>Piping isometrics</li><li>General arrangement drawings</li><li>Bill of materials</li><li>Revision control</li><li>Model and P&amp;ID checks</li></ul></div>
           <div class="lc-col"><h4>Results</h4><div class="lc-out"><b>95%</b><span>less manual rework per isometric</span></div><div class="lc-out"><b>10 min</b><span>per sheet, including engineer review</span></div><div class="lc-out"><b>Every revision</b><span>compared automatically, sheet by sheet</span></div></div>
           <div class="lc-col"><h4>Modules used</h4><a class="lc-shot" href="isometrics/"><img src="assets/posters/../screens/sheet.svg" alt="" loading="lazy" /><span>Isometrics &rarr;</span></a><a class="lc-more" href="gad/">GAD annotation &rarr;</a></div>
         </div><div class="lc-panel" data-panel="procurement" hidden>
@@ -133,24 +133,27 @@
 </section>
 <section class="walk" id="walk">
   <div class="wrap"><p class="eyebrow">Walkthrough</p><h2>A line, from first P&amp;ID to the workface.</h2></div>
-  <nav class="walk-bar" aria-label="Walkthrough steps"><div class="wrap"><a href="#w-pid"><i>01</i>Read</a><a href="#w-iso"><i>02</i>Generate</a><a href="#w-gad"><i>03</i>Annotate</a><a href="#w-mto"><i>04</i>Take off</a><a href="#w-review"><i>05</i>Check</a><a href="#w-site"><i>06</i>Build</a></div></nav>
+  <nav class="walk-bar" aria-label="Walkthrough steps"><div class="wrap"><a href="#w-pid"><i>01</i>Read</a><a href="#w-equip"><i>02</i>Model</a><a href="#w-iso"><i>03</i>Generate</a><a href="#w-gad"><i>04</i>Annotate</a><a href="#w-mto"><i>05</i>Take off</a><a href="#w-review"><i>06</i>Check</a><a href="#w-site"><i>07</i>Build</a></div></nav>
   <div class="wrap"><article class="walk-step" id="w-pid">
         <div class="walk-copy"><span class="walk-k">01 &middot; Read</span><h3>Turn a stack of P&amp;IDs into data by lunchtime</h3><p>Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.</p><ul><li>Line, valve and instrument lists, ready on day one</li><li>Every tag traced back to its place on the sheet</li><li>Dangling lines and missing tags flagged for review</li></ul><a href="pid/">See it read a P&amp;ID &rarr;</a></div>
         <div data-mock="pid" data-root=""></div>
-      </article><article class="walk-step flip" id="w-iso">
-        <div class="walk-copy"><span class="walk-k">02 &middot; Generate</span><h3>From the model to a finished sheet</h3><p>Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.</p><ul><li>Hours of clean-up per sheet become minutes of review</li><li>Your title block and your drafting standards</li><li>Native DWG and DXF, editable by your team</li></ul><a href="isometrics/">Watch the pipeline run &rarr;</a></div>
+      </article><article class="walk-step flip" id="w-equip">
+        <div class="walk-copy"><span class="walk-k">02 &middot; Model</span><h3>Equipment models from vendor drawings</h3><p>Vendor drawings arrive as PDFs, and someone has to model every vessel and exchanger by hand. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them, ready to place in your plant model.</p><ul><li>Vessels, exchangers, pumps and more</li><li>Nozzles with size, rating and orientation</li><li>Checked against the vendor drawing</li></ul><a href="equipment/">See equipment modelling &rarr;</a></div>
+        <div data-mock="equip" data-root=""></div>
+      </article><article class="walk-step" id="w-iso">
+        <div class="walk-copy"><span class="walk-k">03 &middot; Generate</span><h3>From the model to a finished sheet</h3><p>Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.</p><ul><li>Hours of clean-up per sheet become minutes of review</li><li>Your title block and your drafting standards</li><li>Native DWG and DXF, editable by your team</li></ul><a href="isometrics/">Watch the pipeline run &rarr;</a></div>
         <div data-mock="iso" data-root=""></div>
-      </article><article class="walk-step" id="w-gad">
-        <div class="walk-copy"><span class="walk-k">03 &middot; Annotate</span><h3>General arrangements, ready to issue</h3><p>Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.</p><ul><li>A clean sheet in about ten seconds</li><li>Still your native DGN, plus a 1:1 PDF</li><li>Every label clear of piping and of other labels</li></ul><a href="gad/">See GAD annotation &rarr;</a></div>
+      </article><article class="walk-step flip" id="w-gad">
+        <div class="walk-copy"><span class="walk-k">04 &middot; Annotate</span><h3>General arrangements, ready to issue</h3><p>Plans extracted from the model arrive with notes piled on top of each other. Cadmium cleans it up in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.</p><ul><li>A clean sheet in about ten seconds</li><li>Still your native DGN, plus a 1:1 PDF</li><li>Every label clear of piping and of other labels</li></ul><a href="gad/">See GAD annotation &rarr;</a></div>
         <div data-mock="gad" data-root=""></div>
-      </article><article class="walk-step flip" id="w-mto">
-        <div class="walk-copy"><span class="walk-k">04 &middot; Take off</span><h3>MTOs that keep up with the model</h3><p>Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.</p><ul><li>Differences by item and by line, per revision</li><li>Late changes visible the day they happen</li><li>Fewer surplus and short-shipped items at site</li></ul><a href="solutions/procurement/">See procurement &rarr;</a></div>
+      </article><article class="walk-step" id="w-mto">
+        <div class="walk-copy"><span class="walk-k">05 &middot; Take off</span><h3>MTOs that keep up with the model</h3><p>Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.</p><ul><li>Differences by item and by line, per revision</li><li>Late changes visible the day they happen</li><li>Fewer surplus and short-shipped items at site</li></ul><a href="solutions/procurement/">See procurement &rarr;</a></div>
         <div data-mock="mto" data-root=""></div>
-      </article><article class="walk-step" id="w-review">
-        <div class="walk-copy"><span class="walk-k">05 &middot; Check</span><h3>Engineers review changes, not whole sheets</h3><p>Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.</p><ul><li>Automatic clouding at every revision</li><li>Model, P&amp;ID and BOM checked against each other</li><li>A full record of who approved what, and when</li></ul><a href="solutions/detailed/">See detailed engineering &rarr;</a></div>
+      </article><article class="walk-step flip" id="w-review">
+        <div class="walk-copy"><span class="walk-k">06 &middot; Check</span><h3>Engineers review changes, not whole sheets</h3><p>Each revision is compared with the last and the changes are clouded for you. Sheets are checked against the model and P&amp;ID, then a qualified engineer signs them off.</p><ul><li>Automatic clouding at every revision</li><li>Model, P&amp;ID and BOM checked against each other</li><li>A full record of who approved what, and when</li></ul><a href="solutions/detailed/">See detailed engineering &rarr;</a></div>
         <div data-mock="review" data-root=""></div>
-      </article><article class="walk-step flip" id="w-site">
-        <div class="walk-copy"><span class="walk-k">06 &middot; Build</span><h3>The current drawing, at the workface</h3><p>Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.</p><ul><li>Isometric and 3D model on any phone or tablet</li><li>Superseded revisions clearly flagged</li><li>Test-pack boundaries worked out from the P&amp;IDs</li></ul><a href="solutions/construction/">See construction &rarr;</a></div>
+      </article><article class="walk-step" id="w-site">
+        <div class="walk-copy"><span class="walk-k">07 &middot; Build</span><h3>The current drawing, at the workface</h3><p>Every sheet and its 3D model open on any device, with no CAD licence. Superseded revisions are flagged, so nobody builds from an old print.</p><ul><li>Isometric and 3D model on any phone or tablet</li><li>Superseded revisions clearly flagged</li><li>Test-pack boundaries worked out from the P&amp;IDs</li></ul><a href="solutions/construction/">See construction &rarr;</a></div>
         <div data-mock="site" data-root=""></div>
       </article></div>
 </section>
@@ -244,11 +247,11 @@
     <h2>Keep the tools you already use.</h2>
     <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and writes native files.</p>
     <div class="flowmap" data-inview>
-      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
+      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Vendor drawings and datasheets</p><p>Scanned PDFs and images</p></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
       <div class="flow-mid"><img src="cadmium-brand/icon/cadmium-icon.svg" alt="" width="64" height="64" /><b>One dataset</b><span>Tags, lines and geometry, linked across documents and revisions</span></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50H50V10H100"/><path d="M0 50H60V30H100"/><path d="M0 50H100"/><path d="M0 50H60V70H100"/><path d="M0 50H50V90H100"/></svg>
-      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
+      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Plant 3D, E3D and S3D equipment; STEP and IGES</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
     </div>
     <p class="connects"><b>Connects to</b> SharePoint &middot; Aconex &middot; ProjectWise &middot; SAP &middot; Oracle &middot; REST API</p>
   </div>
@@ -284,7 +287,7 @@
         <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
         <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
         <div class="field"><label for="fTrack">Where would you start?</label>
-          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>Equipment models from vendor drawings</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
         <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
         <button class="btn btn--primary" type="submit">Request a pilot</button>
         <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
@@ -302,7 +305,7 @@
         </a>
         <p>AI for engineering.</p>
       </div>
-      <div><h4>Platform</h4><a href="platform/">Overview</a><a href="isometrics/">Isometrics</a><a href="gad/">GAD annotation</a><a href="pid/">P&amp;ID intelligence</a><a href="3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Platform</h4><a href="platform/">Overview</a><a href="isometrics/">Isometrics</a><a href="gad/">GAD annotation</a><a href="pid/">P&amp;ID intelligence</a><a href="equipment/">Equipment 3D modelling</a><a href="3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4><a href="solutions/feed/">Front-end engineering</a><a href="solutions/detailed/">Detailed engineering</a><a href="solutions/procurement/">Procurement and fabrication</a><a href="solutions/construction/">Construction</a><a href="solutions/handover/">Commissioning and handover</a><a href="solutions/brownfield/">Brownfield and revamps</a></div>
       <div><h4>Company</h4><a href="teams/">Teams</a><a href="security/">Security</a><a href="company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="credits/">Photo credits</a></div>
     </div>

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../styles.css?v=e4997f18" />
-<link rel="stylesheet" href="../site.css?v=f60ea787" />
+<link rel="stylesheet" href="../site.css?v=bf84dda1" />
 <link rel="icon" href="../cadmium-brand/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="../cadmium-brand/favicon/favicon.ico" sizes="any" />
 <link rel="apple-touch-icon" href="../cadmium-brand/favicon/favicon-180.png" sizes="180x180" />
@@ -31,7 +31,7 @@
       <b>Cadmium</b>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <div class="nav-drop"><button class="nav-drop-btn is-current" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="../platform/" class="is-current" aria-current="page"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="../isometrics/"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="../gad/"><b>GAD annotation</b><span>General arrangements, issue-ready</span></a><a href="../pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="../3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
+      <div class="nav-drop"><button class="nav-drop-btn is-current" type="button" aria-expanded="false">Platform</button><div class="nav-panel"><a href="../platform/" class="is-current" aria-current="page"><b>Platform overview</b><span>How the modules share one dataset</span></a><a href="../isometrics/"><b>Isometrics</b><span>Model to finished sheet</span></a><a href="../gad/"><b>GAD annotation</b><span>General arrangements, issue-ready</span></a><a href="../pid/"><b>P&amp;ID intelligence</b><span>Drawings into connected data</span></a><a href="../equipment/"><b>Equipment 3D modelling</b><span>Vendor drawings to plant-ready models</span></a><a href="../3d-from-2d/"><b>3D from 2D</b><span>Models from drawings</span></a></div></div>
       <div class="nav-drop"><button class="nav-drop-btn" type="button" aria-expanded="false">Solutions</button><div class="nav-panel"><a href="../solutions/feed/"><b>Front-end engineering</b><span>Turn licensor packages into live data</span></a><a href="../solutions/detailed/"><b>Detailed engineering</b><span>Issue isometrics and MTOs in minutes</span></a><a href="../solutions/procurement/"><b>Procurement and fabrication</b><span>MTOs and spools your shop can trust</span></a><a href="../solutions/construction/"><b>Construction</b><span>The current drawing and model, at the workface</span></a><a href="../solutions/handover/"><b>Commissioning and handover</b><span>As-builts and data your client will accept</span></a><em class="nav-sub">Project type</em><a href="../solutions/brownfield/"><b>Brownfield and revamps</b><span>Bring legacy plants back into data</span></a></div></div>
       <a href="../teams/">Teams</a>
       <a href="../security/">Security</a>
@@ -66,6 +66,7 @@
     <h2>Start with one. They share the same data.</h2>
     <article class="prod"><div><h3>Isometrics</h3><p>A 3D model to a finished, annotated isometric on your template, with bill of materials, spool data and automatic revision comparison.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="../isometrics/">Watch the pipeline run</a></div></div><div data-mock="iso" data-root="../"></div></article>
     <article class="prod"><div><h3>GAD annotation</h3><p>General arrangement plans extracted from the model become issue-ready drawings: labels clear of piping, chained dimensions, margin entries, in your native DGN with a 1:1 PDF.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="../gad/">See GAD annotation</a></div></div><div data-mock="gad" data-root="../"></div></article>
+    <article class="prod"><div><h3>Equipment 3D modelling</h3><p>Vendor drawings and datasheets become accurate 3D equipment with nozzles, ready to place in Plant 3D, E3D or S3D, or as neutral STEP and IGES.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="../equipment/">See equipment modelling</a></div></div><div data-mock="equip" data-root="../"></div></article>
     <article class="prod"><div><h3>P&amp;ID intelligence</h3><p>Scanned or native P&amp;IDs into symbols, tags and connectivity, with line lists, valve lists and isolation answers on tap.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="../pid/">Try the live demo</a></div></div><div data-mock="pid" data-root="../"></div></article>
     <article class="prod"><div><h3>3D from 2D</h3><p>General arrangements and legacy drawings into 3D models and pipe routes, with conflicts between drawings marked before they reach site.</p><div class="prod-actions"><a class="btn btn--primary btn--sm" href="../3d-from-2d/">Try the live demo</a></div></div><a class="prod-shot" href="../3d-from-2d/" aria-label="3D from 2D"><img src="../assets/posters/3d-from-2d.png" alt="" loading="lazy" /></a></article>
   </div></section>
@@ -75,11 +76,11 @@
     <h2>Keep the tools you already use.</h2>
     <p class="lead lead--wide">Nothing changes about how your designers model. Cadmium reads what they produce and writes native files.</p>
     <div class="flowmap" data-inview>
-      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Scanned PDFs and images</p></div>
+      <div class="integ-col"><h3>Reads</h3><p>AutoCAD Plant 3D</p><p>MicroStation DGN</p><p>AVEVA E3D and Hexagon S3D</p><p>SmartPlant and AVEVA P&amp;ID</p><p>Vendor drawings and datasheets</p><p>Scanned PDFs and images</p></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10H50V50H100"/><path d="M0 30H40V50H100"/><path d="M0 50H100"/><path d="M0 70H40V50H100"/><path d="M0 90H50V50H100"/></svg>
       <div class="flow-mid"><img src="../cadmium-brand/icon/cadmium-icon.svg" alt="" width="64" height="64" /><b>One dataset</b><span>Tags, lines and geometry, linked across documents and revisions</span></div>
       <svg class="flow-pipes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50H50V10H100"/><path d="M0 50H60V30H100"/><path d="M0 50H100"/><path d="M0 50H60V70H100"/><path d="M0 50H50V90H100"/></svg>
-      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
+      <div class="integ-col"><h3>Writes</h3><p>DWG, DXF and DGN, as native entities</p><p>Your title block and standards</p><p>PCF for spool fabrication</p><p>Plant 3D, E3D and S3D equipment; STEP and IGES</p><p>Excel and CSV registers</p><p>CFIHOS-structured handover data</p></div>
     </div>
     <p class="connects"><b>Connects to</b> SharePoint &middot; Aconex &middot; ProjectWise &middot; SAP &middot; Oracle &middot; REST API</p>
   </div>
@@ -102,7 +103,7 @@
         <div class="field"><label for="fCompany">Company</label><input id="fCompany" name="company" type="text" placeholder="Acme Engineering" /></div>
         <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" required placeholder="you@company.com" /></div>
         <div class="field"><label for="fTrack">Where would you start?</label>
-          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
+          <select id="fTrack" name="track"><option>Isometrics from a 3D model</option><option>P&amp;IDs into line and valve lists</option><option>Equipment models from vendor drawings</option><option>3D from legacy drawings</option><option>Not sure yet</option></select></div>
         <div class="field"><label for="fNotes">About the project</label><textarea id="fNotes" name="notes" rows="3" placeholder="Refinery revamp, around 2,400 isometrics, modelled in Plant 3D."></textarea></div>
         <button class="btn btn--primary" type="submit">Request a pilot</button>
         <p class="form-note" id="formNote">Opens your mail client addressed to <a href="mailto:hello@cadmium-ai.com" id="formMailLink">hello@cadmium-ai.com</a>.</p>
@@ -120,7 +121,7 @@
         </a>
         <p>AI for engineering.</p>
       </div>
-      <div><h4>Platform</h4><a href="../platform/">Overview</a><a href="../isometrics/">Isometrics</a><a href="../gad/">GAD annotation</a><a href="../pid/">P&amp;ID intelligence</a><a href="../3d-from-2d/">3D from 2D</a></div>
+      <div><h4>Platform</h4><a href="../platform/">Overview</a><a href="../isometrics/">Isometrics</a><a href="../gad/">GAD annotation</a><a href="../pid/">P&amp;ID intelligence</a><a href="../equipment/">Equipment 3D modelling</a><a href="../3d-from-2d/">3D from 2D</a></div>
       <div><h4>Solutions</h4><a href="../solutions/feed/">Front-end engineering</a><a href="../solutions/detailed/">Detailed engineering</a><a href="../solutions/procurement/">Procurement and fabrication</a><a href="../solutions/construction/">Construction</a><a href="../solutions/handover/">Commissioning and handover</a><a href="../solutions/brownfield/">Brownfield and revamps</a></div>
       <div><h4>Company</h4><a href="../teams/">Teams</a><a href="../security/">Security</a><a href="../company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="../credits/">Photo credits</a></div>
     </div>

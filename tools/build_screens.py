@@ -63,3 +63,37 @@ for i in range(11):
 out.append('</svg>')
 open('assets/screens/gad.svg', 'w').write('\n'.join(out))
 print('ok')
+
+# ── a synthetic vendor drawing for the equipment recording ──
+def text(x, y, t, size=11, anchor='start', fill='#cbd5e1'):
+    return f'<text x="{x}" y="{y}" font-size="{size}" text-anchor="{anchor}" fill="{fill}">{t}</text>'
+L = '#cbd5e1'
+E = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" font-family="ui-monospace,Consolas,monospace"><g data-l="base"><rect x="8" y="8" width="744" height="624" fill="none" stroke="#5b6675" stroke-width="2"/>']
+E.append(f'<path d="M150 130H530Q590 130 590 200Q590 270 530 270H150Q90 270 90 200Q90 130 150 130Z" fill="none" stroke="{L}" stroke-width="2"/><path d="M150 130V270M530 130V270" stroke="{L}" stroke-dasharray="7 4"/><path d="M70 200H610" stroke="#5b6675" stroke-dasharray="22 5 4 5"/>')
+NOZ = [('N1', 210, 130, -1), ('N2', 340, 130, -1), ('N3', 470, 130, -1), ('N4', 260, 270, 1), ('N5', 440, 270, 1)]
+for n, x, y, d in NOZ:
+    E.append(f'<path d="M{x-12} {y}V{y+d*30}H{x+12}V{y}M{x-18} {y+d*30}H{x+18}" fill="none" stroke="{L}" stroke-width="1.6"/>')
+    E.append(text(x, y + d * 38 + (4 if d > 0 else 0) + (6 if d > 0 else 0), n, 11, 'middle'))
+for x in (190, 490):
+    E.append(f'<path d="M{x-44} 325H{x+44}M{x-34} 325L{x-24} 268M{x+34} 325L{x+24} 268" fill="none" stroke="{L}" stroke-width="1.6"/>')
+E.append('<path d="M150 362V378M530 362V378M150 370H530" stroke="#ff7b6b"/>' + text(340, 364, '7200 T/T', 11, 'middle', '#ff7b6b'))
+E.append('<path d="M618 130H634M618 270H634M626 130V270" stroke="#ff7b6b"/>' + text(642, 204, '2400 ID', 11, 'start', '#ff7b6b'))
+E.append(text(30, 40, 'V-3104 KNOCK-OUT DRUM', 13))
+E.append(text(30, 58, 'VENDOR GA  REV 2  NOT FOR CONSTRUCTION', 10, 'start', '#8a97ad'))
+SCHED = [('N1', '8"', 'Inlet'), ('N2', '4"', 'Vent'), ('N3', '6"', 'Outlet'), ('N4', '3"', 'Drain'), ('N5', '2"', 'Level')]
+E.append(f'<path d="M30 420H400M30 442H400M100 420V{442+len(SCHED)*22}M170 420V{442+len(SCHED)*22}M30 420V{442+len(SCHED)*22}M400 420V{442+len(SCHED)*22}" stroke="#5b6675" fill="none"/>')
+E.append(text(42, 436, 'MARK', 10) + text(112, 436, 'SIZE', 10) + text(182, 436, 'SERVICE', 10))
+for i, (m_, sz, sv) in enumerate(SCHED):
+    y = 458 + i * 22
+    E.append(text(42, y, m_, 10) + text(112, y, sz, 10) + text(182, y, sv, 10) + f'<path d="M30 {y+6}H400" stroke="#333b47"/>')
+E.append('<path d="M480 540H730M480 570H730M480 600H730M480 540V620H730V540" stroke="#5b6675" fill="none"/>' + text(492, 560, 'V-3104', 11) + text(492, 590, 'DESIGN 150 PSIG, 300 F', 9) + '</g>')
+BOX = '#ffcf5c'
+for x, y, w, h in [(84, 124, 512, 152), (612, 122, 92, 158), (140, 352, 400, 32)]:
+    E.append(f'<rect data-l="dims" x="{x}" y="{y}" width="{w}" height="{h}" fill="rgba(255,207,92,.05)" stroke="{BOX}" stroke-width="1.4"/>')
+for n, x, y, d in NOZ:
+    top = y - 40 if d < 0 else y
+    E.append(f'<rect data-l="noz" x="{x-24}" y="{top}" width="48" height="52" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.4"/>')
+for x in (190, 490):
+    E.append(f'<rect data-l="sad" x="{x-50}" y="264" width="100" height="66" fill="rgba(127,150,255,.08)" stroke="#7f96ff" stroke-width="1.4"/>')
+E.append(f'<rect data-l="noz" x="26" y="416" width="378" height="{30+len(SCHED)*22}" fill="rgba(52,211,153,.05)" stroke="#34d399" stroke-width="1.4"/></svg>')
+open('assets/screens/equip-drawing.svg', 'w').write('\n'.join(E))

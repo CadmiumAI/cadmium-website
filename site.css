@@ -881,3 +881,12 @@ h2{font-weight:700;letter-spacing:-.018em}
 .lc-note{margin-top:14px;font-size:15px;color:var(--ink-2);max-width:none}
 .lc-note a{font-weight:600;text-decoration:none}
 .nav-panel .nav-sub{display:block;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:10px 11px 3px;margin-top:4px;border-top:1px solid var(--rule)}
+
+/* equipment recording: vendor drawing beside the model */
+.pane.eq{display:none;grid-template-columns:1fr 1fr}
+.pane.eq.on{display:grid}
+.eq-a{position:relative;border-right:1px solid #0c0e11;overflow:hidden}
+.eq-b{position:relative;overflow:hidden;background:#0d1016}
+.eqi{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;visibility:hidden}
+.eqi.on{visibility:visible}
+.eq .vcube{width:46px;height:46px;font-size:9px;right:10px;top:10px}

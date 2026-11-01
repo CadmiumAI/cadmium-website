@@ -105,7 +105,7 @@ def footer(root):
     <div class="foot-grid">
       <div class="foot-brand">
         <a href="{home}" class="footer-brand" aria-label="Cadmium — home">
-          <img src="{root}cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light.svg" alt="Cadmium" width="190" height="60" />
+          <img src="{root}cadmium-brand/icon/cadmium-icon.svg" alt="" width="30" height="30" /><b>Cadmium</b>
         </a>
         <p>AI for engineering.</p>
       </div>
@@ -139,8 +139,8 @@ def head(title, desc, root, url):
 <meta property="og:url" content="https://cadmium-ai.com/{url}" />
 <meta property="og:title" content="{title}" />
 <meta property="og:description" content="{desc}" />
-<meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/lockup-horizontal/cadmium-horizontal-on-light@2x.png" />
-<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:image" content="https://cadmium-ai.com/cadmium-brand/icon/cadmium-icon-1024.png" />
+<meta name="twitter:card" content="summary" />
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>

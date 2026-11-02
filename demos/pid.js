@@ -798,10 +798,12 @@
     { id: 'scan', label: 'Scan', note: 'What the reader is given: pixels and nothing else.' },
     { id: 'clean', label: 'Clean', note: 'Threshold, measure the skew and remove it, drop the specks.' },
     { id: 'lines', label: 'Pipe', note: 'Long straight strokes become pipe segments, coloured by the net they join.' },
-    { id: 'symbols', label: 'Symbols', note: 'Closed shapes become equipment and instruments; what is left is matched against the symbol library.' },
-    { id: 'text', label: 'Tags', note: 'Tags are read glyph by glyph, corrected by tag grammar and bound to the nearest symbol.' },
-    { id: 'graph', label: 'Graph', note: 'Everything joined: click any item to work out how to isolate it.' }
+    { id: 'valves', label: 'Valves', note: 'Valve bodies matched against the symbol library, each labelled with its type and its tag.' },
+    { id: 'instruments', label: 'Instruments', note: 'Instrument bubbles read glyph by glyph and bound to the nearest line, with type and tag.' },
+    { id: 'equipment', label: 'Equipment', note: 'Pumps, vessels and exchangers, with type and tag. Click any item to work out how to isolate it.' }
   ];
+  /* The last three stages each show one family, so there is no separate tag pass. */
+  var CAT = { valves: 'valve', instruments: 'inst', equipment: 'equip' };
 
   window.CadPid = function (root) {
     var view = root.querySelector('[data-pid-canvas]');
@@ -810,7 +812,7 @@
     var src = document.createElement('canvas');
     src.width = W; src.height = H;
     var srcCtx = src.getContext('2d', { willReadFrequently: true });
-    var strokes = [], tool = 'isolate', stage = 'scan', drawingId = 'skid', d = null, T = null;
+    var stage = 'scan', drawingId = 'skid', d = null, T = null;
     var R = null, gray = null, opt = { skew: -1.5, noise: 12, blur: 1 }, selected = null, iso = null, timer = null, autoTimer = null;
     var els = {
       stages: root.querySelector('[data-pid-stages]'),
@@ -825,20 +827,13 @@
 
     function clone(x) { return JSON.parse(JSON.stringify(x)); }
     function loadDrawing(id) {
-      drawingId = id; d = clone(DRAWINGS[id]); T = truth(d); strokes = []; selected = null; iso = null;
+      drawingId = id; d = clone(DRAWINGS[id]); T = truth(d); selected = null; iso = null;
       Array.prototype.forEach.call(els.drawings.children, function (b) { b.classList.toggle('on', b.dataset.id === id); b.setAttribute('aria-pressed', String(b.dataset.id === id)); });
       run(true);
     }
 
     function run(animate) {
-      paint(srcCtx, d, function (c) {
-        strokes.forEach(function (s) {
-          c.save();
-          if (s.erase) { c.strokeStyle = '#fff'; c.lineWidth = 16; c.lineCap = 'round'; c.beginPath(); s.pts.forEach(function (p, i) { i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1]); }); c.stroke(); }
-          else { c.strokeStyle = '#000'; c.lineWidth = 2; c.beginPath(); c.moveTo(s.a[0], s.a[1]); c.lineTo(s.b[0], s.b[1]); c.stroke(); }
-          c.restore();
-        });
-      });
+      paint(srcCtx, d);
       gray = scan(src, opt);
       R = read(gray);
       if (selected !== null && !R.nodes[selected]) { selected = null; iso = null; }
@@ -850,7 +845,7 @@
 
     function autoplay() {
       clearInterval(autoTimer);
-      if (matchMedia('(prefers-reduced-motion:reduce)').matches) { setStage('graph'); return; }
+      if (matchMedia('(prefers-reduced-motion:reduce)').matches) { setStage('equipment'); return; }
       var i = 0;
       setStage(STAGES[0].id);
       autoTimer = setInterval(function () {
@@ -888,38 +883,32 @@
         return;
       }
       if (stage === 'clean') { lut(R.bin, function (v) { return v; }, [203, 213, 225], BG); label(14, H - 18, 'measured skew ' + R.skew.toFixed(2) + '° · ' + R.ms.toFixed(0) + ' ms for the whole read', '#94a3b8'); return; }
-      lut(R.bin, function (v) { return v; }, stage === 'graph' ? [64, 76, 100] : [64, 76, 100], BG);
+      lut(R.bin, function (v) { return v; }, [64, 76, 100], BG);
       ctx.lineCap = 'round';
-      if (stage === 'lines' || stage === 'graph') R.segs.forEach(function (s) {
+      if (stage === 'lines' || CAT[stage]) R.segs.forEach(function (s) {
         var dim = iso && iso.nets.indexOf(s.net) < 0;
         ctx.strokeStyle = iso && !dim ? '#ffcf5c' : dim ? 'rgba(124,160,200,.45)' : COLORS[s.net % COLORS.length];
         ctx.lineWidth = iso && !dim ? 5 : 3;
         ctx.beginPath(); ctx.moveTo(s.x0, s.y0); ctx.lineTo(s.x1, s.y1); ctx.stroke();
       });
-      if (stage === 'text') R.inst.forEach(function (n) { label(n.x - 22, n.y - n.r - 8, n.tag || '?', '#e39bff'); });
-      if (stage === 'symbols' || stage === 'graph') {
+      if (CAT[stage]) {
         ctx.fillStyle = 'rgb(11,16,32)';
         R.words.forEach(function (w) { if (w.cls === 'equip' || w.cls === 'valve') ctx.fillRect(w.x0 - 3, w.y0 - 3, w.x1 - w.x0 + 6, w.y1 - w.y0 + 6); });
       }
-      if (stage === 'symbols' || stage === 'graph') R.nodes.forEach(function (n) {
-        var b = n.box, pad = 4, col = n.type === 'equip' ? '#8ea0ff' : n.type === 'inst' ? '#e39bff' : '#6fe3a8';
+      if (CAT[stage]) R.nodes.forEach(function (n) {
+        var on = n.type === CAT[stage];
+        var b = n.box, pad = 4;
+        var col = on ? (n.type === 'equip' ? '#8ea0ff' : n.type === 'inst' ? '#e39bff' : '#6fe3a8') : 'rgba(150,180,215,.3)';
         var closing = iso && iso.close.indexOf(n.id) >= 0;
-        if (stage === 'graph' && iso) col = closing ? '#ff6b57' : n.id === selected ? '#ffcf5c' : 'rgba(150,180,215,.5)';
-        ctx.strokeStyle = col; ctx.lineWidth = closing || n.id === selected ? 3 : 2;
+        if (iso) col = closing ? '#ff6b57' : n.id === selected ? '#ffcf5c' : 'rgba(150,180,215,.5)';
+        ctx.strokeStyle = col; ctx.lineWidth = closing || n.id === selected ? 3 : on ? 2 : 1;
         ctx.strokeRect(b.x0 - pad, b.y0 - pad, b.x1 - b.x0 + pad * 2, b.y1 - b.y0 + pad * 2);
         if (closing) { ctx.fillStyle = 'rgba(255,107,87,.22)'; ctx.fillRect(b.x0 - pad, b.y0 - pad, b.x1 - b.x0 + pad * 2, b.y1 - b.y0 + pad * 2); }
-        var text = stage === 'symbols' ? n.kind : (n.tag || '?');
-        if (stage !== 'symbols' && !n.tag) col = '#ff6b57';
-        label(b.x0 - pad, b.y0 - pad - 5, text, col);
+        if (!on && !iso) return;
+        if (on && !n.tag) col = '#ff6b57';
+        label(b.x0 - pad, b.y0 - pad - 5, on ? n.kind + ' ' + (n.tag || '?') : (n.tag || '?'), col);
       });
-      if (stage === 'text') R.words.forEach(function (w) {
-        ctx.fillStyle = 'rgba(11,16,32,.86)'; ctx.fillRect(w.x0 - 4, w.y0 - 4, w.x1 - w.x0 + 8, w.y1 - w.y0 + 8);
-        ctx.strokeStyle = w.cls ? '#ffcf5c' : 'rgba(255,207,92,.45)'; ctx.lineWidth = 1.5;
-        ctx.strokeRect(w.x0 - 4, w.y0 - 4, w.x1 - w.x0 + 8, w.y1 - w.y0 + 8);
-        ctx.font = "500 13px 'Fira Mono', monospace"; ctx.fillStyle = w.cls ? '#ffcf5c' : '#c9a85f';
-        ctx.fillText(w.cls ? w.tag : w.s, w.x0, w.y1);
-      });
-      if (stage === 'graph') R.open.forEach(function (o) {
+      if (CAT[stage]) R.open.forEach(function (o) {
         ctx.strokeStyle = o.label ? '#8ea0ff' : '#ff6b57'; ctx.lineWidth = 2.5;
         ctx.beginPath(); ctx.arc(o.x, o.y, 8, 0, 7); ctx.stroke();
       });
@@ -932,7 +921,6 @@
     }
 
     function report() {
-      var edited = strokes.length > 0 || moved;
       var s = score(R, T);
       root.__pid = { score: s, skew: R.skew, ms: R.ms, nodes: R.nodes.length, open: R.open, R: R };
       els.score.innerHTML = '';
@@ -941,15 +929,9 @@
         e.innerHTML = '<b></b><span></span>'; e.firstChild.textContent = v; e.lastChild.textContent = l;
         els.score.appendChild(e);
       }
-      if (edited) {
-        tile(R.nodes.length, 'items read', '');
-        tile(R.nets.length, 'lines traced', '');
-        tile(R.open.filter(function (o) { return !o.label; }).length, 'dangling ends', R.open.some(function (o) { return !o.label; }) ? 'warn' : '');
-      } else {
-        tile(s.nodes[0] + '/' + s.nodes[1], 'tags read correctly', s.nodes[0] === s.nodes[1] ? 'ok' : 'warn');
-        tile(s.edges[0] + '/' + s.edges[1], 'connections found', s.edges[0] === s.edges[1] ? 'ok' : 'warn');
-        tile(s.extra + s.ghost, 'false readings', s.extra + s.ghost ? 'warn' : 'ok');
-      }
+      tile(s.nodes[0] + '/' + s.nodes[1], 'tags read correctly', s.nodes[0] === s.nodes[1] ? 'ok' : 'warn');
+      tile(s.edges[0] + '/' + s.edges[1], 'connections found', s.edges[0] === s.edges[1] ? 'ok' : 'warn');
+      tile(s.extra + s.ghost, 'false readings', s.extra + s.ghost ? 'warn' : 'ok');
       tile(R.ms.toFixed(0) + ' ms', 'on your machine', '');
 
       var kindName = { pump: 'Pump', vessel: 'Vessel', tank: 'Tank', hx: 'Heat exchanger', gate: 'Isolation valve', check: 'Check valve', control: 'Control valve', instrument: 'Instrument' };
@@ -984,13 +966,13 @@
         els.lines.appendChild(tr);
       });
       var dangling = R.open.filter(function (o) { return !o.label; }), off = R.open.filter(function (o) { return o.label; });
-      els.warn.textContent = (dangling.length ? dangling.length + ' dangling line end' + (dangling.length > 1 ? 's' : '') + ' (red on the graph). ' : 'No dangling line ends. ') +
+      els.warn.textContent = (dangling.length ? dangling.length + ' dangling line end' + (dangling.length > 1 ? 's' : '') + ' (red on the drawing). ' : 'No dangling line ends. ') +
         (off.length ? off.length + ' off-sheet connection' + (off.length > 1 ? 's' : '') + ': ' + off.map(function (o) { return o.label; }).join(', ') + '.' : '');
       els.warn.classList.toggle('bad', dangling.length > 0);
       answer();
     }
     function answer() {
-      if (selected === null || !iso) { els.answer.innerHTML = '<b>Click any item on the graph.</b> The reader works out which valves must close to isolate it.'; return; }
+      if (selected === null || !iso) { els.answer.innerHTML = '<b>Click any valve, instrument or equipment item.</b> The reader works out which valves must close to isolate it.'; return; }
       var n = R.nodes[selected], close = iso.close.map(function (id) { return R.nodes[id].tag || 'an unread valve'; }).sort();
       var others = iso.reaches.filter(function (id) { return id !== selected; }).map(function (id) { return R.nodes[id].tag || 'unread equipment'; });
       var msg = '<b></b><span></span>';
@@ -1004,12 +986,11 @@
       selected = id === selected ? null : id;
       iso = selected === null ? null : isolate(R, selected);
       clearInterval(autoTimer);
-      if (stage !== 'graph') setStage('graph'); else draw();
+      if (stage !== 'equipment') setStage('equipment'); else draw();
       report();
     }
 
     /* ---- pointer tools work on the source sheet ---- */
-    var moved = false, drag = null;
     function toSource(e) {
       var r = view.getBoundingClientRect();
       return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H];
@@ -1018,71 +999,20 @@
     view.addEventListener('pointerdown', function (e) {
       var p = toSource(e);
       clearInterval(autoTimer);
-      view.setPointerCapture(e.pointerId);
-      if (tool === 'isolate') {
-        if (stage !== 'graph') setStage('graph');
-        var hit = null, bd = 34;
-        R.nodes.forEach(function (n) {
-          var b = n.box, dd = Math.hypot(Math.max(b.x0 - p[0], p[0] - b.x1, 0), Math.max(b.y0 - p[1], p[1] - b.y1, 0));
-          if (dd < bd) { bd = dd; hit = n; }
-        });
-        if (hit) select(hit.id);
-        return;
-      }
-      if (tool === 'move') {
-        var pick = null, dist = 30;
-        d.inline.forEach(function (s) { var q = Math.hypot(s.x - p[0], s.y - p[1]); if (q < dist) { dist = q; pick = s; } });
-        if (pick) drag = { sym: pick, v: isVertical(d, pick), range: range(pick) };
-        return;
-      }
-      if (tool === 'erase') { var st = { erase: true, pts: [p] }; strokes.push(st); drag = { stroke: st }; schedule(); return; }
-      if (tool === 'pen') { var ln = { a: p, b: p.slice() }; strokes.push(ln); drag = { line: ln }; }
-    });
-    view.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      var p = toSource(e);
-      if (drag.sym) {
-        var v = drag.v ? p[1] : p[0];
-        v = Math.max(drag.range[0], Math.min(drag.range[1], Math.round(v)));
-        if (drag.v) drag.sym.y = v; else drag.sym.x = v;
-        moved = true;
-        schedule();
-      } else if (drag.stroke) { drag.stroke.pts.push(p); schedule(); }
-      else if (drag.line) {
-        var a = drag.line.a;
-        // pipe is drawn square to the sheet
-        drag.line.b = Math.abs(p[0] - a[0]) > Math.abs(p[1] - a[1]) ? [p[0], a[1]] : [a[0], p[1]];
-        schedule();
-      }
-    });
-    ['pointerup', 'pointercancel'].forEach(function (n) {
-      view.addEventListener(n, function () { if (drag) { drag = null; run(false); } });
-    });
-    /* A symbol slides along its own straight, staying clear of its neighbours. */
-    function range(s) {
-      var pts = d.lines[s.line].pts, lo = 0, hi = 0, v = isVertical(d, s);
-      for (var i = 0; i + 1 < pts.length; i++) {
-        var a = pts[i], b = pts[i + 1];
-        if (v && a[0] === b[0] && a[0] === s.x && between(s.y, a[1], b[1])) { lo = Math.min(a[1], b[1]); hi = Math.max(a[1], b[1]); }
-        if (!v && a[1] === b[1] && a[1] === s.y && between(s.x, a[0], b[0])) { lo = Math.min(a[0], b[0]); hi = Math.max(a[0], b[0]); }
-      }
-      lo += 50; hi -= 50;
-      var cur = v ? s.y : s.x;
-      d.inline.concat(d.inst.map(function (n) { return { x: n.on[0], y: n.on[1], inst: true }; })).forEach(function (o) {
-        if (o === s) return;
-        var same = v ? o.x === s.x : o.y === s.y;
-        if (!same) return;
-        var q = v ? o.y : o.x;
-        if (q < cur) lo = Math.max(lo, q + 60); else hi = Math.min(hi, q - 60);
+      if (stage !== 'equipment') setStage('equipment');
+      var hit = null, bd = 34;
+      R.nodes.forEach(function (n) {
+        var b = n.box, dd = Math.hypot(Math.max(b.x0 - p[0], p[0] - b.x1, 0), Math.max(b.y0 - p[1], p[1] - b.y1, 0));
+        if (dd < bd) { bd = dd; hit = n; }
       });
-      return [lo, hi];
-    }
+      if (hit) select(hit.id);
+    });
 
     /* ---- controls ---- */
     Object.keys(DRAWINGS).forEach(function (id) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'chip'; b.dataset.id = id; b.textContent = DRAWINGS[id].label;
-      b.addEventListener('click', function () { moved = false; loadDrawing(id); });
+      b.addEventListener('click', function () { loadDrawing(id); });
       els.drawings.appendChild(b);
     });
     STAGES.forEach(function (s) {
@@ -1090,13 +1020,6 @@
       b.type = 'button'; b.dataset.id = s.id; b.textContent = s.label;
       b.addEventListener('click', function () { clearInterval(autoTimer); setStage(s.id); });
       els.stages.appendChild(b);
-    });
-    Array.prototype.forEach.call(root.querySelectorAll('[data-pid-tool]'), function (b) {
-      b.addEventListener('click', function () {
-        tool = b.dataset.pidTool;
-        Array.prototype.forEach.call(root.querySelectorAll('[data-pid-tool]'), function (o) { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', String(o === b)); });
-        view.dataset.tool = tool;
-      });
     });
     Array.prototype.forEach.call(root.querySelectorAll('[data-pid-range]'), function (input) {
       var key = input.dataset.pidRange, out = root.querySelector('[data-pid-val="' + key + '"]');
@@ -1119,10 +1042,10 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
     });
     var reset = root.querySelector('[data-pid-reset]');
-    if (reset) reset.addEventListener('click', function () { moved = false; loadDrawing(drawingId); });
+    if (reset) reset.addEventListener('click', function () { loadDrawing(drawingId); });
 
     function start() { buildLibrary(); loadDrawing('skid'); }
-    root.__pidApi = { set: function (o) { for (var k in o) opt[k] = o[k]; run(false); return root.__pid.score; }, load: function (id) { loadDrawing(id); clearInterval(autoTimer); }, stage: setStage, isolate: function (tag) { var n = R.nodes.filter(function (x) { return x.tag === tag; })[0]; if (n) select(n.id); return iso; }, erase: function (pts) { strokes.push({ erase: true, pts: pts }); run(false); } };
+    root.__pidApi = { set: function (o) { for (var k in o) opt[k] = o[k]; run(false); return root.__pid.score; }, load: function (id) { loadDrawing(id); clearInterval(autoTimer); }, stage: setStage, isolate: function (tag) { var n = R.nodes.filter(function (x) { return x.tag === tag; })[0]; if (n) select(n.id); return iso; } };
     (document.fonts && document.fonts.load ? Promise.all([document.fonts.load(FONT, 'A1'), document.fonts.load(FONT_S, 'A1')]) : Promise.resolve()).then(start, start);
   };
 })();

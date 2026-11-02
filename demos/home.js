@@ -55,6 +55,25 @@
     steps.forEach(function (s) { wio.observe(s); });
   }
 
+  /* Clicking a step centres it in the room under the sticky nav and bar.
+     scroll-margin cannot: the right offset depends on how tall the step
+     is at this viewport, and the step is nearly as tall as the room. */
+  if (bar.length) {
+    bar.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var step = document.getElementById(a.getAttribute('href').slice(1));
+        var wb = document.querySelector('.walk-bar');
+        if (!step || !wb) return;
+        e.preventDefault();
+        var top = parseFloat(getComputedStyle(wb).top) + wb.offsetHeight;
+        var box = step.getBoundingClientRect();
+        var slack = Math.max(0, (window.innerHeight - top - box.height) / 2);
+        window.scrollTo({ top: window.scrollY + box.top - top - slack, behavior: RM ? 'auto' : 'smooth' });
+        history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+  }
+
   /* Cost */
   var calc = document.getElementById('costCalc');
   if (calc) {

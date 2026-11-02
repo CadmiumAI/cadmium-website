@@ -40,7 +40,7 @@ PHASES = {
     n='Greenfield', title='Greenfield projects', short='Start a new build with connected data',
     h1='Building new? Start connected from day one.',
     lead='A new plant is the one chance to get the data right from the start. Cadmium links P&amp;IDs, equipment models, isometrics and MTOs from the first licensor package, so nothing has to be reconciled at handover.',
-    outcomes=[('From the first package', 'P&amp;IDs read into tagged data at the start of FEED'), ('Connected throughout', 'one dataset from FEED to handover'), ('Ready for handover', 'registers built as the job runs, not at the end')],
+    outcomes=[('From the first package', 'P&amp;IDs read into tagged data at the start of FEED'), ('Connected throughout', 'one dataset from FEED to the workface'), ('Ready for handover', 'registers built as the job runs, not at the end')],
     rows=[('Line and valve lists', 'Typed up from licensor drawings', 'Generated from the P&amp;IDs from the first issue'), ('Equipment models', 'Placeholders until late in the job', 'Built from each vendor GA as it arrives'), ('Isometrics and MTOs', 'Redrawn and recounted at every revision', 'Regenerated from the model at every revision'), ('Handover data', 'Compiled in the final weeks', 'Built up throughout the project')],
     module=('Equipment 3D modelling', 'equipment/', 'pid.png'), module2=('P&amp;ID intelligence', 'pid/'),
     lost='Reconciling documents at the end that could have stayed connected from the start.'),
@@ -245,7 +245,7 @@ def lifecycle():
     return f'''<section class="band" id="lifecycle">
   <div class="wrap">
     <p class="eyebrow">Across the project</p>
-    <h2>One platform, from FEED to handover.</h2>
+    <h2>One platform, from FEED to the workface.</h2>
     <p class="lead lead--wide">Pick a phase to see the deliverables, where the hours go, and what Cadmium takes off your team.</p>
     <div class="lc" id="lc" data-inview>
       <div class="lc-line" role="tablist" aria-label="Project phases">{btns}</div>
@@ -257,7 +257,7 @@ def lifecycle():
 
 WALK_STEPS = [
  ('pid', 'Read', 'Turn a stack of P&amp;IDs into data by lunchtime', 'Open native files or scans. Every symbol, tag and line is read, linked back to where it sits on the sheet, and joined into a graph of the plant. Anything uncertain goes to an engineer, not into your line list.', ['Line, valve and instrument lists, ready on day one', 'Every tag traced back to its place on the sheet', 'Dangling lines and missing tags flagged for review'], 'pid/', 'See it read a P&amp;ID'),
- ('equip', 'Model', 'Equipment models from vendor GAs', 'Vendor drawings arrive as GAs, and someone has to model every equipment by hand. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them, ready to place in your plant model.', ['Vessels, exchangers, pumps and more', 'Nozzles with size, rating and orientation', 'Checked against the vendor GA'], 'equipment/', 'See equipment modelling'),
+ ('equip', 'Model', 'Equipment models from vendor GAs', 'Vendor GAs arrive as drawings, not models, and someone has to model every item of equipment by hand. Cadmium reads the GA and builds the 3D equipment, with nozzles where the vendor put them, ready to place in your plant model.', ['Vessels, exchangers, pumps and more', 'Nozzles with size, rating and orientation', 'Checked against the vendor GA'], 'equipment/', 'See equipment modelling'),
  ('iso', 'Generate', 'From the model to a finished sheet', 'Point Cadmium at the 3D model. You get a finished isometric on your template, with every dimension, elevation and balloon in place, in native CAD.', ['Hours of clean-up per sheet become minutes of review', 'Your title block and your drafting standards', 'Native DWG and DXF, editable by your team'], 'isometrics/', 'Watch the pipeline run'),
  ('gad', 'Annotate', 'Your GAs, annotated and ready to issue', 'GAs extracted from your design tool arrive with notes piled on top of each other. Cadmium annotates the drawing in the DGN itself: labels placed clear of piping and dimensions, chained dimensions at the matchlines, and margin entries in your drafter&rsquo;s style.', ['A clean sheet in about ten seconds', 'Still your native DGN, plus a 1:1 PDF', 'Every label clear of piping and of other labels'], 'gad/', 'See GAD annotation'),
  ('mto', 'Take off', 'MTOs that keep up with the model', 'Quantities come straight from the model, line by line. When the model changes, you see exactly which items moved, before a purchase order goes out on stale numbers.', ['Differences by item and by line, per revision', 'Late changes visible the day they happen', 'Fewer surplus and short-shipped items at site'], 'phases/procurement/', 'See procurement'),
@@ -623,7 +623,7 @@ page('equipment', 'Equipment 3D modelling — Cadmium', 'Cadmium turns vendor GA
       <div>
         <p class="eyebrow">Equipment 3D modelling</p>
         <h1>From vendor GA to plant-ready model.</h1>
-        <p class="lead">Every equipment arrives as a vendor GA, and someone has to model it. Cadmium reads the drawing and builds the 3D equipment, with nozzles where the vendor put them.</p>
+        <p class="lead">Every item of equipment arrives as a vendor GA, and someone has to model it. Cadmium reads the GA and builds the 3D equipment, with nozzles where the vendor put them.</p>
         <div class="hq-actions"><a class="btn btn--on-dark" href="#contact">Start a pilot</a></div>
       </div>
       <div data-mock="equip" data-root="{R}"></div>

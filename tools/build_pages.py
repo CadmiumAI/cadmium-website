@@ -279,79 +279,6 @@ def walkthrough():
   <div class="wrap">{steps}</div>
 </section>'''
 
-THREAD = '''<section class="band band--alt" id="thread">
-  <div class="wrap">
-    <p class="eyebrow">Connected data</p>
-    <h2>One revision. Every document.</h2>
-    <p class="lead lead--wide">P&amp;IDs, models, isometrics and MTOs describe the same plant, so Cadmium treats them as one dataset. Select a part to find it everywhere, or revise the line and watch the change carry through. <a href="platform/">How the platform fits together &rarr;</a></p>
-    <div class="thread" id="thread-demo" data-rev="A" data-inview>
-      <div class="thread-bar">
-        <div class="chips" data-parts></div>
-        <button type="button" class="btn btn--primary btn--sm" data-revise>Upsize line to 8 in</button>
-        <span class="thread-rev">Revision <b data-revtext>A</b></span>
-      </div>
-      <div class="thread-grid">
-        <figure><figcaption>P&amp;ID</figcaption><svg viewBox="0 0 320 170" class="t-pid">
-          <g data-part="pump"><circle class="t-s" cx="38" cy="104" r="16"/><path class="t-s" d="M22 104H8M38 88V64M26 118l-6 12h36l-6-12"/><text x="38" y="150" text-anchor="middle">P-101</text></g>
-          <g data-part="pipe"><path class="t-l" d="M38 64H96M136 64H168M196 64H246"/><text x="216" y="54" text-anchor="middle" data-linetag>6-PW-101</text></g>
-          <g data-part="valve"><path class="t-s" d="M96 56l20 8V56l-20 8z M136 56l-20 8V56l20 8z"/><path class="t-s" d="M116 64V48M107 48h18"/><text x="116" y="88" text-anchor="middle">HV-101</text></g>
-          <g data-part="reducer"><path class="t-s" d="M168 56l28 4v8l-28 4z"/><text x="182" y="88" text-anchor="middle">R-1 CONC</text></g>
-          <g data-part="elbow"><rect class="t-s" x="246" y="30" width="44" height="106" rx="20"/><text x="268" y="152" text-anchor="middle">D-101</text></g>
-        </svg></figure>
-        <figure><figcaption>3D model</figcaption><svg viewBox="0 0 320 170" class="t-3d">
-          <g data-part="pump">
-            <path class="t-v" d="M20 132l20-11 28 16-20 11z" opacity=".55"/>
-            <path class="t-v" d="M20 132v12l28 16v-12z" opacity=".8"/>
-            <path class="t-v" d="M48 148l20-11v12l-20 11z"/>
-            <path class="t-v" d="M31 124v-8a15 8 0 0 1 30 0v8z" opacity=".7"/>
-            <ellipse class="t-v" cx="46" cy="124" rx="15" ry="8" opacity=".95"/>
-          </g>
-          <g data-part="pipe">
-            <path class="t-p" d="M52 128L199.2 43"/>
-            <path class="t-p" d="M213.1 51L259.8 78"/>
-            <path class="t-hl" d="M50.5 125.4L197.7 40.4"/>
-          </g>
-          <g data-part="valve">
-            <path class="t-v" d="M93.7 114.3L84.7 98.7L100.5 100Z M116.3 101.3L107.3 85.7L100.5 100Z"/>
-            <path class="t-h" d="M100.5 100V80"/>
-            <ellipse class="t-h" cx="100.5" cy="78" rx="10" ry="4.5"/>
-          </g>
-          <g data-part="reducer"><path class="t-v" d="M147.4 83.3L138.4 67.7L159.2 59.7L164.7 69.3Z"/></g>
-          <g data-part="elbow"><path class="t-p" d="M199.2 43Q211.2 36 213.1 51"/></g>
-        </svg></figure>
-        <figure><figcaption>Isometric</figcaption><svg viewBox="0 0 320 170" class="t-iso">
-          <g data-part="pipe">
-            <path class="t-g" d="M52 128L199.2 43L259.8 78"/>
-            <text class="t-d" x="70" y="105" transform="rotate(-30 70 105)">2400</text>
-            <text class="t-d" x="181.9" y="44" transform="rotate(-30 181.9 44)">3100</text>
-          </g>
-          <g data-part="pump"><circle class="t-b" cx="34" cy="140" r="9"/><text x="34" y="144" text-anchor="middle">1</text></g>
-          <g data-part="valve">
-            <path class="t-q" d="M94.1 112.9L86.1 99.1L100.5 100Z M114.9 100.9L106.9 87.1L100.5 100Z"/>
-            <path class="t-q" d="M100.5 100V83"/>
-            <ellipse class="t-q" cx="100.5" cy="81" rx="8" ry="3.5"/>
-            <circle class="t-b" cx="124" cy="120" r="9"/><text x="124" y="124" text-anchor="middle">2</text>
-          </g>
-          <g data-part="reducer">
-            <path class="t-q" d="M147.8 81.9L139.8 68.1L158.6 60.7L163.6 69.3Z"/>
-            <circle class="t-b" cx="156.5" cy="96" r="9"/><text x="156.5" y="100" text-anchor="middle">3</text>
-          </g>
-          <g data-part="elbow"><circle class="t-b" cx="273.8" cy="72" r="9"/><text x="273.8" y="76" text-anchor="middle">4</text></g>
-          <text class="t-size" x="30" y="24" data-sizeflag>6 NB &middot; Rev A</text>
-        </svg></figure>
-        <figure class="t-bomf"><figcaption>Bill of materials</figcaption>
-          <table class="t-bom"><thead><tr><th>#</th><th>Item</th><th>Qty</th></tr></thead><tbody>
-            <tr data-part="pump"><td>1</td><td data-a="Pump flange, 6 in" data-b="Pump flange, 8 in">Pump flange, 6 in</td><td>1</td></tr>
-            <tr data-part="valve"><td>2</td><td data-a="Gate valve, 6 in" data-b="Gate valve, 8 in">Gate valve, 6 in</td><td>1</td></tr>
-            <tr data-part="reducer"><td>3</td><td data-a="Reducer, concentric, 6 &times; 4" data-b="Reducer, concentric, 8 &times; 6">Reducer, concentric, 6 &times; 4</td><td>1</td></tr>
-            <tr data-part="elbow"><td>4</td><td data-a="Elbow, 90 LR, 4 in" data-b="Elbow, 90 LR, 6 in">Elbow, 90 LR, 4 in</td><td>1</td></tr>
-            <tr data-part="pipe"><td>5</td><td data-a="Pipe, 6 in" data-b="Pipe, 8 in">Pipe, 6 in</td><td>5.5 m</td></tr>
-          </tbody></table>
-        </figure>
-      </div>
-    </div>
-  </div>
-</section>'''
 
 INTEG = '''<section class="band" id="integrations">
   <div class="wrap">
@@ -447,7 +374,6 @@ home = f'''<section class="hq hq--photo" id="top">
 {walkthrough()}
 {FIELD}
 {COST}
-{THREAD}
 {INTEG}
 {SEC_BAND}'''
 page('', 'Cadmium — AI for engineering',

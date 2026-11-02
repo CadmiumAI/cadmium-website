@@ -96,43 +96,4 @@
     run();
   }
 
-  /* Linked documents */
-  var t = document.getElementById('thread-demo');
-  if (t) {
-    var box = t.querySelector('[data-parts]');
-    var PARTS = [['pump', 'Pump'], ['valve', 'Gate valve'], ['reducer', 'Reducer'], ['elbow', 'Elbow'], ['pipe', 'Pipe']];
-    var select = function (id) {
-      $$('[data-part]', t).forEach(function (el) { el.classList.toggle('hot', el.dataset.part === id); });
-      $$('.chip', box).forEach(function (c) { var on = c.dataset.id === id; c.classList.toggle('on', on); c.setAttribute('aria-pressed', String(on)); });
-    };
-    PARTS.forEach(function (p) {
-      var b = document.createElement('button');
-      b.type = 'button'; b.className = 'chip'; b.dataset.id = p[0]; b.textContent = p[1];
-      b.addEventListener('click', function () { stopT(); select(p[0]); });
-      box.appendChild(b);
-    });
-    $$('[data-part]', t).forEach(function (el) { el.addEventListener('click', function () { stopT(); select(el.dataset.part); }); });
-    select('valve');
-
-    var btn = t.querySelector('[data-revise]');
-    var revise = function () {
-      var toB = t.dataset.rev === 'A';
-      t.dataset.rev = toB ? 'B' : 'A';
-      btn.textContent = toB ? 'Back to 6 in' : 'Upsize line to 8 in';
-      t.querySelector('[data-revtext]').textContent = t.dataset.rev;
-      t.querySelector('[data-linetag]').textContent = toB ? '8-PW-101' : '6-PW-101';
-      t.querySelector('[data-sizeflag]').textContent = (toB ? '8 NB' : '6 NB') + ' · Rev ' + t.dataset.rev;
-      $$('td[data-a]', t).forEach(function (td) { td.innerHTML = toB ? td.dataset.b : td.dataset.a; td.classList.toggle('changed', toB); });
-      t.classList.remove('pulse'); void t.offsetWidth; t.classList.add('pulse');
-    };
-    btn.addEventListener('click', function () { stopT(); revise(); });
-    /* Plays itself: find each part, then issue a revision. */
-    var ti = 1, tTimer = null;
-    function stopT() { clearInterval(tTimer); tTimer = null; }
-    if (!RM) tTimer = setInterval(function () {
-      if (!t.classList.contains('in')) return;
-      if (ti === PARTS.length) { revise(); ti = 0; return; }
-      select(PARTS[ti][0]); ti++;
-    }, 1900);
-  }
 })();

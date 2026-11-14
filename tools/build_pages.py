@@ -102,11 +102,13 @@ def nav(root, cur):
       {link('teams/', 'Teams', 'teams')}
       {link('security/', 'Security', 'security')}
       {link('company/', 'Company', 'company')}
+      <a class="nav-signin-m" href="https://app.cadmium-ai.com">Sign in</a>
     </nav>
     <div class="nav-actions">
       <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
+      <a class="nav-signin" href="https://app.cadmium-ai.com">Sign in</a>
       <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
     </div>
   </div>
@@ -126,7 +128,7 @@ def footer(root):
       </div>
       <div><h4>Solutions</h4><a href="{root}isometrics/">Isometrics</a><a href="{root}gad/">GAD annotation</a><a href="{root}pid/">P&amp;ID intelligence</a><a href="{root}equipment/">Equipment 3D modelling</a><a href="{root}3d-from-2d/">3D from 2D</a></div>
       <div><h4>Project phases</h4>{sol}</div>
-      <div><h4>Company</h4><a href="{root}platform/">Platform</a><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
+      <div><h4>Company</h4><a href="{root}platform/">Platform</a><a href="{root}teams/">Teams</a><a href="{root}security/">Security</a><a href="{root}company/">About</a><a href="https://app.cadmium-ai.com">Sign in to Cadmium Studio</a><a href="mailto:hello@cadmium-ai.com">hello@cadmium-ai.com</a><a href="{root}credits/">Photo credits</a></div>
     </div>
     <p class="footer-legal">&copy; <span id="year">2026</span> Cadmium &middot; cadmium-ai.com</p>
   </div>

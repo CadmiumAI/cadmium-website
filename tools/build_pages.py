@@ -97,18 +97,18 @@ def nav(root, cur):
       <b>Cadmium</b>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a class="nav-app-m" href="https://app.cadmium-ai.com"><svg class="nav-app-ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M1.5 5.5h13M6 5.5v8"/></svg>Cadmium Studio</a>
       {drop('Solutions', root, plat, 'x', cur)}
       {drop('Project phases', root, sol, 'x', cur)}
       {link('teams/', 'Teams', 'teams')}
       {link('security/', 'Security', 'security')}
       {link('company/', 'Company', 'company')}
-      <a class="nav-signin-m" href="https://app.cadmium-ai.com">Sign in</a>
     </nav>
     <div class="nav-actions">
       <button class="icon-btn nav-burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
-      <a class="nav-signin" href="https://app.cadmium-ai.com">Sign in</a>
+      <a class="btn btn--ghost btn--sm nav-app" href="https://app.cadmium-ai.com" title="Cadmium Studio: sign in"><svg class="nav-app-ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M1.5 5.5h13M6 5.5v8"/></svg><span class="nav-app-t"><span class="nav-app-co">Cadmium </span>Studio</span></a>
       <a class="btn btn--primary btn--sm" href="#contact">Start a pilot</a>
     </div>
   </div>

@@ -879,12 +879,18 @@ h2{font-weight:700;letter-spacing:-.018em}
 }
 @media (min-width:861px){.nav-panel:has(.has-ic){width:390px}}
 
-/* Sign in to the Studio: a quiet link beside the pilot button for customers
-   who already have an account; in the mobile menu below 860px. */
-.nav-signin{font-size:14.5px;font-weight:500;color:var(--ink-2);text-decoration:none;padding:6px 4px;white-space:nowrap;transition:color .15s}
-.nav-signin:hover{color:var(--ink)}
-.nav-links .nav-signin-m{display:none}
+/* Cadmium Studio, the app customers sign in to: an outlined button beside the
+   pilot button; below 860px, the first item of the menu, drawn as a button. */
+.nav-app{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-app-ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round}
+.nav-links .nav-app-m{display:none}
+@media (max-width:1080px){ .nav-app-co{display:none} }
+@media (max-width:960px){
+  .nav-app{padding-left:9px;padding-right:9px}
+  .nav-app-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
 @media (max-width:860px){
-  .nav-signin{display:none}
-  .nav-links .nav-signin-m{display:block}
+  .nav-app{display:none}
+  .nav-links .nav-app-m{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 6px;padding:10px 14px;border:1px solid rgba(15,23,42,.28);border-radius:4px;color:#1e293b;font-weight:500}
+  .nav-links .nav-app-m:hover{background:rgba(15,23,42,.05);border-color:rgba(15,23,42,.45);color:#0f172a}
 }
